@@ -3,23 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ClearBot | Business Automation</title>
-<meta name="description" content="ClearBot is a business automation agency. Something powerful is on its way. Stay tuned." />
+<title>ClearBot · A full-service creative agency, run by bots</title>
+<meta name="description" content="Brand systems, websites, ad campaigns, content, video — the work a creative agency does, run by bots that don't sleep, don't drift off-brand, and don't bill you by the hour." />
 
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,300;1,9..144,400;1,9..144,500&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
 
 <!--
-  SVG sprite: the ClearBot logo path is defined once here as a <symbol>
-  and reused via <use href="#clearbot-logo"> everywhere it appears on
-  the page (header mark, ghosted headline backdrop, orbit in panel).
+  SVG sprite: the ClearBot logomark, defined once and reused via <use>.
 -->
 <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
   <symbol id="clearbot-logo" viewBox="0 0 1008 1008">
@@ -27,127 +25,156 @@
   </symbol>
 </svg>
 
-<div class="grain" aria-hidden="true"></div>
+<!-- Ambient background layers -->
+<div class="amb amb-grid" aria-hidden="true"></div>
+<div class="amb amb-glow" aria-hidden="true"></div>
+<div class="amb amb-grain" aria-hidden="true"></div>
+<div class="amb amb-ghost" aria-hidden="true">
+  <svg viewBox="0 0 1008 1008"><use href="#clearbot-logo" /></svg>
+</div>
 
 <div class="shell">
 
   <!-- Top bar -->
   <header class="bar" role="banner">
-    <div class="left">
-      <span class="mark" aria-label="ClearBot">
-        <svg class="mark-logo" width="22" height="22" aria-hidden="true"><use href="#clearbot-logo" /></svg>
-        ClearBot
-      </span>
-      <span style="color: var(--ink-faint);">/</span>
-      <span>Clear workflows. Clear results.</span>
+    <div class="bar-brand">
+      <a class="mark" href="/" aria-label="ClearBot home">
+        <svg class="mark-logo" width="20" height="20" aria-hidden="true"><use href="#clearbot-logo" /></svg>
+        <span>ClearBot</span>
+      </a>
+      <span class="bar-sep">/</span>
+      <span class="bar-tag">Clear workflows. Clear results.</span>
     </div>
 
-    <div class="right">
+    <nav class="bar-nav" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#workflows" class="current" aria-current="page">Workflows</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+    <div class="bar-actions">
+      <a class="ghost-btn" href="#contact">Book intro</a>
       <a class="login-btn" href="https://login.clearbot.io">Login</a>
     </div>
   </header>
 
-  <!-- Main -->
   <main>
-    <div class="hero">
 
-      <!-- Headline -->
-      <section class="headline brand-stage">
-        <svg class="ghost-logo" aria-hidden="true"><use href="#clearbot-logo" /></svg>
-        <h1 class="brand" aria-label="ClearBot">
-          <span class="clear">Clear</span><span class="bot">Bot</span>
-        </h1>
+    <!-- HERO -->
+    <section class="hero" id="workflows">
+      <span class="eyebrow">
+        <span class="pulse-dot"></span>
+        Full-service creative agency · on autopilot
+      </span>
 
-        <p class="lede">
-          Something powerful is on its way. We're engineering the
-          automation layer that lets teams <em>run leaner, think clearer,
-          and build faster.</em> Stay tuned.
-        </p>
+      <h1 class="hero-headline">
+        <span class="it">An agency </span><span class="rm">run by bots.</span>
+        <span class="it"> Branded, shipped, </span><span class="rm">in a week.</span>
+      </h1>
 
-        <div class="cta-row">
-          <form class="form" id="notifyForm" onsubmit="return handleSubmit(event)" aria-label="Notification signup">
-            <label for="emailInput" class="sr-only" style="position:absolute; left:-9999px;">Email address</label>
-            <input id="emailInput" type="email" name="email" placeholder="your@email.com" required autocomplete="email" />
-            <button type="submit" aria-label="Notify me when ClearBot launches">
-              Notify Me
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </form>
-          <span class="meta-note">No spam · Launch only</span>
-        </div>
-      </section>
+      <p class="lede">
+        Brand systems, websites, ad campaigns, content, video — the work a creative agency does, run by bots that don't sleep, don't drift off-brand, and don't bill you by the hour. <em>Clear workflows. Clear results.</em>
+      </p>
 
-      <!-- Status panel -->
-      <aside class="panel" aria-label="Launch status">
-        <svg class="orbit" aria-hidden="true"><use href="#clearbot-logo" /></svg>
-
-        <div class="panel-head">
-          <span>Launch Log</span>
-          <span class="status-tag">
-            <span class="dot" style="width:5px;height:5px;"></span>
-            In Progress
-          </span>
-        </div>
-
-        <div class="countdown" role="timer" aria-live="polite" aria-atomic="true">
-          <div class="unit"><span class="num" id="d">00</span><span class="label">Days</span></div>
-          <div class="unit"><span class="num" id="h">00</span><span class="label">Hrs</span></div>
-          <div class="unit"><span class="num" id="m">00</span><span class="label">Min</span></div>
-          <div class="unit"><span class="num" id="s">00</span><span class="label">Sec</span></div>
-        </div>
-
-        <div class="log" aria-label="Build progress">
-          <div class="log-row done">
-            <span class="tick" aria-hidden="true"></span>
-            <span class="text">Infrastructure wired</span>
-            <span class="pct">100%</span>
+      <!-- SCHEMATIC STAGE: interactive flowchart + detail -->
+      <div class="stage">
+        <article class="panel panel--flow">
+          <span class="bracket bracket-tl"></span>
+          <span class="bracket bracket-br"></span>
+          <header class="panel-head">
+            <span class="panel-fig" id="figLabel">FIG. 01 · BRIEF-TO-BRAND</span>
+            <span class="status-tag"><span class="pulse-dot"></span><span>IN RUN</span></span>
+          </header>
+          <div class="panel-sub">
+            <div class="panel-sub-title" id="autoTitle">Brief → full brand system</div>
+            <div class="panel-sub-meta" id="autoMeta">7 steps · 4 deliverables · ~48h runtime · 9 runs / week</div>
           </div>
-          <div class="log-row done">
-            <span class="tick" aria-hidden="true"></span>
-            <span class="text">Core workflows shipped</span>
-            <span class="pct">100%</span>
-          </div>
-          <div class="log-row active">
-            <span class="tick" aria-hidden="true"></span>
-            <span class="text">Integrations in training</span>
-            <span class="pct">72%</span>
-          </div>
-          <div class="log-row">
-            <span class="tick" aria-hidden="true"></span>
-            <span class="text">Final polish &amp; launch</span>
-            <span class="pct">Queued</span>
-          </div>
-        </div>
-      </aside>
 
-    </div>
+          <div class="flow" id="flow">
+            <div class="flow-viewport" id="flowViewport">
+              <div class="flow-stage" id="flowStage">
+                <svg class="flow-edges" id="flowEdges" aria-hidden="true"></svg>
+                <div class="flow-nodes" id="flowNodes"></div>
+              </div>
+            </div>
+            <div class="flow-zoom" id="flowZoom">
+              <button type="button" data-act="in"  aria-label="Zoom in">+</button>
+              <div class="flow-zoom-val" id="flowZoomVal">100%</div>
+              <button type="button" data-act="out" aria-label="Zoom out">−</button>
+              <button type="button" data-act="rst" aria-label="Reset view">RST</button>
+            </div>
+            <div class="flow-hint">drag to pan · ⌘/ctrl + scroll to zoom</div>
+          </div>
+
+          <footer class="panel-foot">
+            <span>tap a node</span>
+            <span class="legend"><span class="legend-shape trigger"></span>BRIEF</span>
+            <span class="legend"><span class="legend-shape agent"></span>CRAFT</span>
+            <span class="legend"><span class="legend-shape action"></span>PRODUCE</span>
+            <span class="legend"><span class="legend-shape sink"></span>SHIP</span>
+          </footer>
+        </article>
+
+        <aside class="panel panel--detail" id="detailPanel">
+          <span class="bracket bracket-tl"></span>
+          <span class="bracket bracket-br"></span>
+          <header class="panel-head">
+            <span>NODE · DETAIL</span>
+            <span class="status-tag" id="detailTag"></span>
+          </header>
+          <div class="detail" id="detailBody"></div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <div class="divider" id="services"><span>§ 01 · Services</span><span class="divider-line"></span></div>
+    <div class="services" id="services-grid"></div>
+
+    <!-- AUTOMATION GALLERY -->
+    <div class="divider"><span>§ 02 · Built-in automations</span><span class="divider-line"></span></div>
+    <div class="gallery" id="gallery" role="tablist" aria-label="Example workflows"></div>
+
+    <!-- PROCESS -->
+    <div class="divider" id="process"><span>§ 03 · How we engage</span><span class="divider-line"></span></div>
+    <div class="process" id="process-strip"></div>
+
+    <!-- CTA -->
+    <div class="divider" id="contact"><span>§ 04 · Contact</span><span class="divider-line"></span></div>
+    <article class="panel panel--cta">
+      <span class="bracket bracket-tl"></span>
+      <span class="bracket bracket-br"></span>
+      <header class="panel-head">
+        <span>INTAKE · CLEARBOT SYSTEMS</span>
+        <span class="status-tag"><span class="pulse-dot"></span><span>OPEN</span></span>
+      </header>
+      <div class="cta-body">
+        <div class="cta-copy">
+          <h2 class="cta-title">
+            <span class="it">Tell us what you need </span><span class="rm">made.</span>
+          </h2>
+          <p class="cta-text">
+            A 30-minute intro call is free. You leave with sample work in your brand, a workflow diagram, and a fixed monthly number — no hourly billing, ever.
+          </p>
+        </div>
+        <div class="cta-actions">
+          <a class="primary-btn" href="mailto:ethan@clearbot.io">
+            Book intro call
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a class="email-link" href="mailto:ethan@clearbot.io">or · ethan@clearbot.io</a>
+        </div>
+      </div>
+    </article>
+
   </main>
 
-  <!-- Marquee -->
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Workflow Automation</span>
-      <span>AI Agents</span>
-      <span>Process Intelligence</span>
-      <span>Custom Integrations</span>
-      <span>Ops Engineering</span>
-      <span>Workflow Automation</span>
-      <span>AI Agents</span>
-      <span>Process Intelligence</span>
-      <span>Custom Integrations</span>
-      <span>Ops Engineering</span>
-    </div>
-  </div>
-
   <!-- Footer -->
-  <footer class="foot" style="margin-top: 28px;">
-    <div class="left">
-      <span>© 2026 ClearBot Systems</span>
-    </div>
-    <div class="copyright">Built for the quiet efficient future.</div>
-    <div class="right">
+  <footer class="foot">
+    <div class="foot-left">© 2026 ClearBot Systems</div>
+    <div class="foot-mid">Creative work, run by bots.</div>
+    <div class="foot-right">
       <a href="https://twitter.com/TheClearBot" target="_blank" rel="noopener noreferrer">Twitter</a>
       <a href="https://www.linkedin.com/in/ethgrd/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <a href="https://instagram.com/clearbot.io" target="_blank" rel="noopener noreferrer">Instagram</a>
