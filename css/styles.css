@@ -61,12 +61,6 @@ body::after {
     radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.02), transparent 35%);
   pointer-events: none;
   z-index: 0;
-  animation: drift 20s ease-in-out infinite alternate;
-}
-
-@keyframes drift {
-  0%   { transform: translate(0, 0); }
-  100% { transform: translate(-30px, 20px); }
 }
 
 /* Grain overlay */
