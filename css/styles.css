@@ -652,6 +652,7 @@ footer.foot a:hover::after {
 
 .marquee-track {
   display: inline-flex;
+  width: max-content;
   gap: 48px;
   animation: slide 40s linear infinite;
 }
@@ -663,6 +664,7 @@ footer.foot a:hover::after {
   color: var(--ink-dim);
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   gap: 48px;
 }
 
