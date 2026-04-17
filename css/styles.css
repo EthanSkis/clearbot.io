@@ -96,7 +96,7 @@ body::after {
 /* Top bar */
 header.bar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 24px;
   font-size: 11px;
@@ -663,8 +663,6 @@ footer.foot a:hover::after {
 /* Responsive */
 @media (max-width: 960px) {
   .shell { padding: 20px 24px; }
-  header.bar { grid-template-columns: 1fr auto; }
-  header.bar .right { display: none; }
   main { padding: 48px 0 40px; }
   .hero { grid-template-columns: 1fr; gap: 48px; }
   .orbit { display: none; }
