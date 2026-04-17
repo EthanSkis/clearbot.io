@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClearBot</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0d0f14;
+      color: #e2e8f0;
+            min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+}
+
+    .glow {
+            width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(99,179,237,0.18) 0%, transparent 70%);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      pointer-events: none;
+}
+
+    .logo {
+            font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, #63b3ed, #a78bfa);
+              -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+}
+
+    .tagline {
+            margin-top: 1rem;
+      font-size: 1.15rem;
+      color: #94a3b8;
+      max-width: 480px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+}
+
+    .badge {
+            margin-top: 2rem;
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      background: rgba(99,179,237,0.1);
+      border: 1px solid rgba(99,179,237,0.3);
+      color: #63b3ed;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+}
+
+    footer {
+            position: fixed;
+      bottom: 1.5rem;
+      font-size: 0.75rem;
+      color: #475569;
+}
+  </style>
+    </head>
+    <body>
+      <div class="glow"></div>
+      <div class="logo">ClearBot</div>
+      <p class="tagline">Something powerful is on its way. Stay tuned.</p>
+      <span class="badge">Coming Soon</span>
+      <footer>&copy; 2026 ClearBot &mdash; clearbot.io</footer>
+    </body>
+    </html>
