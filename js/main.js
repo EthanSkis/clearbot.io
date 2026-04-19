@@ -443,11 +443,27 @@ function renderDetail() {
 
 // ── Pan & zoom ──────────────────────────────────────────────
 
+let lastRepaintZoom = null;
+let pendingRepaintRaf = 0;
+
+function scheduleNodeRepaint() {
+  if (pendingRepaintRaf) return;
+  pendingRepaintRaf = requestAnimationFrame(() => {
+    pendingRepaintRaf = 0;
+    const tick = String(performance.now());
+    document.querySelectorAll('.node').forEach(el => {
+      el.style.setProperty('--zoom-tick', tick);
+    });
+    lastRepaintZoom = state.zoom;
+  });
+}
+
 function applyTransform() {
   const stage = document.getElementById('flowStage');
   stage.style.transform = `translate(${state.pan.x}px, ${state.pan.y}px) scale(${state.zoom})`;
   const z = document.getElementById('flowZoomVal');
   if (z) z.textContent = Math.round(state.zoom * 100) + '%';
+  if (state.zoom !== lastRepaintZoom) scheduleNodeRepaint();
 }
 
 function clampZoom(z) { return Math.min(2.5, Math.max(0.4, z)); }
