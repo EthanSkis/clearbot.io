@@ -14,7 +14,7 @@ export async function getSupabaseServer() {
     {
       cookies: {
         getAll: () => cookieStore.getAll(),
-        setAll: (items) => {
+        setAll: (items: { name: string; value: string; options: CookieOptions }[]) => {
           items.forEach(({ name, value, options }) => {
             const opts: CookieOptions = { ...options, domain: COOKIE_DOMAIN };
             try { cookieStore.set({ name, value, ...opts }); } catch { /* Server Component read-only */ }
