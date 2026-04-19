@@ -1,11 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    // Route handlers + server actions both talk to Supabase; keep them
-    // running in the Node runtime so we can use the admin client.
-    serverComponentsExternalPackages: ['@supabase/supabase-js']
-  }
+  // Keep the supabase-js runtime in Node (not bundled) so the admin client's
+  // Node-specific dependencies keep working in server components + route handlers.
+  serverExternalPackages: ['@supabase/supabase-js']
 };
 
 export default nextConfig;
