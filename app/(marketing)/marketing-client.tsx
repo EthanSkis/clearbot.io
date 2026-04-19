@@ -216,7 +216,7 @@ export function MarketingHomeClient() {
     }
     function applyTransform() {
       const stage = $('flowStage'); stage.style.transform = `translate(${state.pan.x}px, ${state.pan.y}px)`;
-      const z = root.querySelector<HTMLElement>('#flowZoomVal'); if (z) z.textContent = Math.round(state.zoom * 100) + '%';
+      $('flowZoomVal').textContent = Math.round(state.zoom * 100) + '%';
       if (state.zoom !== lastZoomLayout) applyZoomLayout();
     }
     const clampZoom = (z: number) => Math.min(2.5, Math.max(0.4, z));
