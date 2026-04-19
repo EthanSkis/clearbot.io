@@ -312,20 +312,17 @@ function renderFlowchart() {
   const minY = Math.min(...ys) - NODE_H / 2;
   const maxY = Math.max(...ys) + NODE_H / 2;
 
-  const stageW = maxX + GEOM.padX;
-  const stageH = maxY + GEOM.padY;
+  const worldW = maxX + GEOM.padX;
+  const worldH = maxY + GEOM.padY;
 
   const stage = document.getElementById('flowStage');
-  stage.style.width  = stageW + 'px';
-  stage.style.height = stageH + 'px';
   stage._bbox = { minX, maxX, minY, maxY };
+  stage._dims = { worldW, worldH };
 
-  // Edges SVG
+  // Edges SVG — draw paths in world coords; viewBox + width/height scale them crisply.
   const svg = document.getElementById('flowEdges');
-  svg.setAttribute('width',  stageW);
-  svg.setAttribute('height', stageH);
-  svg.style.width  = stageW + 'px';
-  svg.style.height = stageH + 'px';
+  svg.setAttribute('viewBox', `0 0 ${worldW} ${worldH}`);
+  svg.setAttribute('preserveAspectRatio', 'none');
   svg.innerHTML = '';
 
   const defs = document.createElementNS(SVG_NS, 'defs');
@@ -373,10 +370,8 @@ function renderFlowchart() {
   placed.forEach(n => {
     const el = document.createElement('div');
     el.className = `node ${n.role}`;
-    el.style.left   = (n.x - NODE_W / 2) + 'px';
-    el.style.top    = (n.y - NODE_H / 2) + 'px';
-    el.style.width  = NODE_W + 'px';
-    el.style.height = NODE_H + 'px';
+    el.dataset.worldX = (n.x - NODE_W / 2);
+    el.dataset.worldY = (n.y - NODE_H / 2);
     el.dataset.id = n.id;
     el.setAttribute('role', 'button');
     el.setAttribute('tabindex', '0');
@@ -395,6 +390,7 @@ function renderFlowchart() {
     wrap.appendChild(el);
   });
 
+  applyZoomLayout();
   applySelection();
 }
 
@@ -443,27 +439,45 @@ function renderDetail() {
 
 // ── Pan & zoom ──────────────────────────────────────────────
 
-let lastRepaintZoom = null;
-let pendingRepaintRaf = 0;
+let lastZoomLayout = null;
 
-function scheduleNodeRepaint() {
-  if (pendingRepaintRaf) return;
-  pendingRepaintRaf = requestAnimationFrame(() => {
-    pendingRepaintRaf = 0;
-    const tick = String(performance.now());
-    document.querySelectorAll('.node').forEach(el => {
-      el.style.setProperty('--zoom-tick', tick);
-    });
-    lastRepaintZoom = state.zoom;
+function applyZoomLayout() {
+  const stage = document.getElementById('flowStage');
+  if (!stage || !stage._dims) return;
+  const z = state.zoom || 1;
+  const { worldW, worldH } = stage._dims;
+  const stageW = worldW * z;
+  const stageH = worldH * z;
+  stage.style.width  = stageW + 'px';
+  stage.style.height = stageH + 'px';
+  stage.style.setProperty('--zoom', z);
+
+  const svg = document.getElementById('flowEdges');
+  if (svg) {
+    svg.setAttribute('width',  stageW);
+    svg.setAttribute('height', stageH);
+    svg.style.width  = stageW + 'px';
+    svg.style.height = stageH + 'px';
+  }
+
+  document.querySelectorAll('#flowNodes .node').forEach(el => {
+    const wx = parseFloat(el.dataset.worldX);
+    const wy = parseFloat(el.dataset.worldY);
+    el.style.left   = (wx * z) + 'px';
+    el.style.top    = (wy * z) + 'px';
+    el.style.width  = (NODE_W * z) + 'px';
+    el.style.height = (NODE_H * z) + 'px';
   });
+
+  lastZoomLayout = z;
 }
 
 function applyTransform() {
   const stage = document.getElementById('flowStage');
-  stage.style.transform = `translate(${state.pan.x}px, ${state.pan.y}px) scale(${state.zoom})`;
+  stage.style.transform = `translate(${state.pan.x}px, ${state.pan.y}px)`;
   const z = document.getElementById('flowZoomVal');
   if (z) z.textContent = Math.round(state.zoom * 100) + '%';
-  if (state.zoom !== lastRepaintZoom) scheduleNodeRepaint();
+  if (state.zoom !== lastZoomLayout) applyZoomLayout();
 }
 
 function clampZoom(z) { return Math.min(2.5, Math.max(0.4, z)); }
