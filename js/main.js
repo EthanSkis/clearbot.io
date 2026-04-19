@@ -257,9 +257,9 @@ function renderServices() {
       </div>
       <h3 class="service-name">${escape(s.name)}</h3>
       <p class="service-body">${escape(s.body)}</p>
-      <span class="service-cta">Explore
+      <a class="service-cta" href="https://signup.clearbot.io/book?focus=${encodeURIComponent(s.id)}">Book a call about this
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
+      </a>
     </article>
   `).join('');
 }
