@@ -443,6 +443,7 @@ header.bar {
   z-index: 2;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  will-change: transform;
   transition: background 0.25s var(--cb-ease),
               border-color 0.25s var(--cb-ease),
               color 0.25s var(--cb-ease),
