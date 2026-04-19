@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import { AUTOMATIONS, NODE_DETAIL, ROLE_TAGS, SERVICES, PROCESS, type Automation, type NodeRole } from './automations';
+import { AUTOMATIONS, NODE_DETAIL, ROLE_TAGS, SERVICES, PROCESS, type FlowNode, type NodeRole } from './automations';
 import { SIGNUP_URL } from '@/lib/env';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
@@ -8,9 +8,9 @@ const NODE_W = 180;
 const NODE_H = 68;
 const GEOM = { colW: 220, rowH: 120, padX: 40, padY: 50 };
 
-interface Placed extends Automation['nodes'][number] { x: number; y: number }
+interface Placed extends FlowNode { x: number; y: number }
 
-function layoutNodes(nodes: Automation['nodes']): Placed[] {
+function layoutNodes(nodes: FlowNode[]): Placed[] {
   return nodes.map((n) => ({ ...n, x: GEOM.padX + n.col * GEOM.colW, y: GEOM.padY + n.row * GEOM.rowH }));
 }
 function connectorPath(a: { x: number; y: number }, b: { x: number; y: number }) {
