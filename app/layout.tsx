@@ -2,9 +2,9 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ClearBot · A full-service creative agency, run by bots',
+  title: 'ClearBot · Your idea. Perfected.',
   description:
-    "Brand systems, websites, ad campaigns, content, video \u2014 the work a creative agency does, run by bots that don't sleep, don't drift off-brand, and don't bill you by the hour.",
+    "An AI-assisted design studio. Brand identities, websites, and rescue jobs for sites that aren't quite working \u2014 made sharp, made fast, made yours.",
   icons: { icon: '/assets/favicon.svg' }
 };
 

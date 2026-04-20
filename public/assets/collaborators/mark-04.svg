@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" fill="none" role="img" aria-label="Collaborator placeholder">
+  <circle cx="22" cy="22" r="10" stroke="#c8c6bf" stroke-width="1.5" />
+  <circle cx="22" cy="22" r="3" fill="#c8c6bf" />
+  <text x="40" y="27" font-family="Fraunces, Georgia, serif" font-size="15" font-style="italic" font-weight="300" fill="#c8c6bf">Orbit Studio</text>
+</svg>

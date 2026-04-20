@@ -13,7 +13,7 @@ export default function MarketingHome() {
             <span>ClearBot</span>
           </a>
           <span className="bar-sep">/</span>
-          <span className="bar-tag">Clear workflows. Clear results.</span>
+          <span className="bar-tag">Your idea. Perfected.</span>
         </div>
         <div className="bar-actions">
           <a className="ghost-btn" href={`${SIGNUP_URL}/book`}>Book intro</a>
@@ -26,34 +26,32 @@ export default function MarketingHome() {
         <section className="hero" id="workflows">
           <span className="eyebrow">
             <span className="pulse-dot" />
-            Full-service creative agency · on autopilot
+            AI-assisted design studio · independent
           </span>
 
           <h1 className="hero-headline">
-            <span className="it">An agency </span>
-            <span className="rm">run by bots.</span>{' '}
-            <span className="it">Branded, shipped, </span>
-            <span className="rm">in a week.</span>
+            <span className="it">Your idea. </span>
+            <span className="rm">Perfected.</span>
           </h1>
 
           <p className="lede">
-            Brand systems, websites, ad campaigns, content, video — the work a creative agency does, run by
-            bots that don&rsquo;t sleep, don&rsquo;t drift off-brand, and don&rsquo;t bill you by the hour.{' '}
-            <em>Clear workflows. Clear results.</em>
+            I design brand identities, build websites, and fix the ones that aren&rsquo;t landing. One
+            designer, AI-assisted, turning rough ideas into work that actually looks finished.{' '}
+            <em>Brand, web, and rescues.</em>
           </p>
 
           <MarketingHomeClient />
         </section>
 
         <div className="divider" id="contact">
-          <span>§ 04 · Contact</span>
+          <span>§ 03 · Contact</span>
           <span className="divider-line" />
         </div>
         <article className="panel panel--cta">
           <span className="bracket bracket-tl" />
           <span className="bracket bracket-br" />
           <header className="panel-head">
-            <span>INTAKE · CLEARBOT SYSTEMS</span>
+            <span>INTAKE · CLEARBOT STUDIO</span>
             <span className="status-tag">
               <span className="pulse-dot" />
               <span>OPEN</span>
@@ -62,12 +60,12 @@ export default function MarketingHome() {
           <div className="cta-body">
             <div className="cta-copy">
               <h2 className="cta-title">
-                <span className="it">Tell us what you need </span>
+                <span className="it">Tell me what you need </span>
                 <span className="rm">made.</span>
               </h2>
               <p className="cta-text">
-                A 30-minute intro call is free. You leave with sample work in your brand, a workflow diagram, and a
-                fixed monthly number — no hourly billing, ever.
+                A 30-minute intro call is free. You&rsquo;ll leave with a direction for the work, a rough
+                timeline, and a price.
               </p>
             </div>
             <div className="cta-actions">
@@ -84,8 +82,8 @@ export default function MarketingHome() {
       </main>
 
       <footer className="foot">
-        <div className="foot-left">© 2026 ClearBot Systems</div>
-        <div className="foot-mid">Creative work, run by bots.</div>
+        <div className="foot-left">© 2026 ClearBot Studio</div>
+        <div className="foot-mid">Your idea. Perfected.</div>
         <div className="foot-right">
           <a href={SIGNUP_URL}>Sign up</a>
           <a href="https://twitter.com/TheClearBot" target="_blank" rel="noopener noreferrer">Twitter</a>

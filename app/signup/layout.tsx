@@ -16,9 +16,9 @@ export default function SignupLayout({ children }: { children: React.ReactNode }
 
         <footer className="foot">
           <div className="left">
-            <span>© 2026 ClearBot Systems</span>
+            <span>© 2026 ClearBot Studio</span>
           </div>
-          <div className="copyright">Clear workflows. Clear results.</div>
+          <div className="copyright">Your idea. Perfected.</div>
           <div className="right">
             <a href="https://clearbot.io">Home</a>
             <a href="mailto:ethan@clearbot.io">Contact</a>
