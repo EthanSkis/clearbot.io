@@ -13,22 +13,30 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(`${CLIENT_URL}?error=missing_code`);
   }
 
-  // Carrier response so the session cookies set by exchangeCodeForSession
-  // ride out on the redirect (see app/api/auth/login/route.ts for context).
-  const carrier = NextResponse.next();
-  const supabase = getSupabaseRouteClient(req, carrier);
+  // Use the redirect response itself as the cookie carrier so session
+  // Set-Cookie headers minted by exchangeCodeForSession ride out on the
+  // response we actually return. Location is patched once we pick dest.
+  // (NextResponse.next() is a middleware primitive and its headers aren't
+  // safe to splice onto a Route Handler redirect.)
+  const res = NextResponse.redirect(CLIENT_URL);
+  const supabase = getSupabaseRouteClient(req, res);
 
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error || !data.session) {
-    return NextResponse.redirect(`${CLIENT_URL}?error=exchange_failed`);
+  try {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error || !data.session || !data.user) {
+      return NextResponse.redirect(`${CLIENT_URL}?error=exchange_failed`);
+    }
+
+    const dest =
+      next && next.startsWith('/')
+        ? new URL(next, url.origin).toString()
+        : await pickPostLoginUrl(supabase, data.user.id);
+
+    res.headers.set('location', dest);
+    return res;
+  } catch {
+    return NextResponse.redirect(`${CLIENT_URL}?error=callback_failed`);
   }
-
-  const dest =
-    next && next.startsWith('/')
-      ? new URL(next, url.origin).toString()
-      : await pickPostLoginUrl(supabase, data.user!.id);
-
-  return NextResponse.redirect(dest, { headers: carrier.headers });
 }
 
 async function pickPostLoginUrl(
