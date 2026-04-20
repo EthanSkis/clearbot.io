@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Settings · ClearBot Client Portal</title>
+<link rel="icon" type="image/svg+xml" href="/client-portal/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/client-portal/css/styles.css" />
+</head>
+<body data-page="settings">
+<div class="splash" aria-hidden="true"><span class="dot"></span><span>Checking session…</span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="app">
+
+  <header class="topbar" role="banner">
+    <a class="brand" href="/" aria-label="ClearBot Client Portal home">
+      <svg class="mark-logo" width="20" height="20" aria-hidden="true"><use href="#clearbot-logo"/></svg>
+      <span class="brand-name">ClearBot<em>/portal</em></span>
+    </a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <span>Portal</span><span class="sep">/</span><span class="here">Settings</span>
+    </nav>
+    <button class="user" data-user aria-label="Account menu">
+      <span class="name" data-user-name>…</span>
+      <span class="avatar" data-user-initial aria-hidden="true">•</span>
+    </button>
+  </header>
+
+  <aside class="sidebar" aria-label="Portal navigation">
+    <a class="nav-item" data-nav="index" href="/">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" data-nav="projects" href="/projects">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
+      Projects
+    </a>
+    <a class="nav-item" data-nav="deliverables" href="/deliverables">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>
+      Deliverables
+    </a>
+    <a class="nav-item" data-nav="messages" href="/messages">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v12H8l-4 3z"/></svg>
+      Messages
+    </a>
+    <a class="nav-item" data-nav="invoices" href="/invoices">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      Invoices
+    </a>
+    <div class="sidebar-group">Account</div>
+    <a class="nav-item" data-nav="settings" href="/settings">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      Settings
+    </a>
+    <button class="nav-item" type="button" data-signout>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Sign Out
+    </button>
+    <div class="spacer"></div>
+    <div class="foot"><a href="https://clearbot.io">← Main Site</a></div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Account · Settings</div>
+        <h1>Your <em>preferences</em>.</h1>
+      </div>
+      <div class="actions">
+        <span class="save-msg" data-save-msg></span>
+        <button type="button" class="btn btn-primary" data-save-settings>Save Changes</button>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Organization</h2>
+        <span class="sub">Shared across everyone on your account</span>
+      </div>
+      <div class="panel bracketed">
+        <div class="form-row">
+          <label class="form-label" for="settings-org-name">Company Name
+            <span class="form-help">This appears on invoices and deliverables.</span>
+          </label>
+          <input id="settings-org-name" class="input" type="text" autocomplete="organization" />
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="settings-org-domain">Primary Domain
+            <span class="form-help">Used for SSO hints and email matching.</span>
+          </label>
+          <input id="settings-org-domain" class="input" type="text" />
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="settings-org-tz">Timezone
+            <span class="form-help">Invoice dates and reminders use this.</span>
+          </label>
+          <select id="settings-org-tz" class="select">
+            <option>America/New_York</option>
+            <option>America/Chicago</option>
+            <option>America/Denver</option>
+            <option>America/Los_Angeles</option>
+            <option>Europe/London</option>
+            <option>Europe/Berlin</option>
+            <option>Europe/Paris</option>
+            <option>Asia/Tokyo</option>
+            <option>Asia/Singapore</option>
+            <option>Australia/Sydney</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Your profile</h2>
+        <span class="sub">Just you — not your teammates</span>
+      </div>
+      <div class="panel bracketed">
+        <div class="form-row">
+          <label class="form-label">Full Name
+            <span class="form-help">How the team addresses you in messages.</span>
+          </label>
+          <div class="form-grid">
+            <input id="settings-first" class="input" type="text" placeholder="First" aria-label="First name" autocomplete="given-name" />
+            <input id="settings-last" class="input" type="text" placeholder="Last" aria-label="Last name" autocomplete="family-name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label" for="settings-email">Email
+            <span class="form-help">Where notifications go. Changing it here doesn’t change your sign-in email.</span>
+          </label>
+          <input id="settings-email" class="input" type="email" autocomplete="email" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Notifications</h2><span class="sub">When should we ping you?</span></div>
+      <div class="panel">
+        <div class="form-row">
+          <label class="form-label">Email</label>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <label class="toggle"><input id="settings-notif-deliverables" type="checkbox" /> New deliverables</label>
+            <label class="toggle"><input id="settings-notif-messages" type="checkbox" /> New messages</label>
+            <label class="toggle"><input id="settings-notif-digest" type="checkbox" /> Weekly project digest</label>
+            <label class="toggle"><input id="settings-notif-invoices" type="checkbox" /> Invoice issued · due reminder</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Slack</label>
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <label class="toggle"><input id="settings-notif-slack" type="checkbox" /> Mirror email notifications to Slack</label>
+            <a class="btn btn-sm" href="#" style="align-self:flex-start;">Connect Slack</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Billing</h2><span class="sub">How invoices get paid</span></div>
+      <div class="panel bracketed">
+        <div class="form-row">
+          <label class="form-label">Payment Method</label>
+          <div>
+            <div style="font-family:var(--display); font-size:15px; margin-bottom:4px;">
+              <em style="font-style:italic;font-weight:300;color:var(--ink-dim);">No card on file.</em>
+            </div>
+            <div style="font-size:11px;color:var(--ink-dim);line-height:1.6;margin-bottom:10px;letter-spacing:0.02em;">
+              Invoices are sent by email with a secure Stripe link — you can pay each one there, or save a card below to auto-charge new invoices.
+            </div>
+            <button class="btn btn-sm" type="button" data-action="add-payment-method">+ Add payment method</button>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Billing contact</label>
+          <div>
+            <div style="font-family:var(--display); font-size:15px;">
+              Invoices go to <span data-user-email style="font-family:var(--mono); font-size:12px; color:var(--ink-dim);">—</span>
+            </div>
+            <div style="font-size:11px;color:var(--ink-dim);line-height:1.6;margin-top:6px;letter-spacing:0.02em;">
+              Change this by updating your profile email above.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Security</h2><span class="sub">How you sign in</span></div>
+      <div class="panel bracketed">
+        <div class="form-row">
+          <label class="form-label">Password</label>
+          <div>
+            <div style="font-family:var(--display); font-size:15px; margin-bottom:4px;">
+              Changed on <em style="font-style:italic;font-weight:300;color:var(--ink-dim);">login.clearbot.io</em>.
+            </div>
+            <div style="font-size:11px;color:var(--ink-dim);line-height:1.6;margin-bottom:10px;letter-spacing:0.02em;">
+              We send passwords through one place so reset links always work the same way. You’ll come right back here afterwards.
+            </div>
+            <a class="btn btn-sm" href="https://login.clearbot.io">Change password →</a>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Current session</label>
+          <div>
+            <div style="font-family:var(--display); font-size:15px;">Signed in as <span data-user-email style="font-family:var(--mono); font-size:12px; color:var(--ink-dim);">—</span></div>
+            <button class="btn btn-sm" type="button" data-signout style="margin-top:10px;">Sign out of this browser</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
+
+<script type="module" src="/client-portal/js/app.js"></script>
+</body>
+</html>

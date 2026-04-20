@@ -1,4 +1,5 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr';
+import type { SupabaseClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 
 const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN || undefined;
@@ -6,7 +7,11 @@ const COOKIE_DOMAIN = process.env.COOKIE_DOMAIN || undefined;
 // Called from middleware on every matched request so that Supabase's
 // session cookies stay fresh. Without this, server components read a
 // stale session right after login / token refresh.
-export async function updateSession(req: NextRequest) {
+export async function updateSession(req: NextRequest): Promise<{
+  res: NextResponse;
+  supabase: SupabaseClient;
+  userId: string | null;
+}> {
   const res = NextResponse.next({ request: { headers: req.headers } });
 
   const supabase = createServerClient(
@@ -27,6 +32,6 @@ export async function updateSession(req: NextRequest) {
   );
 
   // Touching getUser() forces a refresh if the access token is near expiry.
-  await supabase.auth.getUser();
-  return res;
+  const { data } = await supabase.auth.getUser();
+  return { res, supabase, userId: data.user?.id ?? null };
 }
