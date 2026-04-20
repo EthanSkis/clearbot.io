@@ -34,11 +34,12 @@ export default function MarketingHome() {
             <span className="rm">Perfected.</span>
           </h1>
 
-          <p className="lede">
-            I design brand identities, build websites, and fix the ones that aren&rsquo;t landing. One
-            designer, AI-assisted, turning rough ideas into work that actually looks finished.{' '}
-            <em>Brand, web, and rescues.</em>
-          </p>
+         <p className="lede">
+  From identity to ad creative to rescues. One designer, AI-powered, shipping work
+  that converts.{' '}
+  <em>Brand, growth, converts.</em>
+</p>
+
 
           <MarketingHomeClient />
         </section>
