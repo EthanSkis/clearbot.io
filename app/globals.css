@@ -86,6 +86,16 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
 .login-btn:hover { background: var(--cb-accent); color: var(--cb-bg); border-color: var(--cb-accent); }
 .login-btn:focus-visible { outline: 2px solid var(--cb-accent); outline-offset: 3px; }
 
+.bar-menu { position: relative; display: none; }
+.bar-menu-toggle { list-style: none; display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border: 1px solid var(--cb-rule-strong); border-radius: 999px; background: rgba(243, 241, 234, 0.02); color: var(--cb-ink-dim); cursor: pointer; transition: color 0.2s var(--cb-ease), background 0.2s var(--cb-ease), border-color 0.2s var(--cb-ease); }
+.bar-menu-toggle::-webkit-details-marker { display: none; }
+.bar-menu-toggle:hover { color: var(--cb-ink); border-color: var(--cb-accent); }
+.bar-menu-toggle:focus-visible { outline: 2px solid var(--cb-accent); outline-offset: 3px; }
+.bar-menu[open] .bar-menu-toggle { color: var(--cb-ink); border-color: var(--cb-accent); background: rgba(243, 241, 234, 0.06); }
+.bar-menu-dropdown { position: absolute; top: calc(100% + 10px); right: 0; display: flex; flex-direction: column; min-width: 180px; padding: 6px; border: 1px solid var(--cb-rule-strong); border-radius: 4px; background: rgba(12, 12, 14, 0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 8px 24px rgba(0,0,0,0.35); z-index: 10; }
+.bar-menu-dropdown a { display: block; padding: 10px 12px; font-family: var(--cb-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--cb-ink-dim); text-decoration: none; border-radius: 2px; transition: color 0.2s var(--cb-ease), background 0.2s var(--cb-ease); }
+.bar-menu-dropdown a:hover { color: var(--cb-ink); background: rgba(243, 241, 234, 0.05); }
+
 .hero { padding: 56px 0 24px; }
 .eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid var(--cb-rule-strong); border-radius: 999px; background: rgba(243, 241, 234, 0.02); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-family: var(--cb-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
 .pulse-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cb-accent); box-shadow: 0 0 8px rgba(255,255,255,0.35); animation: cb-pulse 1.8s ease-in-out infinite; display: inline-block; }
@@ -227,6 +237,7 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
 
 @media (max-width: 1100px) { .process { grid-template-columns: repeat(2, 1fr); } .process-step:nth-child(2) { border-right: 0; } }
 @media (max-width: 960px) { .shell { padding: 18px 24px 32px; } .bar-actions { justify-self: end; } .hero { padding: 40px 0 20px; } .cta-body { grid-template-columns: 1fr; } .cta-actions { min-width: 0; } .amb-ghost { display: none; } .logo-marquee { margin: 44px 0 4px; } .logo-marquee-row { gap: 64px; } .logo-marquee-item { height: 88px; } .logo-marquee-img { max-width: 320px; } }
+@media (max-width: 720px) { .bar-action-inline { display: none; } .bar-menu { display: inline-flex; } }
 @media (max-width: 640px) { .shell { padding: 16px 20px 28px; } .bar-tag, .bar-sep { display: none; } .hero-headline { font-size: clamp(44px, 10vw, 72px); } .process { grid-template-columns: 1fr; } .process-step { border-right: 0; border-bottom: 1px dashed var(--cb-rule); } .process-step:last-child { border-bottom: 0; } .foot { grid-template-columns: 1fr; text-align: center; } .foot-right { justify-self: center; flex-wrap: wrap; justify-content: center; } .dash-shell { padding: 20px 20px 40px; } .dash-nav { gap: 12px; flex-wrap: wrap; } .logo-marquee { margin: 36px 0 0; } .logo-marquee::before, .logo-marquee::after { width: 60px; } .logo-marquee-row { gap: 44px; } .logo-marquee-item { height: 72px; } .logo-marquee-img { max-width: 260px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } .logo-marquee-row { animation: none !important; } }
 

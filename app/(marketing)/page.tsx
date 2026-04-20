@@ -16,9 +16,22 @@ export default function MarketingHome() {
           <span className="bar-tag">Your idea. Perfected.</span>
         </div>
         <div className="bar-actions">
-          <a className="ghost-btn" href={`${SIGNUP_URL}/book`}>Book intro</a>
-          <a className="ghost-btn" href={SIGNUP_URL}>Sign up</a>
+          <a className="ghost-btn bar-action-inline" href={`${SIGNUP_URL}/book`}>Book intro</a>
+          <a className="ghost-btn bar-action-inline" href={SIGNUP_URL}>Sign up</a>
           <a className="login-btn" href={LOGIN_URL}>Login</a>
+          <details className="bar-menu">
+            <summary className="bar-menu-toggle" aria-label="More links">
+              <svg width={16} height={16} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="5" cy="12" r="1.6" fill="currentColor" />
+                <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+                <circle cx="19" cy="12" r="1.6" fill="currentColor" />
+              </svg>
+            </summary>
+            <div className="bar-menu-dropdown" role="menu">
+              <a role="menuitem" href={`${SIGNUP_URL}/book`}>Book intro</a>
+              <a role="menuitem" href={SIGNUP_URL}>Sign up</a>
+            </div>
+          </details>
         </div>
       </header>
 
@@ -26,7 +39,7 @@ export default function MarketingHome() {
         <section className="hero" id="workflows">
           <span className="eyebrow">
             <span className="pulse-dot" />
-            AI-assisted design studio · independent
+            AI-assisted design studio
           </span>
 
           <h1 className="hero-headline">
