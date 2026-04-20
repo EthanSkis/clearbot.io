@@ -7,7 +7,7 @@ export async function POST(_req: Request, { params }: { params: Promise<{ id: st
   if (error || !admin) return errorResponse(error || { status: 500, message: 'Admin client unavailable' });
   const { error: qErr } = await admin
     .from('message_threads')
-    .update({ unread_count_team: 0 })
+    .update({ unread_count_team: 0, team_last_read_at: new Date().toISOString() })
     .eq('id', id);
   if (qErr) return NextResponse.json({ error: qErr.message }, { status: 500 });
   return NextResponse.json({ ok: true });
