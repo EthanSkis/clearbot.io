@@ -475,3 +475,91 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
   .login-page .bullets { grid-template-columns: 1fr; }
   .login-page .grid-2 { grid-template-columns: 1fr; }
 }
+
+/* ==========================================================
+   Editorial light mode — scoped to the marketing subtree.
+   Enabled by wrapping the marketing layout in a .theme-light
+   element. Uses :has() so the tokens and scrollbar colours
+   cascade up to <html>/<body>, while surface overrides stay
+   scoped so login/dashboard pages remain untouched.
+
+   Palette: warm newsprint cream with deep ink. Monochrome,
+   typeset-feel — no coloured accents, only paper + ink.
+   ========================================================== */
+html:has(.theme-light) {
+  --cb-bg:          #f3efe4;
+  --cb-bg-elev:     #ebe5d5;
+  --cb-bg-inset:    rgba(234, 228, 214, 0.55);
+
+  --cb-ink:         #1a1712;
+  --cb-ink-dim:     #5b584f;
+  --cb-ink-faint:   #8d897c;
+
+  --cb-rule:        rgba(26, 23, 18, 0.14);
+  --cb-rule-strong: rgba(26, 23, 18, 0.26);
+
+  --cb-accent:      #1a1712;
+  --cb-accent-dim:  #3a342b;
+  --cb-accent-hover:#000000;
+  --cb-danger:      #a8342c;
+
+  --cb-grid:        rgba(26, 23, 18, 0.045);
+
+  scrollbar-color: rgba(26, 23, 18, 0.24) transparent;
+}
+html:has(.theme-light) ::-webkit-scrollbar-track { background: var(--cb-bg); border-left: 1px solid var(--cb-rule); }
+html:has(.theme-light) ::-webkit-scrollbar-thumb { background: rgba(26, 23, 18, 0.20); border: 2px solid var(--cb-bg); }
+html:has(.theme-light) ::-webkit-scrollbar-thumb:hover { background: rgba(26, 23, 18, 0.34); box-shadow: inset 0 0 0 1px rgba(26, 23, 18, 0.08); }
+html:has(.theme-light) ::-webkit-scrollbar-thumb:active { background: var(--cb-accent-dim); }
+html:has(.theme-light) ::-webkit-scrollbar-corner { background: var(--cb-bg); }
+
+/* Ambient layers — on paper, the dark-mode white glow reads as nothing.
+   Swap for a faint warm vignette and flip the grain to multiply so it
+   reads as a subtle newsprint texture instead of washing everything out. */
+.theme-light .amb-glow {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(26, 23, 18, 0.035), transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(26, 23, 18, 0.022), transparent 40%);
+}
+.theme-light .amb-grain { opacity: 0.22; mix-blend-mode: multiply; }
+.theme-light .amb-ghost { opacity: 0.05; }
+
+/* Header — ghost buttons & the pill "login" chip */
+.theme-light .mark-logo { filter: none; }
+.theme-light .login-btn,
+.theme-light .bar-menu-toggle { background: rgba(26, 23, 18, 0.025); }
+.theme-light .bar-menu[open] .bar-menu-toggle { background: rgba(26, 23, 18, 0.07); }
+.theme-light .bar-menu-dropdown {
+  background: rgba(243, 239, 228, 0.94);
+  box-shadow: 0 8px 24px rgba(26, 23, 18, 0.12);
+}
+.theme-light .bar-menu-dropdown a:hover { background: rgba(26, 23, 18, 0.05); }
+
+/* Hero chip + pulse */
+.theme-light .eyebrow { background: rgba(26, 23, 18, 0.025); }
+.theme-light .pulse-dot { box-shadow: 0 0 8px rgba(26, 23, 18, 0.28); }
+
+/* Panel — subtle depth gradient, inverted from the dark variant */
+.theme-light .panel {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 23, 18, 0.025),
+    rgba(26, 23, 18, 0.005)
+  );
+}
+
+/* Service grid */
+.theme-light .service:hover { background: rgba(26, 23, 18, 0.035); }
+.theme-light .service--core {
+  background: rgba(26, 23, 18, 0.045);
+  box-shadow: inset 0 1px 0 0 rgba(26, 23, 18, 0.14);
+  border-color: var(--cb-rule-strong);
+}
+.theme-light .service--core:hover { background: rgba(26, 23, 18, 0.075); }
+.theme-light .service--core .bracket { border-color: rgba(26, 23, 18, 0.55); }
+.theme-light .service--specialty { background: rgba(26, 23, 18, 0.028); }
+.theme-light .service--specialty:hover { background: rgba(26, 23, 18, 0.055); }
+
+/* Collaborator marquee — logos are mid-grey, slightly lift contrast on cream */
+.theme-light .logo-marquee-item { opacity: 0.7; }
+.theme-light .logo-marquee-item:hover { opacity: 0.95; }

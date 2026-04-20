@@ -2,7 +2,7 @@ import { LogoSprite } from '@/app/_components/LogoSprite';
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="theme-light">
       <LogoSprite />
       <div className="amb amb-grid" aria-hidden="true" />
       <div className="amb amb-glow" aria-hidden="true" />
@@ -13,6 +13,6 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         </svg>
       </div>
       {children}
-    </>
+    </div>
   );
 }
