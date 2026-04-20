@@ -6,7 +6,7 @@ export async function GET() {
   if (error) return errorResponse(error);
   const { data, error: qErr } = await supabase
     .from('message_threads')
-    .select('id, title, preview, project_name, unread_count, status, updated_at')
+    .select('id, title, preview, project_name, unread_count, unread_count_team, status, updated_at')
     .eq('user_id', user.id)
     .order('updated_at', { ascending: false });
   if (qErr) return NextResponse.json({ error: qErr.message }, { status: 500 });
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
       title,
       status: 'active'
     })
-    .select('id, title, preview, project_name, unread_count, status, updated_at')
+    .select('id, title, preview, project_name, unread_count, unread_count_team, status, updated_at')
     .single();
   if (tErr || !thread) return NextResponse.json({ error: tErr?.message || 'Thread create failed' }, { status: 500 });
 

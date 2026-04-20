@@ -85,7 +85,7 @@ export function getThreads(userId) {
   return safeList(() =>
     supabase
       .from('message_threads')
-      .select('id, title, preview, project_name, unread_count, status, updated_at')
+      .select('id, title, preview, project_name, unread_count, unread_count_team, status, updated_at')
       .eq('user_id', userId)
       .order('updated_at', { ascending: false })
   );
@@ -226,7 +226,7 @@ export async function createThread(userId, { title, projectId, projectName, firs
         title: trimmedTitle,
         status: 'active',
       })
-      .select('id, title, preview, project_name, unread_count, status, updated_at')
+      .select('id, title, preview, project_name, unread_count, unread_count_team, status, updated_at')
       .single();
     if (error) return { ok: false, error: error.message };
 

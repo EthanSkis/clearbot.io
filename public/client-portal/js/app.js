@@ -480,6 +480,53 @@ function markActiveNav() {
   });
 }
 
+function ensureSidebarUnreadBadge() {
+  const nav = document.querySelector('[data-nav="messages"]');
+  if (!nav) return null;
+  let badge = nav.querySelector('[data-sidebar-unread-badge]');
+  if (!badge) {
+    badge = document.createElement('span');
+    badge.className = 'nav-badge';
+    badge.setAttribute('data-sidebar-unread-badge', '');
+    badge.hidden = true;
+    nav.appendChild(badge);
+  }
+  return badge;
+}
+
+function updateSidebarUnreadBadge(threads) {
+  const badge = ensureSidebarUnreadBadge();
+  if (!badge) return;
+  const total = (threads || []).reduce((s, t) => s + (t.unread_count || 0), 0);
+  if (total > 0) {
+    badge.textContent = total > 99 ? '99+' : String(total);
+    badge.hidden = false;
+  } else {
+    badge.textContent = '';
+    badge.hidden = true;
+  }
+}
+
+let sidebarUnreadChannel = null;
+async function wireSidebarUnread(user) {
+  ensureSidebarUnreadBadge();
+  const refresh = async () => {
+    const threads = await data.getThreads(user.id);
+    updateSidebarUnreadBadge(threads);
+  };
+  await refresh();
+  try { if (sidebarUnreadChannel) supabase.removeChannel(sidebarUnreadChannel); } catch (_) {}
+  sidebarUnreadChannel = supabase
+    .channel('sidebar-threads:' + user.id)
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'message_threads',
+      filter: 'user_id=eq.' + user.id,
+    }, () => { refresh(); })
+    .subscribe();
+}
+
 function populateIdentity(user) {
   const org = orgName(user);
   const ini = initials(user);
@@ -846,17 +893,23 @@ async function renderMessages(user) {
   }
 
   function renderList() {
+    updateSidebarUnreadBadge(state.threads);
     if (!state.threads.length) {
       list.innerHTML = '<div style="padding:24px 16px;">' + emptyState('No threads', 'Your conversations with the ClearBot team will appear here.') + '</div>';
       return;
     }
-    list.innerHTML = state.threads.map(t =>
-      '<a class="msg-thread' + (t.id === state.activeId ? ' active' : '') + '" href="#' + escapeHtml(t.id) + '" data-thread-id="' + escapeHtml(t.id) + '">' +
-        '<div class="title">' + escapeHtml(t.title || 'Thread') + ((t.unread_count || 0) > 0 ? ' <span class="unread-dot" aria-hidden="true"></span>' : '') + '</div>' +
+    list.innerHTML = state.threads.map(t => {
+      const unread = (t.unread_count || 0);
+      return '<a class="msg-thread' + (t.id === state.activeId ? ' active' : '') + (unread > 0 ? ' unread' : '') + '" href="#' + escapeHtml(t.id) + '" data-thread-id="' + escapeHtml(t.id) + '">' +
+        '<div class="title">' + escapeHtml(t.title || 'Thread') +
+          (unread > 0
+            ? ' <span class="unread-dot" aria-hidden="true"></span><span class="unread-count mono">' + (unread > 99 ? '99+' : unread) + '</span>'
+            : '') +
+        '</div>' +
         '<div class="preview">' + escapeHtml(t.preview || '') + '</div>' +
         '<div class="meta">' + escapeHtml(t.project_name || 'General') + ' \u00b7 ' + fmtRelTime(t.updated_at) + '</div>' +
-      '</a>'
-    ).join('');
+      '</a>';
+    }).join('');
     list.querySelectorAll('[data-thread-id]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -1254,6 +1307,7 @@ async function bootstrap() {
   wireUserMenu();
   wireActionButtons(user);
   wireServicesPanel();
+  wireSidebarUnread(user);
   revealApp();
 
   const page = document.body.dataset.page;
