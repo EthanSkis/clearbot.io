@@ -51,10 +51,7 @@ export const PROCESS: ProcessStep[] = [
 // Collaborators / clients the studio has shipped work for.
 // Drop SVG marks into public/assets/collaborators/ and add rows here.
 export const COLLABORATORS: Collaborator[] = [
-  { name: 'Studio Mark 01', logoSrc: '/assets/collaborators/mark-01.svg' },
-  { name: 'Studio Mark 02', logoSrc: '/assets/collaborators/mark-02.svg' },
-  { name: 'Studio Mark 03', logoSrc: '/assets/collaborators/mark-03.svg' },
-  { name: 'Studio Mark 04', logoSrc: '/assets/collaborators/mark-04.svg' },
-  { name: 'Studio Mark 05', logoSrc: '/assets/collaborators/mark-05.svg' },
-  { name: 'Studio Mark 06', logoSrc: '/assets/collaborators/mark-06.svg' }
+  { name: 'Brand 01', logoSrc: '/assets/collaborators/mark-01.svg' },
+  { name: 'Brand 02', logoSrc: '/assets/collaborators/mark-02.svg' },
+  { name: 'Brand 03', logoSrc: '/assets/collaborators/mark-03.svg' }
 ];

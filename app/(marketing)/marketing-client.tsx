@@ -2,40 +2,16 @@ import Image from 'next/image';
 import { SERVICES, PROCESS, COLLABORATORS } from './automations';
 import { SIGNUP_URL } from '@/lib/env';
 
-const MARQUEE_ROWS: readonly [typeof COLLABORATORS, typeof COLLABORATORS] = (() => {
-  const midpoint = Math.ceil(COLLABORATORS.length / 2);
-  return [COLLABORATORS.slice(0, midpoint), COLLABORATORS.slice(midpoint)] as const;
-})();
-
 export function MarketingHomeClient() {
   return (
     <div>
-      <article className="panel panel--logos" aria-labelledby="collab-head">
-        <span className="bracket bracket-tl" />
-        <span className="bracket bracket-br" />
-        <header className="panel-head">
-          <span id="collab-head">COLLABORATORS · IN ROTATION</span>
-          <span className="status-tag">
-            <span className="pulse-dot" />
-            <span>LIVE</span>
-          </span>
-        </header>
-        <div className="logo-marquee" aria-hidden="true">
-          {MARQUEE_ROWS.map((row, rowIdx) => (
-            <div
-              key={rowIdx}
-              className={`logo-marquee-row logo-marquee-row--${rowIdx === 0 ? 'left' : 'right'}`}
-            >
-              {[...row, ...row, ...row].map((c, i) => (
-                <LogoMark key={`${rowIdx}-${i}`} collaborator={c} />
-              ))}
-            </div>
+      <div className="logo-marquee" aria-label="Collaborators">
+        <div className="logo-marquee-row">
+          {[...COLLABORATORS, ...COLLABORATORS, ...COLLABORATORS, ...COLLABORATORS].map((c, i) => (
+            <LogoMark key={i} collaborator={c} />
           ))}
         </div>
-        <footer className="panel-foot panel-foot--logos">
-          <span>A short list of the people I’ve shipped work for.</span>
-        </footer>
-      </article>
+      </div>
 
       <div className="divider" id="services">
         <span>§ 01 · Services</span>
