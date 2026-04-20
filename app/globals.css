@@ -10,8 +10,8 @@
   --cb-bg-inset:    rgba(10, 11, 13, 0.4);
 
   --cb-ink:         #f3f1ea;
-  --cb-ink-dim:     #8a8880;
-  --cb-ink-faint:   #3a3a38;
+  --cb-ink-dim:     #a8a6a0;
+  --cb-ink-faint:   #605e5a;
 
   --cb-rule:        rgba(243, 241, 234, 0.08);
   --cb-rule-strong: rgba(243, 241, 234, 0.16);
@@ -113,35 +113,43 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
 
 @keyframes cb-marquee-left { from { transform: translateX(0); } to { transform: translateX(-25%); } }
 
-.divider { display: flex; align-items: center; gap: 14px; margin: 72px 0 28px; font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
+.divider { display: flex; align-items: center; gap: 14px; margin: 72px 0 28px; font-family: var(--cb-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--cb-ink-dim); }
 .divider-line { flex: 1; height: 1px; background: var(--cb-rule); }
 
-.services-tier { margin-bottom: 32px; }
+.services-tier { margin-bottom: 48px; }
 .services-tier:last-of-type { margin-bottom: 0; }
-.services-tier-head { display: grid; grid-template-columns: auto auto 1fr auto; align-items: baseline; gap: 14px; margin: 0 0 16px; font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
+.services-tier-head { display: grid; grid-template-columns: auto auto 1fr auto; align-items: baseline; gap: 14px; margin: 0 0 20px; padding-top: 14px; border-top: 1px solid var(--cb-rule-strong); font-family: var(--cb-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--cb-ink-dim); }
+.services-tier--core .services-tier-head { border-top: none; padding-top: 0; }
 .services-tier-code { color: var(--cb-ink); }
 .services-tier-label { color: var(--cb-ink); letter-spacing: 0.18em; }
-.services-tier-blurb { color: var(--cb-ink-faint); text-transform: none; letter-spacing: 0.04em; font-size: 11px; font-family: var(--cb-display); font-weight: 300; font-style: italic; }
-.services-tier-rule { height: 1px; min-width: 40px; background: var(--cb-rule); align-self: center; }
+.services-tier-blurb { color: var(--cb-ink-faint); text-transform: none; letter-spacing: 0.04em; font-size: 13px; font-family: var(--cb-display); font-weight: 300; font-style: italic; }
+.services-tier-rule { height: 1px; min-width: 40px; background: var(--cb-rule-strong); align-self: center; }
 
 .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 1px solid var(--cb-rule); border-left: 1px solid var(--cb-rule); }
 .service { position: relative; display: flex; flex-direction: column; min-height: 240px; padding: 28px 24px; border-right: 1px solid var(--cb-rule); border-bottom: 1px solid var(--cb-rule); transition: background 0.25s var(--cb-ease); }
-.service-head { display: flex; justify-content: space-between; font-family: var(--cb-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); margin-bottom: 14px; }
-.service-head .meta { color: var(--cb-ink-faint); }
+.service:hover { background: rgba(243, 241, 234, 0.04); }
+.service-head { display: flex; justify-content: space-between; font-family: var(--cb-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--cb-ink-dim); margin-bottom: 14px; }
+.service-head .meta { color: var(--cb-ink-dim); }
 .service-tier-tag { display: inline-flex; align-items: center; gap: 6px; }
 .service-tier-code { color: var(--cb-ink); }
 .service-tier-sep { color: var(--cb-ink-faint); }
-.service-name { font-family: var(--cb-display); font-size: 22px; font-weight: 500; letter-spacing: -0.01em; color: var(--cb-ink); margin-bottom: 12px; }
-.service-body { font-family: var(--cb-mono); font-size: 12px; line-height: 1.5; color: var(--cb-ink-dim); flex: 1; }
-.service-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--cb-ink); }
+.service-name { font-family: var(--cb-display); font-size: 26px; font-weight: 500; letter-spacing: -0.01em; color: var(--cb-ink); margin-bottom: 12px; }
+.service-body { font-family: var(--cb-mono); font-size: 14px; line-height: 1.65; color: var(--cb-ink-dim); flex: 1; }
+.service-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--cb-ink); transition: color 0.2s var(--cb-ease), gap 0.2s var(--cb-ease); }
+.service-cta:hover { color: var(--cb-accent-dim); gap: 12px; }
+.service-cta:hover svg { transform: translateX(3px); transition: transform 0.25s var(--cb-ease); }
+.service-cta:focus-visible { outline: 2px solid var(--cb-accent); outline-offset: 3px; border-radius: 1px; }
 
 /* Tier-specific card treatments — stays within the monochrome system */
-.service--core { background: rgba(243, 241, 234, 0.02); }
+.service--core { background: rgba(243, 241, 234, 0.055); border-color: var(--cb-rule-strong); box-shadow: inset 0 1px 0 0 rgba(243, 241, 234, 0.18); min-height: 280px; padding: 32px 28px; }
+.service--core:hover { background: rgba(243, 241, 234, 0.085); }
 .service--core .service-tier-code { letter-spacing: 0.28em; }
-.service--fast { border-left: 1px solid var(--cb-rule-strong); }
+.service--core .bracket { width: 18px; height: 18px; border-color: rgba(243, 241, 234, 0.5); }
+.service--fast { border-left: 1px solid var(--cb-rule-strong); min-height: 220px; }
 .service--fast .service-tier-code { color: var(--cb-accent-dim); }
 .service--production .service-tier-code { color: var(--cb-ink-dim); }
-.service--specialty { background: rgba(10, 11, 13, 0.25); }
+.service--specialty { background: rgba(10, 11, 13, 0.25); min-height: 260px; padding: 32px 28px; }
+.service--specialty:hover { background: rgba(10, 11, 13, 0.12); }
 .service--specialty .service-name { color: var(--cb-accent-dim); }
 .service--specialty .service-tier-code { color: var(--cb-ink-faint); }
 .service--specialty .service-body { color: var(--cb-ink-faint); }
