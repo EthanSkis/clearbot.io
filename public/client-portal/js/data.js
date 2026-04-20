@@ -251,7 +251,7 @@ export async function markThreadRead(threadId) {
   try {
     const { error } = await supabase
       .from('message_threads')
-      .update({ unread_count: 0 })
+      .update({ unread_count: 0, client_last_read_at: new Date().toISOString() })
       .eq('id', threadId);
     if (error) return { ok: false, error: error.message };
     return { ok: true };

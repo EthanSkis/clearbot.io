@@ -2270,6 +2270,9 @@ async function showView(name) {
   if (state.currentView === 'messages-all' && name !== 'messages-all') {
     teardownMessagesAllChannels();
   }
+  if (state.currentView === 'user-detail' && name !== 'user-detail') {
+    teardownUserMessagesChannels();
+  }
   state.currentView = name;
   $$('[data-view-pane]').forEach(el => {
     el.hidden = el.getAttribute('data-view-pane') !== name;
@@ -2715,12 +2718,16 @@ async function renderUserMessages(bundle) {
   const list = $('[data-threads]');
   const pane = $('[data-thread-pane]');
   if (!list || !pane) return;
+  teardownUserMessagesChannels();
   const threads = (bundle.threads || []).slice();
   if (!threads.length) {
     list.innerHTML = '<div style="padding:24px 16px;">' + emptyState('No threads', 'Client message threads appear here as the client starts conversations.') + '</div>';
     pane.innerHTML = '<div class="msg-pane-body" style="align-items:center;justify-content:center;">' + emptyState('Nothing selected', 'When the client opens a thread it will show up in this list.') + '</div>';
     return;
   }
+
+  let activeId = null;
+  const view = { messagesSeenIds: new Set() };
 
   const renderList = (activeId) => {
     list.innerHTML = threads.map(t => {
@@ -2746,6 +2753,7 @@ async function renderUserMessages(bundle) {
   const renderPane = async (threadId) => {
     const active = threads.find(t => t.id === threadId);
     if (!active) return;
+    activeId = threadId;
     renderList(threadId);
     pane.innerHTML =
       '<div class="msg-pane-head">' +
@@ -2762,6 +2770,7 @@ async function renderUserMessages(bundle) {
     const body = pane.querySelector('[data-msg-body]');
     const messages = await listThreadMessages(threadId);
     const meId = state.currentUser && state.currentUser.id;
+    view.messagesSeenIds = new Set(messages.map(m => m.id));
     if (!messages.length) {
       body.innerHTML = '<div class="empty" style="padding:24px;">No messages in this thread yet.</div>';
     } else {
@@ -2778,6 +2787,36 @@ async function renderUserMessages(bundle) {
         }
       });
     }
+
+    if (userMessagesChannels.pane) {
+      try { supabase.removeChannel(userMessagesChannels.pane); } catch (_) {}
+      userMessagesChannels.pane = null;
+    }
+    userMessagesChannels.pane = supabase
+      .channel('user-messages:' + threadId)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: 'thread_id=eq.' + threadId,
+      }, (payload) => {
+        const m = payload.new;
+        if (!m || view.messagesSeenIds.has(m.id)) return;
+        view.messagesSeenIds.add(m.id);
+        if (activeId !== threadId) return;
+        const liveBody = pane.querySelector('[data-msg-body]');
+        if (!liveBody) return;
+        const emptyEl = liveBody.querySelector('.empty');
+        if (emptyEl) liveBody.innerHTML = '';
+        liveBody.insertAdjacentHTML('beforeend', renderMessageBubble(m, meId));
+        liveBody.scrollTop = liveBody.scrollHeight;
+        if (m.sender_role === 'client') {
+          markThreadReadTeam(threadId).then((res) => {
+            if (res.ok) { active.unread_count_team = 0; renderList(threadId); }
+          });
+        }
+      })
+      .subscribe();
 
     const form = pane.querySelector('[data-composer]');
     const input = pane.querySelector('[data-composer-input]');
@@ -2813,8 +2852,9 @@ async function renderUserMessages(bundle) {
           body.insertAdjacentHTML('beforeend', renderMessageBubble(res.data, meId));
           body.scrollTop = body.scrollHeight;
         }
+        if (res.data && res.data.id) view.messagesSeenIds.add(res.data.id);
         // Optimistically bump the thread's preview locally. The DB trigger
-        // increments unread_count (client-side) on insert, so we mirror that here.
+        // recomputes unread_count (client-side) on insert, so we mirror that here.
         active.preview = text.slice(0, 140);
         active.updated_at = new Date().toISOString();
         active.unread_count = (active.unread_count || 0) + 1;
@@ -2825,6 +2865,46 @@ async function renderUserMessages(bundle) {
   };
 
   renderPane(threads[0].id);
+
+  // Keep the thread list in sync with the DB: new client messages, new
+  // threads, unread_count changes all flow in here.
+  let refreshTimer = null;
+  const refreshSoon = () => {
+    if (refreshTimer) return;
+    refreshTimer = setTimeout(async () => {
+      refreshTimer = null;
+      const fresh = await safeList(() =>
+        supabase.from('message_threads')
+          .select('*')
+          .eq('user_id', state.selectedUserId)
+          .order('updated_at', { ascending: false })
+      );
+      threads.length = 0;
+      for (const t of fresh) threads.push(t);
+      renderList(activeId);
+    }, 50);
+  };
+  userMessagesChannels.list = supabase
+    .channel('user-threads:' + state.selectedUserId)
+    .on('postgres_changes', {
+      event: '*',
+      schema: 'public',
+      table: 'message_threads',
+      filter: 'user_id=eq.' + state.selectedUserId,
+    }, refreshSoon)
+    .subscribe();
+}
+
+const userMessagesChannels = { list: null, pane: null };
+function teardownUserMessagesChannels() {
+  if (userMessagesChannels.list) {
+    try { supabase.removeChannel(userMessagesChannels.list); } catch (_) {}
+    userMessagesChannels.list = null;
+  }
+  if (userMessagesChannels.pane) {
+    try { supabase.removeChannel(userMessagesChannels.pane); } catch (_) {}
+    userMessagesChannels.pane = null;
+  }
 }
 
 function populateActivityProjectSelect(bundle) {
