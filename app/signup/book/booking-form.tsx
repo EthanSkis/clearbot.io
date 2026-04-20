@@ -8,9 +8,15 @@ type Slot = { iso: string; day: string; date: string; time: string };
 const FOCUS_OPTIONS = [
   { value: 'brand',   label: 'Brand system' },
   { value: 'web',     label: 'Website or landing page' },
+  { value: 'rescue',  label: 'Website rescue' },
+  { value: 'copy',    label: 'Landing-page copy' },
+  { value: 'audit',   label: 'Site & brand audit' },
+  { value: 'naming',  label: 'Naming & taglines' },
   { value: 'ads',     label: 'Ads & campaigns' },
   { value: 'content', label: 'Content engine' },
-  { value: 'video',   label: 'Video & motion' },
+  { value: 'video',   label: 'Motion & video' },
+  { value: 'deck',    label: 'Pitch-deck design' },
+  { value: 'icons',   label: 'Illustration & icons' },
   { value: 'other',   label: 'Something else' },
 ] as const;
 
