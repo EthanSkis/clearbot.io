@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Messages · ClearBot Client Portal</title>
+<link rel="icon" type="image/svg+xml" href="/client-portal/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/client-portal/css/styles.css" />
+</head>
+<body data-page="messages">
+<div class="splash" aria-hidden="true"><span class="dot"></span><span>Checking session…</span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="app">
+
+  <header class="topbar" role="banner">
+    <a class="brand" href="/" aria-label="ClearBot Client Portal home">
+      <svg class="mark-logo" width="20" height="20" aria-hidden="true"><use href="#clearbot-logo"/></svg>
+      <span class="brand-name">ClearBot<em>/portal</em></span>
+    </a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <span>Portal</span><span class="sep">/</span><span class="here">Messages</span>
+    </nav>
+    <button class="user" data-user aria-label="Account menu">
+      <span class="name" data-user-name>…</span>
+      <span class="avatar" data-user-initial aria-hidden="true">•</span>
+    </button>
+  </header>
+
+  <aside class="sidebar" aria-label="Portal navigation">
+    <a class="nav-item" data-nav="index" href="/">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
+      Dashboard
+    </a>
+    <a class="nav-item" data-nav="projects" href="/projects">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
+      Projects
+    </a>
+    <a class="nav-item" data-nav="deliverables" href="/deliverables">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>
+      Deliverables
+    </a>
+    <a class="nav-item" data-nav="messages" href="/messages">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v12H8l-4 3z"/></svg>
+      Messages
+    </a>
+    <a class="nav-item" data-nav="invoices" href="/invoices">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+      Invoices
+    </a>
+    <div class="sidebar-group">Account</div>
+    <a class="nav-item" data-nav="settings" href="/settings">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+      Settings
+    </a>
+    <button class="nav-item" type="button" data-signout>
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+      Sign Out
+    </button>
+    <div class="spacer"></div>
+    <div class="foot"><a href="https://clearbot.io">← Main Site</a></div>
+  </aside>
+
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">Messages</div>
+        <h1>Your <em>project conversations</em>.</h1>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" data-new-thread>+ New Thread</button>
+      </div>
+    </div>
+
+    <div class="msg-shell">
+      <div class="msg-list">
+        <div class="msg-search">
+          <input class="input" type="search" placeholder="Search threads…" />
+        </div>
+        <div class="msg-threads" data-threads></div>
+      </div>
+      <div class="msg-pane" data-thread-pane></div>
+    </div>
+
+  </main>
+
+</div>
+
+<script type="module" src="/client-portal/js/app.js"></script>
+</body>
+</html>
