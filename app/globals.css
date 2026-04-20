@@ -104,11 +104,7 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
 .status-tag { color: var(--cb-accent); display: inline-flex; align-items: center; gap: 6px; }
 
 /* Collaborators marquee — bare logo strip under the hero lede. */
-.logo-marquee { position: relative; margin: 56px 0 8px; overflow: hidden; }
-.logo-marquee::before,
-.logo-marquee::after { content: ""; position: absolute; top: 0; bottom: 0; width: 120px; pointer-events: none; z-index: 2; }
-.logo-marquee::before { left: 0; background: linear-gradient(90deg, var(--cb-bg) 10%, rgba(10, 11, 13, 0)); }
-.logo-marquee::after  { right: 0; background: linear-gradient(270deg, var(--cb-bg) 10%, rgba(10, 11, 13, 0)); }
+.logo-marquee { position: relative; margin: 56px 0 8px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 120px, #000 calc(100% - 120px), transparent 100%); mask-image: linear-gradient(90deg, transparent 0, #000 120px, #000 calc(100% - 120px), transparent 100%); }
 .logo-marquee-row { display: flex; align-items: center; gap: 88px; width: max-content; will-change: transform; animation: cb-marquee-left 60s linear infinite; }
 .logo-marquee:hover .logo-marquee-row { animation-play-state: paused; }
 .logo-marquee-item { display: inline-flex; align-items: center; justify-content: center; height: 112px; opacity: 0.85; transition: opacity 0.25s var(--cb-ease); text-decoration: none; flex-shrink: 0; }
