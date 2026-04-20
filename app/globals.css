@@ -116,13 +116,41 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
 .divider { display: flex; align-items: center; gap: 14px; margin: 72px 0 28px; font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
 .divider-line { flex: 1; height: 1px; background: var(--cb-rule); }
 
+.services-tier { margin-bottom: 32px; }
+.services-tier:last-of-type { margin-bottom: 0; }
+.services-tier-head { display: grid; grid-template-columns: auto auto 1fr auto; align-items: baseline; gap: 14px; margin: 0 0 16px; font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
+.services-tier-code { color: var(--cb-ink); }
+.services-tier-label { color: var(--cb-ink); letter-spacing: 0.18em; }
+.services-tier-blurb { color: var(--cb-ink-faint); text-transform: none; letter-spacing: 0.04em; font-size: 11px; font-family: var(--cb-display); font-weight: 300; font-style: italic; }
+.services-tier-rule { height: 1px; min-width: 40px; background: var(--cb-rule); align-self: center; }
+
 .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 1px solid var(--cb-rule); border-left: 1px solid var(--cb-rule); }
-.service { position: relative; display: flex; flex-direction: column; min-height: 240px; padding: 28px 24px; border-right: 1px solid var(--cb-rule); border-bottom: 1px solid var(--cb-rule); }
+.service { position: relative; display: flex; flex-direction: column; min-height: 240px; padding: 28px 24px; border-right: 1px solid var(--cb-rule); border-bottom: 1px solid var(--cb-rule); transition: background 0.25s var(--cb-ease); }
 .service-head { display: flex; justify-content: space-between; font-family: var(--cb-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); margin-bottom: 14px; }
 .service-head .meta { color: var(--cb-ink-faint); }
+.service-tier-tag { display: inline-flex; align-items: center; gap: 6px; }
+.service-tier-code { color: var(--cb-ink); }
+.service-tier-sep { color: var(--cb-ink-faint); }
 .service-name { font-family: var(--cb-display); font-size: 22px; font-weight: 500; letter-spacing: -0.01em; color: var(--cb-ink); margin-bottom: 12px; }
 .service-body { font-family: var(--cb-mono); font-size: 12px; line-height: 1.5; color: var(--cb-ink-dim); flex: 1; }
 .service-cta { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--cb-ink); }
+
+/* Tier-specific card treatments — stays within the monochrome system */
+.service--core { background: rgba(243, 241, 234, 0.02); }
+.service--core .service-tier-code { letter-spacing: 0.28em; }
+.service--fast { border-left: 1px solid var(--cb-rule-strong); }
+.service--fast .service-tier-code { color: var(--cb-accent-dim); }
+.service--production .service-tier-code { color: var(--cb-ink-dim); }
+.service--specialty { background: rgba(10, 11, 13, 0.25); }
+.service--specialty .service-name { color: var(--cb-accent-dim); }
+.service--specialty .service-tier-code { color: var(--cb-ink-faint); }
+.service--specialty .service-body { color: var(--cb-ink-faint); }
+
+@media (max-width: 640px) {
+  .services-tier-head { grid-template-columns: auto 1fr; row-gap: 4px; }
+  .services-tier-blurb { grid-column: 1 / -1; }
+  .services-tier-rule { display: none; }
+}
 
 .process { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--cb-rule); }
 .process-step { position: relative; padding: 28px 24px 32px; border-right: 1px dashed var(--cb-rule); }
