@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Dashboard · ClearBot Client Portal</title>
-<meta name="description" content="ClearBot Client Portal — track ongoing work, review deliverables, and stay aligned with the team." />
+<title>Home · ClearBot Portal</title>
+<meta name="description" content="ClearBot Client Portal — your active work, at a glance." />
 <link rel="icon" type="image/svg+xml" href="/client-portal/assets/favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -17,194 +17,41 @@
 
 <div class="app">
 
-  <header class="topbar" role="banner">
-    <a class="brand" href="/" aria-label="ClearBot Client Portal home">
-      <svg class="mark-logo" width="20" height="20" aria-hidden="true"><use href="#clearbot-logo"/></svg>
-      <span class="brand-name">ClearBot<em>/portal</em></span>
-    </a>
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <span>Portal</span><span class="sep">/</span><span class="here">Dashboard</span>
-    </nav>
-    <button class="user" data-user aria-label="Account menu">
-      <span class="name" data-user-name>…</span>
-      <span class="avatar" data-user-initial aria-hidden="true">•</span>
-    </button>
-  </header>
-
-  <aside class="sidebar" aria-label="Portal navigation">
-    <a class="nav-item" data-nav="index" href="/">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
-      Dashboard
-    </a>
-    <a class="nav-item" data-nav="projects" href="/projects">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg>
-      Projects
-    </a>
-    <a class="nav-item" data-nav="deliverables" href="/deliverables">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg>
-      Deliverables
-    </a>
-    <a class="nav-item" data-nav="messages" href="/messages">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v12H8l-4 3z"/></svg>
-      Messages
-    </a>
-    <a class="nav-item" data-nav="invoices" href="/invoices">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-      Invoices
-    </a>
-    <div class="sidebar-group">Account</div>
-    <a class="nav-item" data-nav="settings" href="/settings">
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
-      Settings
-    </a>
-    <button class="nav-item" type="button" data-signout>
-      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
-      Sign Out
-    </button>
-    <div class="spacer"></div>
-    <div class="foot"><a href="https://clearbot.io">← Main Site</a></div>
-  </aside>
+  <div data-chrome data-crumb="Home"></div>
 
   <main class="main">
 
     <div class="page-head">
       <div>
-        <div class="eyebrow" data-today>Dashboard</div>
+        <div class="eyebrow">§ Portal</div>
         <h1 data-greeting>Welcome back.</h1>
       </div>
       <div class="actions">
-        <a href="/messages" class="btn">Message Us</a>
-        <button type="button" class="btn btn-primary" data-action="new-project">+ New Request</button>
+        <a href="/messages" class="btn">Message us</a>
+        <button type="button" class="btn btn-primary" data-action="new-project">+ New request</button>
       </div>
     </div>
 
-    <div class="tiles" role="region" aria-label="Portal summary" aria-live="polite">
-      <div class="tile" data-tile="active-projects">
-        <div class="label">Active Engagements</div>
-        <div class="val"><span class="tile-skel" aria-hidden="true"></span></div>
-        <div class="delta">Loading…</div>
-      </div>
-      <div class="tile" data-tile="pending-review">
-        <div class="label">Awaiting Approval</div>
-        <div class="val"><span class="tile-skel" aria-hidden="true"></span></div>
-        <div class="delta">Loading…</div>
-      </div>
-      <div class="tile" data-tile="open-invoices">
-        <div class="label">Open Invoices</div>
-        <div class="val"><span class="tile-skel" aria-hidden="true"></span></div>
-        <div class="delta">Loading…</div>
-      </div>
-      <div class="tile" data-tile="unread-messages">
-        <div class="label">Unread Messages</div>
-        <div class="val"><span class="tile-skel" aria-hidden="true"></span></div>
-        <div class="delta">Loading…</div>
-      </div>
-    </div>
-
-    <section class="panel bracketed onboarding-card" data-onboarding-card hidden
-             style="margin-bottom:20px;">
-      <div class="panel-head">
-        <h2>Get your first project off the ground</h2>
-        <button type="button" class="panel-close" data-onboarding-close aria-label="Dismiss onboarding card">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
-        </button>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;">
-        <p class="modal-prose" style="flex:1;min-width:240px;margin:0;">
-          You’re signed in but there’s nothing here yet. Tell us what you need and we’ll scope it together — no commitment until you’ve seen a brief.
-        </p>
-        <button type="button" class="btn btn-primary" data-action="new-project">Start your first request</button>
-      </div>
-    </section>
-
-    <section class="panel bracketed services-panel" data-services-panel>
+    <section class="panel bracketed" style="margin-bottom:28px;">
       <div class="panel-head">
         <div class="panel-head-text">
-          <h2>Services</h2>
-          <span class="panel-sub">Pick one to brief a new project.</span>
+          <h2>Your work</h2>
+          <span class="panel-sub" data-projects-count></span>
         </div>
-        <button type="button" class="panel-close" data-services-close aria-label="Hide services">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6l-12 12"/></svg>
-        </button>
       </div>
-      <div class="services">
-
-        <article class="service" data-service="brand">
-          <div class="service-head">
-            <span class="service-code">SVC / 01</span>
-            <span class="service-meta">typical · 48 hours</span>
-          </div>
-          <h3 class="service-title">Brand <em>systems</em></h3>
-          <p class="service-desc">Logo, type, color, voice, guidelines. A full identity shipped as Figma libraries and a PDF bible — ready for every downstream bot to draw from.</p>
-          <button type="button" class="service-cta" data-action="new-project" data-service-pick="brand">Explore <span aria-hidden="true">→</span></button>
-        </article>
-
-        <article class="service" data-service="web">
-          <div class="service-head">
-            <span class="service-code">SVC / 02</span>
-            <span class="service-meta">typical · 3–72 hours</span>
-          </div>
-          <h3 class="service-title">Websites <em>&amp; pages</em></h3>
-          <p class="service-desc">Marketing sites and campaign landers. On-brand, fast, analytics-wired, with A/B variants live on day one. Webflow, Framer, or custom Next.js.</p>
-          <button type="button" class="service-cta" data-action="new-project" data-service-pick="web">Explore <span aria-hidden="true">→</span></button>
-        </article>
-
-        <article class="service" data-service="ads">
-          <div class="service-head">
-            <span class="service-code">SVC / 03</span>
-            <span class="service-meta">typical · 6 hours</span>
-          </div>
-          <h3 class="service-title">Ads <em>&amp; campaigns</em></h3>
-          <p class="service-desc">Concept through live placements. Copy variants, sized creative, audience targeting, and media plans pushed straight to Meta, Google, and TikTok.</p>
-          <button type="button" class="service-cta" data-action="new-project" data-service-pick="ads">Explore <span aria-hidden="true">→</span></button>
-        </article>
-
-        <article class="service" data-service="content">
-          <div class="service-head">
-            <span class="service-code">SVC / 04</span>
-            <span class="service-meta">retainer · from $4k/mo</span>
-          </div>
-          <h3 class="service-title">Content <em>engine</em></h3>
-          <p class="service-desc">Monthly content at the scale a human team can’t match. Social posts, blogs, newsletters, and repurposing flows tuned to your brand voice.</p>
-          <button type="button" class="service-cta" data-action="new-project" data-service-pick="content">Explore <span aria-hidden="true">→</span></button>
-        </article>
-
-        <article class="service" data-service="video">
-          <div class="service-head">
-            <span class="service-code">SVC / 05</span>
-            <span class="service-meta">typical · 45 min per cut</span>
-          </div>
-          <h3 class="service-title">Video <em>&amp; motion</em></h3>
-          <p class="service-desc">Ad cuts, explainers, and social video from raw footage or stock. Music scored, captioned, sized for every placement.</p>
-          <button type="button" class="service-cta" data-action="new-project" data-service-pick="video">Explore <span aria-hidden="true">→</span></button>
-        </article>
-
-      </div>
+      <div data-projects-list></div>
     </section>
 
-    <div class="services-restore" data-services-restore hidden>
-      <button type="button" class="btn btn-sm" data-services-show>Show services</button>
-    </div>
+    <section class="panel">
+      <div class="panel-head">
+        <h2>§ Activity</h2>
+      </div>
+      <div class="feed" data-activity></div>
+    </section>
 
-    <div class="grid-2">
-
-      <section class="panel bracketed">
-        <div class="panel-head">
-          <h2>Recent Activity</h2>
-          <a class="action" href="#">View all →</a>
-        </div>
-        <div class="feed" data-activity></div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-head">
-          <h2>Your Projects</h2>
-          <a class="action" href="/projects">All →</a>
-        </div>
-        <div class="proj-list" data-projects-sidebar></div>
-      </section>
-
-    </div>
+    <p class="mono" style="margin-top:28px;font-size:11px;color:var(--ink-dim);letter-spacing:0.04em;">
+      Looking for something new? <a href="https://clearbot.io#services" style="color:var(--ink);text-decoration:underline;text-underline-offset:3px;">Browse services → clearbot.io</a>
+    </p>
 
   </main>
 

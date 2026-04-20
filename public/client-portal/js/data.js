@@ -55,7 +55,7 @@ export function getProjects(userId) {
   return safeList(() =>
     supabase
       .from('projects')
-      .select('id, name, description, status, progress, next_milestone, created_at, updated_at')
+      .select('id, name, description, status, progress, next_milestone, service_id, created_at, updated_at')
       .eq('user_id', userId)
       .order('updated_at', { ascending: false })
   );
