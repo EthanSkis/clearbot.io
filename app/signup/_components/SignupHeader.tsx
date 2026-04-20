@@ -8,17 +8,17 @@ export function SignupHeader() {
 
   return (
     <header className="bar" role="banner">
-      <div className="left">
+      <div className="bar-brand">
         <a className="mark" href="https://clearbot.io" aria-label="ClearBot home">
-          <svg className="mark-logo" width={22} height={22} aria-hidden="true">
+          <svg className="mark-logo" width={20} height={20} aria-hidden="true">
             <use href="#clearbot-logo" />
           </svg>
-          ClearBot
+          <span>ClearBot</span>
         </a>
-        <span style={{ color: 'var(--cb-ink-faint)' }}>/</span>
-        <span>{label}</span>
+        <span className="bar-sep">/</span>
+        <span className="bar-tag">{label}</span>
       </div>
-      <div className="right">
+      <div className="bar-actions">
         <a className="back-btn" href="https://clearbot.io">
           <svg width={14} height={14} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
