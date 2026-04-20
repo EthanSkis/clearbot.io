@@ -762,7 +762,19 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
   letter-spacing: 0.14em;
   margin-top: 6px;
 }
-.msg-thread .unread-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.msg-thread .unread-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; flex-shrink: 0; }
+.msg-thread.unread .title { color: var(--accent); font-weight: 600; }
+.msg-thread.unread .preview { color: var(--ink); }
+.msg-thread .unread-count {
+  margin-left: 4px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #111;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+}
 .msg-pane { display: flex; flex-direction: column; min-height: 0; }
 .msg-pane-head {
   padding: 18px 22px;
@@ -2195,6 +2207,18 @@ async function sendThreadMessage({ threadId, userId, senderId, body }) {
       .single()
   );
 }
+async function markThreadReadTeam(threadId) {
+  try {
+    const res = await fetch('/api/team/threads/' + encodeURIComponent(threadId) + '/read', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    if (!res.ok) return { ok: false, error: 'HTTP ' + res.status };
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: (e && e.message) || 'Unknown error' };
+  }
+}
 async function dashboardStats() {
   const [profilesCount, profiles, projects, invoices, activity, threads] = await Promise.all([
     (async () => {
@@ -2207,7 +2231,7 @@ async function dashboardStats() {
     safeList(() => supabase.from('projects').select('id, user_id, name, status, progress, updated_at')),
     safeList(() => supabase.from('invoices').select('id, user_id, project_name, amount_cents, status, due_at, issued_at, paid_at')),
     safeList(() => supabase.from('activity').select('id, user_id, text, project_name, unread, created_at').order('created_at', { ascending: false }).limit(30)),
-    safeList(() => supabase.from('message_threads').select('id, user_id, title, project_name, preview, unread_count, updated_at').gt('unread_count', 0).order('updated_at', { ascending: false }).limit(100)),
+    safeList(() => supabase.from('message_threads').select('id, user_id, title, project_name, preview, unread_count, unread_count_team, updated_at').gt('unread_count_team', 0).order('updated_at', { ascending: false }).limit(100)),
   ]);
   return { profilesCount, profiles, projects, invoices, activity, threads };
 }
@@ -2316,7 +2340,7 @@ async function renderHome() {
   const weekAgo = Date.now() - 7 * 86400000;
   const recent7 = activity.filter(a => a.created_at && new Date(a.created_at).getTime() >= weekAgo).length;
   const unreadThreads = threads || [];
-  const unreadTotal = unreadThreads.reduce((s, t) => s + (t.unread_count || 0), 0);
+  const unreadTotal = unreadThreads.reduce((s, t) => s + (t.unread_count_team || 0), 0);
   const unreadClientCount = new Set(unreadThreads.map(t => t.user_id)).size;
 
   setTile('total-users', profilesCount || profiles.length, profiles.length + ' profiles');
@@ -2397,7 +2421,7 @@ async function renderHome() {
     const byUser = new Map();
     for (const t of unreadThreads) {
       const cur = byUser.get(t.user_id) || { uid: t.user_id, count: 0, latest: null, threads: [] };
-      cur.count += (t.unread_count || 0);
+      cur.count += (t.unread_count_team || 0);
       if (!cur.latest || new Date(t.updated_at || 0) > new Date(cur.latest.updated_at || 0)) cur.latest = t;
       cur.threads.push(t);
       byUser.set(t.user_id, cur);
@@ -2699,13 +2723,18 @@ async function renderUserMessages(bundle) {
   }
 
   const renderList = (activeId) => {
-    list.innerHTML = threads.map(t =>
-      '<a class="msg-thread' + (t.id === activeId ? ' active' : '') + '" href="#" data-thread-id="' + escapeHtml(t.id) + '">' +
-        '<div class="title">' + escapeHtml(t.title || 'Thread') + ((t.unread_count || 0) > 0 ? ' <span class="unread-dot" aria-hidden="true"></span>' : '') + '</div>' +
+    list.innerHTML = threads.map(t => {
+      const unread = (t.unread_count_team || 0);
+      return '<a class="msg-thread' + (t.id === activeId ? ' active' : '') + (unread > 0 ? ' unread' : '') + '" href="#" data-thread-id="' + escapeHtml(t.id) + '">' +
+        '<div class="title">' + escapeHtml(t.title || 'Thread') +
+          (unread > 0
+            ? ' <span class="unread-dot" aria-hidden="true"></span><span class="unread-count mono">' + (unread > 99 ? '99+' : unread) + '</span>'
+            : '') +
+        '</div>' +
         '<div class="preview">' + escapeHtml(t.preview || '') + '</div>' +
         '<div class="meta">' + escapeHtml(t.project_name || 'General') + ' · ' + fmtRelTime(t.updated_at) + '</div>' +
-      '</a>'
-    ).join('');
+      '</a>';
+    }).join('');
     list.querySelectorAll('[data-thread-id]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -2738,6 +2767,16 @@ async function renderUserMessages(bundle) {
     } else {
       body.innerHTML = messages.map(m => renderMessageBubble(m, meId)).join('');
       body.scrollTop = body.scrollHeight;
+    }
+
+    // Clear team-side unread when the team opens the thread.
+    if ((active.unread_count_team || 0) > 0) {
+      markThreadReadTeam(threadId).then((res) => {
+        if (res.ok) {
+          active.unread_count_team = 0;
+          renderList(threadId);
+        }
+      });
     }
 
     const form = pane.querySelector('[data-composer]');
@@ -2774,7 +2813,8 @@ async function renderUserMessages(bundle) {
           body.insertAdjacentHTML('beforeend', renderMessageBubble(res.data, meId));
           body.scrollTop = body.scrollHeight;
         }
-        // Optimistically bump the thread's preview locally.
+        // Optimistically bump the thread's preview locally. The DB trigger
+        // increments unread_count (client-side) on insert, so we mirror that here.
         active.preview = text.slice(0, 140);
         active.updated_at = new Date().toISOString();
         active.unread_count = (active.unread_count || 0) + 1;
@@ -3385,7 +3425,7 @@ async function renderMessagesAll() {
   async function fetchThreads() {
     const rows = await safeList(() =>
       supabase.from('message_threads')
-        .select('id, user_id, title, preview, project_name, unread_count, status, updated_at')
+        .select('id, user_id, title, preview, project_name, unread_count, unread_count_team, status, updated_at')
         .order('updated_at', { ascending: false })
         .limit(300)
     );
@@ -3446,6 +3486,13 @@ async function renderMessagesAll() {
       body.scrollTop = body.scrollHeight;
     }
 
+    // Clear team-side unread when the thread is opened.
+    if ((thread.unread_count_team || 0) > 0) {
+      markThreadReadTeam(thread.id).then((res) => {
+        if (res.ok) { thread.unread_count_team = 0; updateSidebarUnreadBadge(threads); rerun(); }
+      });
+    }
+
     if (messagesAllChannels.pane) {
       try { supabase.removeChannel(messagesAllChannels.pane); } catch (_) {}
       messagesAllChannels.pane = null;
@@ -3468,6 +3515,16 @@ async function renderMessagesAll() {
         if (emptyEl) liveBody.innerHTML = '';
         liveBody.insertAdjacentHTML('beforeend', renderMessageBubble(m, meId));
         liveBody.scrollTop = liveBody.scrollHeight;
+        // If a client message arrives while the team is viewing, clear it immediately.
+        if (m.sender_role === 'client') {
+          markThreadReadTeam(thread.id).then((res) => {
+            if (res.ok) {
+              thread.unread_count_team = 0;
+              updateSidebarUnreadBadge(threads);
+              rerun();
+            }
+          });
+        }
       })
       .subscribe();
 
@@ -3509,7 +3566,7 @@ async function renderMessagesAll() {
 
   const drawList = (q, unreadOnly) => {
     const filtered = threads.filter(t => {
-      if (unreadOnly && !(t.unread_count > 0)) return false;
+      if (unreadOnly && !(t.unread_count_team > 0)) return false;
       if (!q) return true;
       return matchAll(t._haystack, q);
     });
@@ -3526,13 +3583,18 @@ async function renderMessagesAll() {
       renderEmptyPane('No threads match the current filter.');
       return;
     }
-    listRoot.innerHTML = filtered.map(t =>
-      '<a class="msg-thread' + (t.id === view.activeId ? ' active' : '') + '" href="#" data-thread-id="' + escapeHtml(t.id) + '">' +
-        '<div class="title">' + escapeHtml(t.title || 'Thread') + ((t.unread_count || 0) > 0 ? ' <span class="unread-dot" aria-hidden="true"></span>' : '') + '</div>' +
+    listRoot.innerHTML = filtered.map(t => {
+      const unread = (t.unread_count_team || 0);
+      return '<a class="msg-thread' + (t.id === view.activeId ? ' active' : '') + (unread > 0 ? ' unread' : '') + '" href="#" data-thread-id="' + escapeHtml(t.id) + '">' +
+        '<div class="title">' + escapeHtml(t.title || 'Thread') +
+          (unread > 0
+            ? ' <span class="unread-dot" aria-hidden="true"></span><span class="unread-count mono">' + (unread > 99 ? '99+' : unread) + '</span>'
+            : '') +
+        '</div>' +
         '<div class="preview">' + escapeHtml(t.preview || '') + '</div>' +
         '<div class="meta">' + escapeHtml(t._client || 'Client') + ' · ' + escapeHtml(t.project_name || 'General') + ' · ' + fmtRelTime(t.updated_at) + '</div>' +
-      '</a>'
-    ).join('');
+      '</a>';
+    }).join('');
     listRoot.querySelectorAll('[data-thread-id]').forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
@@ -3589,7 +3651,7 @@ async function renderMessagesAll() {
 function updateSidebarUnreadBadge(threads) {
   const el = document.querySelector('[data-sidebar-unread-badge]');
   if (!el) return;
-  const total = (threads || []).reduce((s, t) => s + (t.unread_count || 0), 0);
+  const total = (threads || []).reduce((s, t) => s + (t.unread_count_team || 0), 0);
   if (total > 0) {
     el.textContent = String(total);
     el.hidden = false;
