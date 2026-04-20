@@ -1997,6 +1997,24 @@ function setModalBusy(root, busy, busyLabel) {
   }
 }
 
+function showSignOutModal() {
+  openModal({
+    eyebrow: 'Confirm',
+    title: 'Sign out of your <em>workspace</em>?',
+    bodyHtml:
+      '<p class="modal-prose">You\u2019ll need to sign back in to pick up where you left off. ' +
+      'Active work on the server is safe \u2014 we just close this session on your device.</p>',
+    confirmLabel: 'Sign Out',
+    cancelLabel: 'Stay',
+    confirmVariant: 'danger',
+    onConfirm: async (root) => {
+      setModalBusy(root, true, 'Signing out\u2026');
+      await supabase.auth.signOut();
+      location.replace(LOGIN_URL);
+    },
+  });
+}
+
 // ============================================================================
 // Data access (safeList / safeOne wrappers)
 // ============================================================================
@@ -3715,10 +3733,9 @@ function wireNav() {
     });
   });
   $$('[data-signout]').forEach(el => {
-    el.addEventListener('click', async (e) => {
+    el.addEventListener('click', (e) => {
       e.preventDefault();
-      await supabase.auth.signOut();
-      location.replace(LOGIN_URL);
+      showSignOutModal();
     });
   });
   $$('.subtab').forEach(el => {
