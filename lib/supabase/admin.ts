@@ -20,6 +20,10 @@ type AdminDatabase = {
         Args: { code_input: string };
         Returns: boolean;
       };
+      verify_access_code: {
+        Args: { code_input: string };
+        Returns: boolean;
+      };
       auth_providers_for_email: {
         Args: { p_email: string };
         Returns: string[];
