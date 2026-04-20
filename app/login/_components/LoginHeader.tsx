@@ -1,0 +1,48 @@
+'use client';
+import { usePathname } from 'next/navigation';
+
+export function LoginHeader() {
+  const pathname = usePathname() || '/';
+  const isPrivacy = pathname.endsWith('/privacy');
+  const isTerms = pathname.endsWith('/terms');
+  const isLegal = isPrivacy || isTerms;
+
+  const label = isPrivacy
+    ? 'Legal · Privacy Policy'
+    : isTerms
+    ? 'Legal · Terms of Service'
+    : 'Secure access / Member sign-in';
+
+  const backHref = isLegal
+    ? pathname.startsWith('/login/') ? '/login' : '/'
+    : 'https://clearbot.io';
+
+  return (
+    <header className="bar" role="banner">
+      <div className="left">
+        <a className="mark" href="https://clearbot.io" aria-label="ClearBot home">
+          <svg className="mark-logo" width={22} height={22} aria-hidden="true">
+            <use href="#clearbot-logo" />
+          </svg>
+          ClearBot
+        </a>
+        <span style={{ color: 'var(--cb-ink-faint)' }}>/</span>
+        <span>{label}</span>
+      </div>
+      <div className="right">
+        <a className="back-btn" href={backHref}>
+          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M19 12H5M11 6l-6 6 6 6"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Back
+        </a>
+      </div>
+    </header>
+  );
+}
