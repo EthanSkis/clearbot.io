@@ -67,8 +67,8 @@ function LogoMark({ collaborator }: { collaborator: { name: string; logoSrc: str
     <Image
       src={collaborator.logoSrc}
       alt=""
-      width={140}
-      height={44}
+      width={280}
+      height={88}
       className="logo-marquee-img"
       unoptimized
     />
