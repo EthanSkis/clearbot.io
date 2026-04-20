@@ -16,7 +16,7 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
 
         <footer className="foot">
           <div className="left">
-            <span>© 2026 ClearBot Studio</span>
+            <span>© 2026 ClearBot Solutions</span>
           </div>
           <div className="copyright">Your idea. Perfected.</div>
           <div className="right">

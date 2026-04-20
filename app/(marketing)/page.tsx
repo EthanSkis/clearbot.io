@@ -65,7 +65,7 @@ export default function MarketingHome() {
           <span className="bracket bracket-tl" />
           <span className="bracket bracket-br" />
           <header className="panel-head">
-            <span>INTAKE · CLEARBOT STUDIO</span>
+            <span>INTAKE · CLEARBOT SOLUTIONS</span>
             <span className="status-tag">
               <span className="pulse-dot" />
               <span>OPEN</span>
@@ -96,7 +96,7 @@ export default function MarketingHome() {
       </main>
 
       <footer className="foot">
-        <div className="foot-left">© 2026 ClearBot Studio</div>
+        <div className="foot-left">© 2026 ClearBot Solutions</div>
         <div className="foot-mid">Your idea. Perfected.</div>
         <div className="foot-right">
           <a href={SIGNUP_URL}>Sign up</a>
