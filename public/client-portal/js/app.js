@@ -471,8 +471,9 @@ function injectSprite() {
   document.body.insertBefore(wrap.firstChild, document.body.firstChild);
 }
 
-// Fetch + inject the shared topbar/sidebar HTML into every page's <div data-chrome>.
-// Eliminates copy-paste across the client portal pages.
+// Fetch + inject the shared topbar/sidebar into every page. The placeholder
+// <div data-chrome> gets *replaced* (not innerHTML-populated) so .topbar and
+// .sidebar end up as direct children of .app — which the CSS grid requires.
 async function loadChrome() {
   const slot = document.querySelector('[data-chrome]');
   if (!slot) return;
@@ -480,9 +481,16 @@ async function loadChrome() {
   try {
     const res = await fetch('/client-portal/partials/chrome.html', { credentials: 'same-origin' });
     if (!res.ok) return;
-    slot.innerHTML = await res.text();
-    const here = slot.querySelector('[data-crumb-here]');
-    if (here) here.textContent = crumb;
+    const html = await res.text();
+    const tpl = document.createElement('template');
+    tpl.innerHTML = html.trim();
+    const frag = tpl.content;
+    const hereEl = frag.querySelector('[data-crumb-here]');
+    if (hereEl) hereEl.textContent = crumb;
+    const parent = slot.parentNode;
+    if (!parent) return;
+    parent.insertBefore(frag, slot);
+    parent.removeChild(slot);
   } catch (e) {
     console.warn('[portal] chrome load failed:', e);
   }
