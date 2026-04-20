@@ -4,7 +4,23 @@ export const BookingCreateSchema = z.object({
   name: z.string().min(1).max(200),
   email: z.string().email().max(320),
   company: z.string().max(200).optional().nullable(),
-  focus: z.enum(['brand', 'web', 'ads', 'content', 'video', 'other']).optional().nullable(),
+  focus: z
+    .enum([
+      'brand',
+      'web',
+      'rescue',
+      'copy',
+      'audit',
+      'naming',
+      'ads',
+      'content',
+      'video',
+      'deck',
+      'icons',
+      'other',
+    ])
+    .optional()
+    .nullable(),
   preferred_slot: z.string().datetime().optional().nullable(),
   preferred_slot_label: z.string().max(120).optional().nullable(),
   timezone: z.string().max(80).optional().nullable(),
