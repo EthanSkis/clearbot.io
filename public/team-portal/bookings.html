@@ -167,7 +167,7 @@
     </div>
   </header>
 
-  <div class="eyebrow">Inbound</div>
+  <div class="eyebrow">§ Inbound</div>
   <h1>Intro call <em>bookings</em>.</h1>
   <p style="font-family: var(--display); font-weight: 300; font-size: 15px; color: var(--ink-dim); margin: 10px 0 24px;">Booking requests submitted at <em style="font-style: italic; color: var(--ink);">signup.clearbot.io/book</em>.</p>
 
@@ -446,7 +446,7 @@
     const allowed = TEAM_EMAILS.some(e => e.toLowerCase() === email);
     if (!allowed) {
       document.querySelector('.app').innerHTML =
-        '<div class="eyebrow">Access</div>' +
+        '<div class="eyebrow">§ Access</div>' +
         '<h1>Not <em>authorized</em>.</h1>' +
         '<p style="font-family:var(--display);font-weight:300;font-size:15px;color:var(--ink-dim);margin:12px 0 24px;max-width:56ch;">This page is for Clearbot staff. Your email isn’t on the team allowlist.</p>' +
         '<a class="btn btn-sm" href="https://client.clearbot.io">Go to client portal</a>';

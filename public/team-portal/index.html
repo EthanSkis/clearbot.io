@@ -1198,7 +1198,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="home">
       <div class="page-head">
         <div>
-          <div class="eyebrow" data-today>Command center</div>
+          <div class="eyebrow" data-today>§ Command center</div>
           <h1>Good <em data-daypart>day</em>, <em data-team-name>team</em>.</h1>
         </div>
         <div class="actions">
@@ -1226,8 +1226,8 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <div class="val">&mdash;</div>
           <div class="delta">&nbsp;</div>
         </div>
-        <div class="tile" data-tile="activity-7d">
-          <div class="label">Activity &middot; 7d</div>
+        <div class="tile" data-tile="services-in-flight">
+          <div class="label">Services in flight</div>
           <div class="val">&mdash;</div>
           <div class="delta">&nbsp;</div>
         </div>
@@ -1253,20 +1253,29 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <div class="proj-list" data-home-top-outstanding></div>
         </section>
       </div>
-      <section class="panel bracketed" style="margin-top: 20px;">
-        <div class="panel-head">
-          <h2>Unread Messages by Client</h2>
-          <span class="mono" style="font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.18em;" data-home-unread-total>&mdash;</span>
-        </div>
-        <div class="proj-list" data-home-unread-by-client></div>
-      </section>
+      <div class="grid-2" style="margin-top: 20px;">
+        <section class="panel bracketed">
+          <div class="panel-head">
+            <h2>Service breakdown</h2>
+            <span class="mono" style="font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.18em;">Active projects by tier</span>
+          </div>
+          <div data-home-service-breakdown></div>
+        </section>
+        <section class="panel bracketed">
+          <div class="panel-head">
+            <h2>Unread Messages by Client</h2>
+            <span class="mono" style="font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.18em;" data-home-unread-total>&mdash;</span>
+          </div>
+          <div class="proj-list" data-home-unread-by-client></div>
+        </section>
+      </div>
     </section>
 
     <!-- USERS -->
     <section class="view-pane" data-view-pane="users" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">Roster</div>
+          <div class="eyebrow">§ Roster</div>
           <h1>Clients <em>directory</em>.</h1>
         </div>
       </div>
@@ -1296,7 +1305,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="user-detail" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow" data-user-eyebrow>Client</div>
+          <div class="eyebrow" data-user-eyebrow>§ Client</div>
           <h1 data-user-title>&hellip;</h1>
         </div>
         <div class="actions">
@@ -1379,6 +1388,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
             <thead>
               <tr>
                 <th>Project</th>
+                <th>Service</th>
                 <th>Status</th>
                 <th>Progress</th>
                 <th>Next Milestone</th>
@@ -1457,12 +1467,19 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="projects-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">All clients</div>
+          <div class="eyebrow">§ All clients</div>
           <h1>Projects <em>aggregate</em>.</h1>
         </div>
       </div>
       <div class="search-bar">
         <input class="input" id="projects-all-search" type="search" placeholder="Search project, description, client, status&hellip;" autocomplete="off" />
+        <select class="select" id="projects-all-tier" aria-label="Filter by service tier" style="max-width:200px;">
+          <option value="">All tiers</option>
+          <option value="core">Core &middot; flagship</option>
+          <option value="fast">Fast-turn add-ons</option>
+          <option value="production">Production &middot; series</option>
+          <option value="specialty">Specialty</option>
+        </select>
         <span class="count" data-projects-all-count>&mdash;</span>
       </div>
       <div class="table-wrap">
@@ -1470,6 +1487,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <thead>
             <tr>
               <th>Project</th>
+              <th>Service</th>
               <th>Client</th>
               <th>Status</th>
               <th>Progress</th>
@@ -1486,7 +1504,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="invoices-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">All clients</div>
+          <div class="eyebrow">§ All clients</div>
           <h1>Invoices <em>ledger</em>.</h1>
         </div>
       </div>
@@ -1534,7 +1552,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="deliverables-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">All clients</div>
+          <div class="eyebrow">§ All clients</div>
           <h1>Deliverables <em>library</em>.</h1>
         </div>
       </div>
@@ -1565,7 +1583,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="messages-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">All clients</div>
+          <div class="eyebrow">§ All clients</div>
           <h1>Messages <em>inbox</em>.</h1>
         </div>
       </div>
@@ -1586,7 +1604,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="activity-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">All clients</div>
+          <div class="eyebrow">§ All clients</div>
           <h1>Activity <em>stream</em>.</h1>
         </div>
       </div>
@@ -1599,7 +1617,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="bookings-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">Inbound</div>
+          <div class="eyebrow">§ Inbound</div>
           <h1>Intro call <em>bookings</em>.</h1>
         </div>
         <div class="actions">
@@ -1644,7 +1662,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="codes-all" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">Signup gate</div>
+          <div class="eyebrow">§ Signup gate</div>
           <h1>Access <em>codes</em>.</h1>
         </div>
         <div class="actions">
@@ -1675,7 +1693,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <section class="view-pane" data-view-pane="unauthorized" hidden>
       <div class="page-head">
         <div>
-          <div class="eyebrow">Access</div>
+          <div class="eyebrow">§ Access</div>
           <h1>Not <em>authorized</em>.</h1>
         </div>
       </div>
@@ -1697,6 +1715,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 import { jsPDF } from 'https://esm.sh/jspdf@2.5.1';
+import { SERVICES, TIER_GROUPS, servicesByTier, getService, serviceCode, serviceTag, tierLabel } from '/shared/services.js';
 
 // ============================================================================
 // Config
@@ -2228,7 +2247,7 @@ async function dashboardStats() {
       } catch (_) { return 0; }
     })(),
     safeList(() => supabase.from('profiles').select('user_id, company_name, email, first_name, last_name')),
-    safeList(() => supabase.from('projects').select('id, user_id, name, status, progress, updated_at')),
+    safeList(() => supabase.from('projects').select('id, user_id, name, status, progress, service_id, updated_at')),
     safeList(() => supabase.from('invoices').select('id, user_id, project_name, amount_cents, status, due_at, issued_at, paid_at')),
     safeList(() => supabase.from('activity').select('id, user_id, text, project_name, unread, created_at').order('created_at', { ascending: false }).limit(30)),
     safeList(() => supabase.from('message_threads').select('id, user_id, title, project_name, preview, unread_count, unread_count_team, updated_at').gt('unread_count_team', 0).order('updated_at', { ascending: false }).limit(100)),
@@ -2326,9 +2345,56 @@ function setTile(key, value, delta) {
   if (v) v.innerHTML = value;
   if (d) d.textContent = delta || '';
 }
+
+// Group active projects by tier and render as horizontal bars. Clicking a row
+// jumps to the projects-all view with that tier pre-filtered.
+function renderServiceBreakdown(activeProjects) {
+  const root = document.querySelector('[data-home-service-breakdown]');
+  if (!root) return;
+  const counts = { core: 0, fast: 0, production: 0, specialty: 0, untagged: 0 };
+  for (const p of activeProjects) {
+    const svc = p.service_id ? getService(p.service_id) : null;
+    if (!svc) counts.untagged += 1;
+    else counts[svc.tier] = (counts[svc.tier] || 0) + 1;
+  }
+  const max = Math.max(1, counts.core, counts.fast, counts.production, counts.specialty, counts.untagged);
+  const tierRow = (tier, label, n) => {
+    const pct = Math.round((n / max) * 100);
+    return '<button type="button" class="svc-breakdown-row" data-tier-filter="' + escapeHtml(tier) + '" style="display:grid;grid-template-columns:130px 1fr 36px;align-items:center;gap:12px;width:100%;padding:10px 0;background:transparent;border:0;border-top:1px solid var(--rule);color:inherit;font-family:inherit;cursor:pointer;text-align:left;">' +
+      '<span class="mono" style="font-size:11px;color:var(--ink-dim);letter-spacing:0.04em;">' + escapeHtml(label) + '</span>' +
+      '<span style="display:block;height:6px;background:var(--rule);border-radius:2px;position:relative;overflow:hidden;">' +
+        '<span style="display:block;height:100%;width:' + pct + '%;background:var(--ink);"></span>' +
+      '</span>' +
+      '<span class="mono" style="font-size:13px;color:var(--ink);text-align:right;">' + n + '</span>' +
+    '</button>';
+  };
+  root.innerHTML =
+    tierRow('core', 'Core \u00b7 flagship', counts.core) +
+    tierRow('fast', 'Fast-turn', counts.fast) +
+    tierRow('production', 'Production', counts.production) +
+    tierRow('specialty', 'Specialty', counts.specialty) +
+    (counts.untagged > 0
+      ? '<div style="display:grid;grid-template-columns:130px 1fr 36px;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--rule);">' +
+          '<span class="mono" style="font-size:11px;color:var(--ink-faint);letter-spacing:0.04em;">Untagged</span>' +
+          '<span style="display:block;height:6px;background:var(--rule);border-radius:2px;overflow:hidden;">' +
+            '<span style="display:block;height:100%;width:' + Math.round((counts.untagged / max) * 100) + '%;background:var(--ink-faint);"></span>' +
+          '</span>' +
+          '<span class="mono" style="font-size:13px;color:var(--ink-dim);text-align:right;">' + counts.untagged + '</span>' +
+        '</div>'
+      : '');
+  root.querySelectorAll('[data-tier-filter]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      showView('projects-all').then(() => {
+        const t = btn.getAttribute('data-tier-filter');
+        const sel = document.querySelector('#projects-all-tier');
+        if (sel) { sel.value = t; sel.dispatchEvent(new Event('change')); }
+      });
+    });
+  });
+}
 async function renderHome() {
   const today = $('[data-today]');
-  if (today) today.textContent = 'Command center · ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  if (today) today.textContent = '\u00a7 Command center \u00b7 ' + new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   const daypart = $('[data-daypart]');
   if (daypart) daypart.textContent = greetingPart();
   const teamName = $('[data-team-name]');
@@ -2337,14 +2403,17 @@ async function renderHome() {
   const { profilesCount, profiles, projects, invoices, activity, threads } = await dashboardStats();
   state.allProfilesCache = profiles;
 
-  const active = projects.filter(p => !['shipped', 'done', 'archived'].includes((p.status || '').toLowerCase())).length;
+  const activeProjects = projects.filter(p => !['shipped', 'done', 'archived'].includes((p.status || '').toLowerCase()));
+  const active = activeProjects.length;
   const openInv = invoices.filter(i => (i.status || '').toLowerCase() !== 'paid');
   const outstanding = openInv.reduce((s, i) => s + (i.amount_cents || 0), 0);
-  const weekAgo = Date.now() - 7 * 86400000;
-  const recent7 = activity.filter(a => a.created_at && new Date(a.created_at).getTime() >= weekAgo).length;
   const unreadThreads = threads || [];
   const unreadTotal = unreadThreads.reduce((s, t) => s + (t.unread_count_team || 0), 0);
   const unreadClientCount = new Set(unreadThreads.map(t => t.user_id)).size;
+
+  // Count distinct service_ids across active projects for the "Services in flight" tile.
+  const activeServiceIds = new Set(activeProjects.map(p => p.service_id).filter(Boolean));
+  const untaggedActive = activeProjects.filter(p => !p.service_id).length;
 
   setTile('total-users', profilesCount || profiles.length, profiles.length + ' profiles');
   setTile('active-projects', active, projects.length + ' total');
@@ -2352,7 +2421,10 @@ async function renderHome() {
   setTile('unread-messages', unreadTotal, unreadTotal === 0
     ? 'Inbox zero'
     : 'Across ' + unreadClientCount + (unreadClientCount === 1 ? ' client' : ' clients'));
-  setTile('activity-7d', recent7, 'notes this week');
+  setTile('services-in-flight', activeServiceIds.size, untaggedActive
+    ? untaggedActive + (untaggedActive === 1 ? ' untagged' : ' untagged')
+    : (activeServiceIds.size === 0 ? 'none tagged' : 'distinct lanes'));
+  renderServiceBreakdown(activeProjects);
   updateSidebarUnreadBadge(unreadThreads);
 
   // Surface pending booking requests on the command-center and sidebar.
@@ -2518,7 +2590,7 @@ async function renderUserDetail() {
   const displayName = userDisplayName(profile);
   if (titleEl) titleEl.innerHTML = escapeHtml(displayName) +
     (profile && profile.primary_domain ? ' <em>@' + escapeHtml(profile.primary_domain) + '</em>' : '');
-  if (eyeEl) eyeEl.textContent = 'Client · ' + (profile && profile.email ? profile.email : state.selectedUserId);
+  if (eyeEl) eyeEl.textContent = '\u00a7 Client \u00b7 ' + (profile && profile.email ? profile.email : state.selectedUserId);
 
   fillProfileForm(profile || {});
   renderUserProjects(bundle);
@@ -2562,11 +2634,17 @@ function renderUserProjects(bundle) {
   }
   if (wrap) wrap.hidden = false;
   if (empty) empty.innerHTML = '';
-  tbody.innerHTML = rows.map(p =>
-    '<tr data-project-row="' + escapeHtml(p.id) + '">' +
+  tbody.innerHTML = rows.map(p => {
+    const svc = p.service_id ? getService(p.service_id) : null;
+    const svcCell = svc
+      ? '<div class="mono" style="font-size:10.5px;color:var(--ink-dim);letter-spacing:0.04em;">' + escapeHtml(serviceCode(p.service_id)) + '</div>' +
+        '<div>' + escapeHtml(svc.name) + '</div>'
+      : '<span class="mono" style="color:var(--ink-faint);">\u2014</span>';
+    return '<tr data-project-row="' + escapeHtml(p.id) + '">' +
       '<td><div class="proj-name">' + escapeHtml(p.name || 'Untitled') + '</div>' +
           (p.description ? '<div class="sub">' + escapeHtml(p.description) + '</div>' : '') +
       '</td>' +
+      '<td>' + svcCell + '</td>' +
       '<td>' + statusBadge(p.status) + '</td>' +
       '<td style="min-width:160px;"><div style="display:flex;align-items:center;gap:10px;">' +
         '<span class="progress"><span class="progress-bar" style="width:' + (p.progress || 0) + '%"></span></span>' +
@@ -2578,8 +2656,8 @@ function renderUserProjects(bundle) {
         '<button type="button" class="btn btn-sm" data-edit-project="' + escapeHtml(p.id) + '">Edit</button>' +
         '<button type="button" class="btn btn-sm" data-delete-project="' + escapeHtml(p.id) + '">Delete</button>' +
       '</div></td>' +
-    '</tr>'
-  ).join('');
+    '</tr>';
+  }).join('');
   tbody.querySelectorAll('[data-edit-project]').forEach(btn => {
     btn.addEventListener('click', (e) => { e.stopPropagation(); showProjectModal(rows.find(r => r.id === btn.getAttribute('data-edit-project'))); });
   });
@@ -2924,6 +3002,22 @@ function statusOptions(list, current) {
   return list.map(s => '<option value="' + s + '"' + (s === (current || '') ? ' selected' : '') + '>' + s + '</option>').join('');
 }
 
+// Service-taxonomy dropdown, grouped by tier. Used by the project modal and
+// the booking detail modal so focus + project lanes point at the same 11 ids.
+function serviceSelectOptions(current) {
+  const head = '<option value="">\u2014 None \u2014</option>';
+  const groups = servicesByTier().map((g) => {
+    if (!g.items.length) return '';
+    const opts = g.items.map((s) =>
+      '<option value="' + escapeHtml(s.id) + '"' + (s.id === (current || '') ? ' selected' : '') + '>' +
+        escapeHtml(serviceCode(s.id) + ' \u00b7 ' + s.name) +
+      '</option>'
+    ).join('');
+    return '<optgroup label="' + escapeHtml(g.label) + '">' + opts + '</optgroup>';
+  }).join('');
+  return head + groups;
+}
+
 function showProjectModal(existing) {
   if (!state.selectedUserId) return;
   const isEdit = !!existing;
@@ -2933,6 +3027,8 @@ function showProjectModal(existing) {
     bodyHtml:
       '<div class="modal-field"><label class="form-label" for="p-name">Name</label>' +
         '<input class="input" id="p-name" type="text" value="' + escapeHtml(existing ? (existing.name || '') : '') + '" /></div>' +
+      '<div class="modal-field"><label class="form-label" for="p-service">Service</label>' +
+        '<select class="select" id="p-service">' + serviceSelectOptions(existing ? existing.service_id : null) + '</select></div>' +
       '<div class="modal-field"><label class="form-label" for="p-desc">Description</label>' +
         '<textarea class="textarea" id="p-desc" rows="3">' + escapeHtml(existing ? (existing.description || '') : '') + '</textarea></div>' +
       '<div class="form-grid">' +
@@ -2951,6 +3047,7 @@ function showProjectModal(existing) {
       if (!name) { setModalError(root, 'Name is required.'); return false; }
       const patch = {
         name,
+        service_id: root.querySelector('#p-service').value || null,
         description: root.querySelector('#p-desc').value || null,
         status: root.querySelector('#p-status').value,
         progress: Number(root.querySelector('#p-progress').value) || 0,
@@ -3304,18 +3401,31 @@ async function renderProjectsAll() {
   const empty = $('[data-projects-all-empty]');
   const countEl = $('[data-projects-all-count]');
   const searchEl = $('#projects-all-search');
+  const tierEl = $('#projects-all-tier');
   if (!tbody) return;
 
   const draw = (q) => {
-    const filtered = !q ? rows : rows.filter(p => {
-      const pf = profileFor(p.user_id);
-      const hay = [
-        p.name, p.description, p.status, p.next_milestone,
-        userDisplayName(pf), pf && pf.company_name, pf && pf.email, pf && pf.primary_domain,
-      ].filter(Boolean).join(' ');
-      return matchAll(hay, q);
-    });
-    if (countEl) countEl.textContent = q
+    const tier = tierEl ? tierEl.value : '';
+    let filtered = rows;
+    if (tier) {
+      filtered = filtered.filter((p) => {
+        const svc = p.service_id ? getService(p.service_id) : null;
+        return svc && svc.tier === tier;
+      });
+    }
+    if (q) {
+      filtered = filtered.filter(p => {
+        const pf = profileFor(p.user_id);
+        const svc = p.service_id ? getService(p.service_id) : null;
+        const hay = [
+          p.name, p.description, p.status, p.next_milestone,
+          svc && svc.name, svc && serviceCode(p.service_id),
+          userDisplayName(pf), pf && pf.company_name, pf && pf.email, pf && pf.primary_domain,
+        ].filter(Boolean).join(' ');
+        return matchAll(hay, q);
+      });
+    }
+    if (countEl) countEl.textContent = (q || tier)
       ? filtered.length + (filtered.length === 1 ? ' match' : ' matches')
       : filtered.length + (filtered.length === 1 ? ' project' : ' projects');
     if (!rows.length) {
@@ -3325,15 +3435,21 @@ async function renderProjectsAll() {
     }
     if (!filtered.length) {
       tbody.innerHTML = '';
-      if (empty) empty.innerHTML = emptyState('No matches', 'Try a shorter query or a different field.');
+      if (empty) empty.innerHTML = emptyState('No matches', 'Try a shorter query or a different tier.');
       return;
     }
     if (empty) empty.innerHTML = '';
     tbody.innerHTML = filtered.map(p => {
       const pf = profileFor(p.user_id);
+      const svc = p.service_id ? getService(p.service_id) : null;
+      const svcCell = svc
+        ? '<div class="mono" style="font-size:10.5px;color:var(--ink-dim);letter-spacing:0.04em;">' + escapeHtml(serviceCode(p.service_id)) + '</div>' +
+          '<div>' + escapeHtml(svc.name) + '</div>'
+        : '<span class="mono" style="color:var(--ink-faint);">\u2014</span>';
       return '<tr class="is-clickable" data-open-user="' + escapeHtml(p.user_id) + '">' +
         '<td><div class="proj-name">' + escapeHtml(p.name || 'Untitled') + '</div>' +
             (p.description ? '<div class="sub">' + escapeHtml(p.description) + '</div>' : '') + '</td>' +
+        '<td>' + svcCell + '</td>' +
         '<td>' + escapeHtml(userDisplayName(pf)) + '</td>' +
         '<td>' + statusBadge(p.status) + '</td>' +
         '<td style="min-width:160px;"><div style="display:flex;align-items:center;gap:10px;">' +
@@ -3349,6 +3465,10 @@ async function renderProjectsAll() {
   };
 
   wireAllViewSearch(searchEl, draw);
+  if (tierEl && tierEl.dataset.bound !== '1') {
+    tierEl.dataset.bound = '1';
+    tierEl.addEventListener('change', () => draw((searchEl && searchEl.value || '').trim().toLowerCase()));
+  }
   draw((searchEl && searchEl.value || '').trim().toLowerCase());
 }
 
@@ -3969,13 +4089,16 @@ function wireNav() {
 async function listBookingRequests() {
   return safeList(() =>
     supabase.from('booking_requests')
-      .select('id, name, email, company, focus, preferred_slot, preferred_slot_label, timezone, notes, source, status, created_at')
+      .select('id, name, email, company, focus, focus_service_id, preferred_slot, preferred_slot_label, timezone, notes, source, status, created_at')
       .order('created_at', { ascending: false })
       .limit(500)
   );
 }
 async function updateBookingStatus(id, status) {
   return safeWrite(() => supabase.from('booking_requests').update({ status }).eq('id', id));
+}
+async function updateBookingFocusService(id, focusServiceId) {
+  return safeWrite(() => supabase.from('booking_requests').update({ focus_service_id: focusServiceId || null }).eq('id', id));
 }
 async function deleteBookingRequest(id) {
   return safeWrite(() => supabase.from('booking_requests').delete().eq('id', id));
@@ -4035,20 +4158,25 @@ async function renderBookingsAll() {
     }
     if (wrap) wrap.hidden = false;
     if (emptyRoot) emptyRoot.innerHTML = '';
-    tbody.innerHTML = filtered.map(r =>
-      '<tr data-booking-row="' + escapeHtml(r.id) + '" style="cursor:pointer;">' +
+    tbody.innerHTML = filtered.map(r => {
+      const svc = r.focus_service_id ? getService(r.focus_service_id) : null;
+      const focusCell = svc
+        ? '<div>' + escapeHtml(svc.name) + '</div>' +
+          '<div class="mono" style="font-size:10px;color:var(--ink-dim);letter-spacing:0.04em;margin-top:2px;">' + escapeHtml(tierLabel(svc.tier)) + '</div>'
+        : '<span class="mono">' + escapeHtml(r.focus || '\u2014') + '</span>';
+      return '<tr data-booking-row="' + escapeHtml(r.id) + '" style="cursor:pointer;">' +
         '<td>' +
           '<div class="proj-name">' + escapeHtml(r.name || '\u2014') + '</div>' +
           '<div class="sub">' + escapeHtml(r.email || '') + '</div>' +
         '</td>' +
         '<td class="mono">' + escapeHtml(r.company || '\u2014') + '</td>' +
-        '<td class="mono">' + escapeHtml(r.focus || '\u2014') + '</td>' +
+        '<td>' + focusCell + '</td>' +
         '<td class="mono">' + escapeHtml(r.preferred_slot_label || (r.preferred_slot ? fmtShortDate(r.preferred_slot) : '\u2014')) + '</td>' +
         '<td>' + bookingStatusBadge(r.status) + '</td>' +
         '<td class="mono">' + fmtRelTime(r.created_at) + '</td>' +
         '<td><button type="button" class="btn btn-sm" data-booking-open="' + escapeHtml(r.id) + '">Open</button></td>' +
-      '</tr>'
-    ).join('');
+      '</tr>';
+    }).join('');
     const open = (id) => { const row = rows.find(x => x.id === id); if (row) showBookingDetail(row); };
     tbody.querySelectorAll('[data-booking-row]').forEach(tr => {
       tr.addEventListener('click', () => open(tr.getAttribute('data-booking-row')));
@@ -4099,11 +4227,18 @@ function showBookingDetail(booking) {
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;padding:16px 18px;border:1px solid var(--rule);border-radius:2px;background:rgba(243,241,234,0.012);">' +
         '<div><div class="modal-eyebrow">Email</div><div class="mono" style="font-size:13px;margin-top:6px;"><a href="' + mailHref + '" style="color:var(--ink);">' + escapeHtml(booking.email || '\u2014') + '</a></div></div>' +
         '<div><div class="modal-eyebrow">Company</div><div style="font-family:var(--display);font-size:15px;margin-top:6px;color:var(--ink);">' + escapeHtml(booking.company || '\u2014') + '</div></div>' +
-        '<div><div class="modal-eyebrow">Focus</div><div style="font-family:var(--display);font-size:15px;margin-top:6px;color:var(--ink);">' + escapeHtml(booking.focus || '\u2014') + '</div></div>' +
+        '<div><div class="modal-eyebrow">Focus (submitted)</div><div style="font-family:var(--display);font-size:15px;margin-top:6px;color:var(--ink);">' + escapeHtml(booking.focus || '\u2014') + '</div></div>' +
         '<div><div class="modal-eyebrow">Preferred slot</div><div style="font-family:var(--display);font-size:15px;margin-top:6px;color:var(--ink);">' + escapeHtml(booking.preferred_slot_label || '\u2014') + '</div></div>' +
         '<div><div class="modal-eyebrow">Timezone</div><div class="mono" style="font-size:12px;margin-top:6px;color:var(--ink);">' + escapeHtml(booking.timezone || '\u2014') + '</div></div>' +
         '<div><div class="modal-eyebrow">Source</div><div class="mono" style="font-size:12px;margin-top:6px;color:var(--ink);">' + escapeHtml(booking.source || '\u2014') + '</div></div>' +
       '</div>' +
+      '<section style="margin-bottom:20px;padding:14px 18px;border:1px solid var(--rule);border-radius:2px;background:rgba(243,241,234,0.012);">' +
+        '<div class="modal-eyebrow" style="margin-bottom:8px;">Map to service</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">' +
+          '<select class="select" id="booking-focus-service" style="flex:1;min-width:240px;">' + serviceSelectOptions(booking.focus_service_id) + '</select>' +
+          '<span class="mono" data-focus-save-msg style="font-size:11px;color:var(--ink-dim);"></span>' +
+        '</div>' +
+      '</section>' +
       (booking.notes
         ? '<section style="margin-bottom:20px;"><div class="modal-eyebrow">Notes</div><p style="font-family:var(--display);font-size:15px;font-weight:300;line-height:1.55;color:var(--ink);margin-top:8px;white-space:pre-wrap;">' + escapeHtml(booking.notes) + '</p></section>'
         : '') +
@@ -4139,6 +4274,23 @@ function showBookingDetail(booking) {
       await renderBookingsAll();
     });
   });
+  const focusSel = root.querySelector('#booking-focus-service');
+  const focusMsg = root.querySelector('[data-focus-save-msg]');
+  if (focusSel) {
+    focusSel.addEventListener('change', async () => {
+      focusSel.setAttribute('disabled', 'true');
+      if (focusMsg) focusMsg.textContent = 'Saving\u2026';
+      const res = await updateBookingFocusService(booking.id, focusSel.value || null);
+      focusSel.removeAttribute('disabled');
+      if (!res.ok) {
+        if (focusMsg) focusMsg.textContent = 'Save failed';
+        return;
+      }
+      booking.focus_service_id = focusSel.value || null;
+      if (focusMsg) { focusMsg.textContent = 'Saved'; setTimeout(() => { focusMsg.textContent = ''; }, 1800); }
+      await renderBookingsAll();
+    });
+  }
   const delBtn = root.querySelector('[data-booking-delete]');
   if (delBtn) {
     delBtn.addEventListener('click', async () => {

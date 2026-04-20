@@ -29,9 +29,6 @@ function resolvePrefix(host: string): string | null {
 const CLIENT_PAGES: Record<string, string> = {
   '': 'index.html',
   '/': 'index.html',
-  '/projects': 'projects.html',
-  '/deliverables': 'deliverables.html',
-  '/invoices': 'invoices.html',
   '/messages': 'messages.html',
   '/settings': 'settings.html'
 };
