@@ -1,32 +1,38 @@
 import { SignupForm } from './signup-form';
-import { LOGIN_URL } from '@/lib/env';
 
-export const metadata = { title: 'Sign up · ClearBot' };
+export const metadata = { title: 'Sign up — ClearBot' };
 
 export default function SignupPage() {
   return (
-    <article className="auth-card panel">
-      <span className="bracket bracket-tl" />
-      <span className="bracket bracket-br" />
-      <header style={{ marginBottom: 20 }}>
-        <a href="https://clearbot.io" className="mark" aria-label="ClearBot home" style={{ textDecoration: 'none' }}>
-          <svg className="mark-logo" width={22} height={22} aria-hidden="true">
-            <use href="#clearbot-logo" />
-          </svg>
-          <span style={{ fontSize: 12, letterSpacing: '0.22em', textTransform: 'uppercase' }}>ClearBot</span>
-        </a>
-      </header>
-      <h1 className="auth-title">
-        <em>Create your</em> account.
-      </h1>
-      <p className="auth-sub">
-        Access is invitation-only right now. Drop in your invite code, then pick a password or sign in with GitHub.
-      </p>
-      <SignupForm />
-      <div className="auth-foot">
-        <span>Already have an account?</span>
-        <a href={LOGIN_URL}>Log in →</a>
-      </div>
-    </article>
+    <div className="stage">
+      <svg className="ghost-logo" aria-hidden="true">
+        <use href="#clearbot-logo" />
+      </svg>
+
+      <section className="card" aria-labelledby="signup-title">
+        <span className="bracket bracket-tl" aria-hidden="true" />
+        <span className="bracket bracket-br" aria-hidden="true" />
+
+        <div className="card-head">
+          <span>Session · 01</span>
+          <span
+            className="status-tag"
+            title="Your password is sent over an encrypted HTTPS connection."
+          >
+            <span className="dot" aria-hidden="true" />
+            Encrypted · HTTPS
+          </span>
+        </div>
+
+        <h1 className="title" id="signup-title">
+          <span className="italic">Create</span> account.
+        </h1>
+        <p className="subtitle">
+          Join <em>ClearBot</em> and spin up your workspace.
+        </p>
+
+        <SignupForm />
+      </section>
+    </div>
   );
 }
