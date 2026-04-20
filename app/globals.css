@@ -417,3 +417,74 @@ header.bar { display: grid; grid-template-columns: 1fr auto; align-items: center
 @media (max-width: 480px) {
   .login-page .doc { padding: 32px 22px 26px; }
 }
+
+/* ==========================================================
+   Book intro — wider card, bullets, two-column form, slot picker
+   ========================================================== */
+
+.login-page .stage--book { max-width: 720px; }
+@media (min-width: 900px) { .login-page .stage--book { max-width: 880px; } }
+
+.login-page .stage--book .ghost-logo { width: 820px; height: 820px; }
+
+.login-page .field label .hint { color: var(--cb-ink-faint); letter-spacing: 0.18em; font-family: var(--cb-mono); font-size: 10px; }
+
+.login-page .input-wrap select,
+.login-page .input-wrap textarea {
+  flex: 1; min-width: 0; background: transparent; border: 0; outline: 0;
+  padding: 14px 18px; color: var(--cb-ink);
+  font-family: var(--cb-mono); font-size: 13px; letter-spacing: 0.02em; resize: none;
+}
+.login-page .input-wrap select {
+  appearance: none; -webkit-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--cb-ink-dim) 50%),
+    linear-gradient(135deg, var(--cb-ink-dim) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+  text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px;
+}
+.login-page .input-wrap select option { background: var(--cb-bg-elev); color: var(--cb-ink); }
+.login-page .input-wrap textarea { min-height: 80px; line-height: 1.55; }
+.login-page .input-wrap textarea::placeholder,
+.login-page .input-wrap input::placeholder {
+  color: var(--cb-ink-dim); text-transform: uppercase; letter-spacing: 0.14em; font-size: 11px;
+}
+
+.login-page .bullets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+.login-page .bullet { border: 1px solid var(--cb-rule); background: rgba(243, 241, 234, 0.015); padding: 12px 14px 10px; border-radius: 2px; display: flex; flex-direction: column; gap: 4px; }
+.login-page .bullet .k { font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
+.login-page .bullet .v { font-family: var(--cb-display); font-weight: 300; font-size: 17px; letter-spacing: -0.01em; color: var(--cb-ink); }
+.login-page .bullet .v em { font-style: italic; }
+.login-page .bullet .v--compact { font-size: 15px; }
+
+.login-page .section-label { font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+.login-page .section-label::after { content: ""; flex: 1; height: 1px; background: var(--cb-rule); }
+
+.login-page .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.login-page .form-col { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+.login-page .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.login-page .brief-field { flex: 1 1 auto; min-height: 0; }
+.login-page .brief-field .input-wrap { flex: 1 1 auto; min-height: 0; }
+.login-page .brief-field textarea { height: 100%; min-height: 140px; }
+
+.login-page .slot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; min-height: 72px; align-content: start; }
+.login-page .slot { position: relative; cursor: pointer; }
+.login-page .slot input { position: absolute; opacity: 0; pointer-events: none; }
+.login-page .slot .slot-face { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border: 1px solid var(--cb-rule-strong); border-radius: 2px; background: rgba(243, 241, 234, 0.015); transition: background 0.2s var(--cb-ease), border-color 0.2s var(--cb-ease), color 0.2s var(--cb-ease); }
+.login-page .slot .slot-day { font-family: var(--cb-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: var(--cb-ink-dim); }
+.login-page .slot .slot-time { font-family: var(--cb-display); font-weight: 300; font-size: 16px; letter-spacing: -0.01em; color: var(--cb-ink); line-height: 1.15; }
+.login-page .slot:hover .slot-face { border-color: var(--cb-accent-dim); background: rgba(243, 241, 234, 0.04); }
+.login-page .slot input:checked + .slot-face { background: var(--cb-accent); border-color: var(--cb-accent); }
+.login-page .slot input:checked + .slot-face .slot-day,
+.login-page .slot input:checked + .slot-face .slot-time { color: var(--cb-bg); }
+.login-page .slot input:focus-visible + .slot-face { outline: 2px solid var(--cb-accent); outline-offset: 3px; }
+
+@media (max-width: 720px) {
+  .login-page .stage--book { max-width: 460px; }
+  .login-page .form-grid { grid-template-columns: 1fr; }
+  .login-page .bullets { grid-template-columns: 1fr; }
+  .login-page .grid-2 { grid-template-columns: 1fr; }
+}

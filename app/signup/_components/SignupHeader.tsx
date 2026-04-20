@@ -1,4 +1,11 @@
+'use client';
+import { usePathname } from 'next/navigation';
+
 export function SignupHeader() {
+  const pathname = usePathname() ?? '';
+  const isBook = pathname === '/book' || pathname.endsWith('/book');
+  const label = isBook ? 'Intro call / Intake' : 'Secure access / Member sign-up';
+
   return (
     <header className="bar" role="banner">
       <div className="left">
@@ -9,7 +16,7 @@ export function SignupHeader() {
           ClearBot
         </a>
         <span style={{ color: 'var(--cb-ink-faint)' }}>/</span>
-        <span>Secure access / Member sign-up</span>
+        <span>{label}</span>
       </div>
       <div className="right">
         <a className="back-btn" href="https://clearbot.io">
