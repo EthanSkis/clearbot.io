@@ -1728,14 +1728,34 @@ function allCookieNames() {
   }
   return names;
 }
+// @supabase/ssr v0.5+ wraps the session cookie value as
+// `base64-{base64url(JSON)}` (base64URL alphabet, no padding). supabase-js
+// uses standard atob and won't unwrap that for a custom storage, so do it
+// here — otherwise getSession() returns null and we bounce back to login.
+function decodeBase64URL(str) {
+  const pad = (4 - (str.length % 4)) % 4;
+  const padded = str + '='.repeat(pad);
+  const std = padded.replace(/-/g, '+').replace(/_/g, '/');
+  return atob(std);
+}
+function maybeUnwrapSsrEnvelope(value) {
+  if (!value || typeof value !== 'string') return value;
+  if (!value.startsWith('base64-')) return value;
+  try { return decodeBase64URL(value.slice('base64-'.length)); }
+  catch (_) { return value; }
+}
+
 const crossDomainCookieStorage = {
   getItem(key) {
+    let raw;
     if (readCookie(key + '.0') != null) {
       let result = ''; let i = 0; let chunk;
       while ((chunk = readCookie(key + '.' + i)) != null) { result += chunk; i++; }
-      return result;
+      raw = result;
+    } else {
+      raw = readCookie(key);
     }
-    return readCookie(key);
+    return maybeUnwrapSsrEnvelope(raw);
   },
   setItem(key, value) {
     this.removeItem(key);

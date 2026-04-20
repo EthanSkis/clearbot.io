@@ -46,8 +46,30 @@ function allCookieNames() {
   return names;
 }
 
+// @supabase/ssr v0.5+ wraps the session cookie value as
+// `base64-{base64url(JSON)}` — base64URL (`-`/`_` alphabet, no padding),
+// not standard base64. supabase-js's built-in decoder uses atob (standard
+// base64) so it can't unwrap these directly when reading from a custom
+// storage like ours. Strip the envelope here so supabase-js gets plain
+// JSON and getSession() succeeds. If it's already plain JSON or a non-
+// base64- value, we pass it through untouched.
+function decodeBase64URL(str) {
+  const pad = (4 - (str.length % 4)) % 4;
+  const padded = str + '='.repeat(pad);
+  const std = padded.replace(/-/g, '+').replace(/_/g, '/');
+  return atob(std);
+}
+
+function maybeUnwrapSsrEnvelope(value) {
+  if (!value || typeof value !== 'string') return value;
+  if (!value.startsWith('base64-')) return value;
+  try { return decodeBase64URL(value.slice('base64-'.length)); }
+  catch (_) { return value; }
+}
+
 const crossDomainCookieStorage = {
   getItem(key) {
+    let raw;
     if (readCookie(key + '.0') != null) {
       let result = '';
       let i = 0;
@@ -56,9 +78,11 @@ const crossDomainCookieStorage = {
         result += chunk;
         i++;
       }
-      return result;
+      raw = result;
+    } else {
+      raw = readCookie(key);
     }
-    return readCookie(key);
+    return maybeUnwrapSsrEnvelope(raw);
   },
   setItem(key, value) {
     this.removeItem(key);

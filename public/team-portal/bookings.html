@@ -233,10 +233,26 @@
     for (const p of parts) { const eq = p.indexOf('='); if (eq < 0) continue; try { names.push(decodeURIComponent(p.slice(0, eq))); } catch (_) { names.push(p.slice(0, eq)); } }
     return names;
   }
+  // @supabase/ssr v0.5+ stores the session as `base64-{base64url(JSON)}`.
+  // supabase-js's built-in unwrap uses standard atob, which can't decode the
+  // url-safe alphabet for a custom storage like ours, so we strip the
+  // envelope here. Otherwise getSession() returns null and we bounce to login.
+  function decodeBase64URL(str) {
+    const pad = (4 - (str.length % 4)) % 4;
+    const std = (str + '='.repeat(pad)).replace(/-/g, '+').replace(/_/g, '/');
+    return atob(std);
+  }
+  function maybeUnwrapSsrEnvelope(value) {
+    if (!value || typeof value !== 'string' || !value.startsWith('base64-')) return value;
+    try { return decodeBase64URL(value.slice('base64-'.length)); } catch (_) { return value; }
+  }
+
   const crossDomainCookieStorage = {
     getItem(key) {
-      if (readCookie(key + '.0') != null) { let result = ''; let i = 0; let chunk; while ((chunk = readCookie(key + '.' + i)) != null) { result += chunk; i++; } return result; }
-      return readCookie(key);
+      let raw;
+      if (readCookie(key + '.0') != null) { let result = ''; let i = 0; let chunk; while ((chunk = readCookie(key + '.' + i)) != null) { result += chunk; i++; } raw = result; }
+      else { raw = readCookie(key); }
+      return maybeUnwrapSsrEnvelope(raw);
     },
     setItem(key, value) {
       this.removeItem(key);
