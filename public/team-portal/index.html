@@ -953,7 +953,11 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     0 0 0 1px rgba(255, 255, 255, 0.02) inset;
 }
 .modal-backdrop.is-open .modal { transform: translateY(0); opacity: 1; }
-.modal-backdrop.modal-no-scroll .modal { overflow: hidden; max-height: none; }
+.modal-backdrop.modal-no-scroll .modal {
+  max-width: 520px;
+  max-height: none;
+  overflow: hidden;
+}
 .modal::before {
   content: ""; position: absolute;
   top: -1px; left: -1px;
@@ -1090,6 +1094,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
   .page-head { flex-direction: column; align-items: flex-start; }
   .modal-backdrop { padding: 16px; }
   .modal { padding: 24px 20px 20px; }
+  .modal-backdrop.modal-no-scroll .modal { max-width: 100%; padding: 24px 20px 20px; }
   .modal-actions { flex-direction: column-reverse; }
   .modal-actions .btn { width: 100%; justify-content: center; }
   .form-grid { grid-template-columns: 1fr; }
