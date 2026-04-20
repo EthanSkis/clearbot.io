@@ -39,7 +39,7 @@ export default function MarketingHome() {
         <section className="hero" id="workflows">
           <span className="eyebrow">
             <span className="pulse-dot" />
-            AI-assisted design studio · independent
+            AI-assisted design studio
           </span>
 
           <h1 className="hero-headline">
