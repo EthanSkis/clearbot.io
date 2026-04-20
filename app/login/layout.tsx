@@ -40,7 +40,7 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
 
         <footer className="foot">
           <div className="left">
-            <span>\u00a9 2026 ClearBot Systems</span>
+            <span>© 2026 ClearBot Systems</span>
           </div>
           <div className="copyright">Clear workflows. Clear results.</div>
           <div className="right">

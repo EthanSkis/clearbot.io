@@ -1,6 +1,6 @@
 import { LoginForm } from './login-form';
 
-export const metadata = { title: 'Login \u2014 ClearBot' };
+export const metadata = { title: 'Login — ClearBot' };
 
 export default function LoginPage() {
   return (
@@ -14,13 +14,13 @@ export default function LoginPage() {
         <span className="bracket bracket-br" aria-hidden="true" />
 
         <div className="card-head">
-          <span>Session \u00b7 01</span>
+          <span>Session · 01</span>
           <span
             className="status-tag"
             title="Your password is sent over an encrypted HTTPS connection."
           >
             <span className="dot" aria-hidden="true" />
-            Encrypted \u00b7 HTTPS
+            Encrypted · HTTPS
           </span>
         </div>
 

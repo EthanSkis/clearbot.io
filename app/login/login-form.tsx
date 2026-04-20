@@ -51,7 +51,7 @@ export function LoginForm() {
     }
 
     setBusy(true);
-    setMsg({ text: 'Authenticating\u2026' });
+    setMsg({ text: 'Authenticating…' });
 
     const res = await fetch('/api/auth/login', {
       method: 'POST',
@@ -65,7 +65,7 @@ export function LoginForm() {
       const providers = await lookupProviders(trimmed);
       const githubOnly = !!providers && providers.includes('github') && !providers.includes('email');
       if (githubOnly) {
-        setMsg({ kind: 'error', text: 'This account uses GitHub. Use \u201cContinue with GitHub\u201d below.' });
+        setMsg({ kind: 'error', text: 'This account uses GitHub. Use “Continue with GitHub” below.' });
         setGithubSuggested(true);
       } else {
         setMsg({ kind: 'error', text: body.error || 'Incorrect email or password.' });
@@ -73,14 +73,14 @@ export function LoginForm() {
       return;
     }
 
-    setMsg({ kind: 'ok', text: 'Signed in \u2014 redirecting\u2026' });
+    setMsg({ kind: 'ok', text: 'Signed in — redirecting…' });
     window.location.href = body.redirectTo ?? '/';
   }
 
   async function onGithub() {
     clearHint();
     setBusy(true);
-    setMsg({ text: 'Redirecting to GitHub\u2026' });
+    setMsg({ text: 'Redirecting to GitHub…' });
     const supabase = getSupabaseBrowser();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'github',
@@ -99,7 +99,7 @@ export function LoginForm() {
       return;
     }
     setBusy(true);
-    setMsg({ text: 'Sending reset link\u2026' });
+    setMsg({ text: 'Sending reset link…' });
     const res = await fetch('/api/auth/password-reset', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -111,7 +111,7 @@ export function LoginForm() {
     } else {
       setMsg({
         kind: 'ok',
-        text: 'Reset link sent \u2014 expires in 1 hour. Check spam if it doesn\u2019t arrive in a minute.'
+        text: 'Reset link sent — expires in 1 hour. Check spam if it doesn’t arrive in a minute.'
       });
     }
   }
@@ -125,7 +125,7 @@ export function LoginForm() {
     if (!providers) return;
     const githubOnly = providers.includes('github') && !providers.includes('email');
     if (githubOnly) {
-      setMsg({ kind: 'ok', text: 'This account uses GitHub \u2014 use \u201cContinue with GitHub\u201d below.' });
+      setMsg({ kind: 'ok', text: 'This account uses GitHub — use “Continue with GitHub” below.' });
       setGithubSuggested(true);
     }
   }
@@ -169,7 +169,7 @@ export function LoginForm() {
               id="password"
               name="password"
               type={showPw ? 'text' : 'password'}
-              placeholder="\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"
+              placeholder="••••••••••••"
               autoComplete="current-password"
               required
               minLength={8}
@@ -201,7 +201,7 @@ export function LoginForm() {
         </div>
 
         <button type="submit" className="submit" disabled={busy}>
-          <span>{busy ? 'Signing in\u2026' : 'Sign In'}</span>
+          <span>{busy ? 'Signing in…' : 'Sign In'}</span>
           <svg width={14} height={14} viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path
               d="M5 12h14M13 6l6 6-6 6"
