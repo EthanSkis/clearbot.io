@@ -19,7 +19,7 @@ export default function NotFound() {
         </svg>
       </div>
 
-      <div className="shell">
+      <div className="shell" style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
         <header className="bar" role="banner">
           <div className="bar-brand">
             <a className="mark" href="/" aria-label="ClearBot home">
@@ -33,7 +33,7 @@ export default function NotFound() {
           </div>
         </header>
 
-        <main>
+        <main style={{ flex: 1 }}>
           <section className="hero">
             <span className="eyebrow">
               <span className="pulse-dot" />
