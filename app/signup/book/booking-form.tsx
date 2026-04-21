@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { Fireworks } from './fireworks';
 
 type Msg = { kind?: 'error' | 'ok'; text: string } | null;
 
@@ -168,6 +169,7 @@ export function BookingForm() {
   if (success) {
     return (
       <>
+        <Fireworks />
         <span className="bracket bracket-tl" aria-hidden="true" />
         <span className="bracket bracket-br" aria-hidden="true" />
         <div className="card-head">
@@ -197,9 +199,6 @@ export function BookingForm() {
             <span className="k">Need to change it?</span>
             <span className="v v--compact">Reply to the confirmation email</span>
           </div>
-        </div>
-        <div className="foot-note">
-          Have an access code already? <a href="/">Sign up</a>
         </div>
       </>
     );
@@ -405,10 +404,6 @@ export function BookingForm() {
           </div>
         </div>
       </form>
-
-      <div className="foot-note">
-        Have an access code already? <a href="/">Sign up</a>
-      </div>
     </>
   );
 }
