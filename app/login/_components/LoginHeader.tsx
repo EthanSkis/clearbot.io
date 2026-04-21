@@ -11,7 +11,7 @@ export function LoginHeader() {
     ? 'Legal · Privacy Policy'
     : isTerms
     ? 'Legal · Terms of Service'
-    : 'Secure access / Member sign-in';
+    : 'Sign-in';
 
   const backHref = isLegal
     ? pathname.startsWith('/login/') ? '/login' : '/'

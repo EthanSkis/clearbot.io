@@ -13,8 +13,8 @@ export function SignupHeader() {
     : isTerms
     ? 'Legal · Terms of Service'
     : isBook
-    ? 'Intro call / Intake'
-    : 'Secure access / Member sign-up';
+    ? 'Book'
+    : 'Sign-up';
 
   const backHref = isLegal
     ? pathname.startsWith('/signup/') ? '/signup' : '/'
