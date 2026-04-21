@@ -21,7 +21,7 @@
     .px-inner { padding-left: 22px !important; padding-right: 22px !important; }
     .h1 { font-size: 38px !important; line-height: 1.05 !important; }
     .lede { font-size: 17px !important; }
-    .code { font-size: 30px !important; letter-spacing: 0.28em !important; }
+    .code { font-size: 12px !important; letter-spacing: 0.02em !important; }
     .stack { display: block !important; width: 100% !important; padding-bottom: 18px !important; }
     .stack-last { padding-bottom: 0 !important; }
     .cta { display: block !important; text-align: center !important; }
@@ -32,7 +32,7 @@
 
 <body style="margin:0; padding:0; background:#f3f1ea; color:#0a0b0d; -webkit-font-smoothing:antialiased; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
 
-<div class="preheader">Your ClearBot password reset code — expires in 15 minutes. If you didn't request this, ignore this email.</div>
+<div class="preheader">Your ClearBot password reset link — expires in 1 hour. If you didn't request this, ignore this email.</div>
 
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f1ea; margin:0; padding:0;">
   <tbody><tr>
@@ -70,7 +70,7 @@
                   <span style="display:inline-block; width:6px; height:6px; background:#0a0b0d; border-radius:50%; line-height:6px;">&nbsp;</span>
                 </td>
                 <td valign="middle" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.22em; color: #6f6d65;">
-                  Security &nbsp;·&nbsp; Password reset &nbsp;·&nbsp; Expires 15:00
+                  Security &nbsp;·&nbsp; Password reset &nbsp;·&nbsp; Expires 1:00
                 </td>
               </tr>
             </tbody></table>
@@ -85,14 +85,14 @@
         <!-- Lede -->
         <tr>
           <td class="px-inner lede" style="padding: 0 40px 32px 40px; font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 300; font-size: 20px; line-height: 1.5; letter-spacing: -0.005em; color: #0a0b0d;">
-            Someone &mdash; <em style="font-style: italic; color: #6f6d65;">hopefully you</em> &mdash; asked to reset the password for the ClearBot account tied to this email. Use the code below, or tap the button to do it in one step.
+            Someone &mdash; <em style="font-style: italic; color: #6f6d65;">hopefully you</em> &mdash; asked to reset the password for the ClearBot account tied to this email. Use the link below, or tap the button to do it in one step.
           </td>
         </tr>
 
         <!-- Body paragraph -->
         <tr>
           <td class="px-inner" style="padding: 0 40px 12px 40px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; font-weight: 400; line-height: 1.7; letter-spacing: 0.02em; color: #0a0b0d;">
-            <span style="color:#6f6d65;">Enter this code at </span>login.clearbot.io/reset-password<span style="color:#6f6d65;"> to choose a new password. It's good for the next 15 minutes, then it quietly stops working.</span>
+            <span style="color:#6f6d65;">Open this link to choose a new password. It's good for the next hour, then it quietly stops working.</span>
           </td>
         </tr>
 
@@ -117,23 +117,23 @@
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom: 1px dashed rgba(10,11,13,0.10); padding-bottom: 18px;">
                     <tbody><tr>
                       <td align="left" style="padding-bottom: 18px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: #6f6d65;">
-                        Your reset code
+                        Your reset link
                       </td>
                       <td align="right" style="padding-bottom: 18px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: #b7b4ab;">
-                        Single-use &middot; Expires 15m
+                        Single-use &middot; Expires 1h
                       </td>
                     </tr>
                   </tbody></table>
 
-                  <div class="code" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 500; font-size: 44px; letter-spacing: 0.32em; color: #0a0b0d; line-height: 1; padding: 28px 0 26px 0; text-align: center;">
-                    {{ .Token }}
+                  <div class="code" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 500; font-size: 13px; letter-spacing: 0.02em; color: #0a0b0d; line-height: 1.6; padding: 28px 0 26px 0; text-align: center; word-break: break-all;">
+                    <a href="{{ .ConfirmationURL }}" style="color:#0a0b0d; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(10,11,13,0.35);">{{ .ConfirmationURL }}</a>
                   </div>
 
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top: 1px dashed rgba(10,11,13,0.10);">
                     <tbody><tr>
                       <td class="stack" width="33%" align="left" valign="top" style="padding: 22px 12px 0 0;">
                         <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Expires in</div>
-                        <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">15 <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">minutes</span></div>
+                        <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">1 <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">hour</span></div>
                       </td>
                       <td class="stack" width="33%" align="left" valign="top" style="padding: 22px 12px 0 12px;">
                         <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Code type</div>
@@ -199,7 +199,7 @@
                 <td valign="top" width="50" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.22em; color: #b7b4ab; padding-top: 2px;">01 &nbsp;&mdash;</td>
                 <td valign="top" style="padding-right: 12px;">
                   <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.04em; color: #0a0b0d; margin-bottom: 4px;">Ignore this email</div>
-                  <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.5; color: #6f6d65;">The code expires in 15 minutes. Your password won't change unless it's used.</div>
+                  <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.5; color: #6f6d65;">The link expires in 1 hour. Your password won't change unless it's used.</div>
                 </td>
               </tr>
             </tbody></table>
