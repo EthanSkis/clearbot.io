@@ -1241,6 +1241,8 @@ async function renderSettings(user) {
     const el = document.getElementById(id);
     if (el) el.value = val || '';
   }
+  const billingEmail = profile.email || user.email || '';
+  $$('[data-user-email]').forEach(el => { el.textContent = billingEmail; });
   const toggles = {
     'settings-notif-deliverables': profile.notif_deliverables !== false,
     'settings-notif-messages':     profile.notif_messages !== false,
@@ -1277,6 +1279,8 @@ async function renderSettings(user) {
       const res = await data.upsertProfile(user.id, patch);
       saveBtn.removeAttribute('disabled');
       if (res.ok) {
+        const nextEmail = patch.email || user.email || '';
+        $$('[data-user-email]').forEach(el => { el.textContent = nextEmail; });
         if (saveMsg) { saveMsg.textContent = 'Saved.'; setTimeout(() => { saveMsg.textContent = ''; }, 2500); }
       } else {
         if (saveMsg) saveMsg.textContent = 'Could not save: ' + (res.error || 'error');
