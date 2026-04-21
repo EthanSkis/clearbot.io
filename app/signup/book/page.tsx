@@ -12,6 +12,10 @@ export default function BookPage() {
       <section className="card" aria-labelledby="book-title">
         <BookingForm />
       </section>
+
+      <div className="foot-note">
+        Have an access code already? <a href="/">Sign up</a>
+      </div>
     </div>
   );
 }
