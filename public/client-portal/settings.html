@@ -151,9 +151,12 @@
           <label class="form-label">Password</label>
           <div>
             <div style="font-size:11px;color:var(--ink-dim);line-height:1.6;margin-bottom:10px;letter-spacing:0.02em;">
-              Password changes happen at login.clearbot.io so reset links always work the same way.
+              We&rsquo;ll email a secure reset link to <span data-reset-email style="font-family:var(--mono);color:var(--ink);">your sign-in address</span> from <span style="font-family:var(--mono);color:var(--ink);">ethan@clearbot.io</span>. The link expires in 1 hour.
             </div>
-            <a class="btn btn-sm" href="https://login.clearbot.io">Change password →</a>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-sm" data-send-reset>Send reset email</button>
+              <span class="reset-msg" data-reset-msg style="font-size:11px;color:var(--ink-dim);letter-spacing:0.02em;"></span>
+            </div>
           </div>
         </div>
       </div>

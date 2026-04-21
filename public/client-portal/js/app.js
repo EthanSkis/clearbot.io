@@ -1255,6 +1255,31 @@ async function renderSettings(user) {
     if (el) el.checked = checked;
   }
 
+  const resetBtn = $('[data-send-reset]');
+  const resetMsg = $('[data-reset-msg]');
+  const resetEmailEl = $('[data-reset-email]');
+  const signInEmail = user.email || '';
+  if (resetEmailEl && signInEmail) resetEmailEl.textContent = signInEmail;
+  if (resetBtn) {
+    resetBtn.addEventListener('click', async () => {
+      if (!signInEmail) {
+        if (resetMsg) resetMsg.textContent = 'No email on file for this account.';
+        return;
+      }
+      resetBtn.setAttribute('disabled', 'true');
+      if (resetMsg) resetMsg.textContent = 'Sending…';
+      const res = await data.requestPasswordReset(signInEmail);
+      resetBtn.removeAttribute('disabled');
+      if (resetMsg) {
+        if (res.ok) {
+          resetMsg.textContent = 'Sent. Check your inbox (and spam) for a message from ethan@clearbot.io.';
+        } else {
+          resetMsg.textContent = 'Could not send: ' + (res.error || 'error');
+        }
+      }
+    });
+  }
+
   const saveBtn = $('[data-save-settings]');
   const saveMsg = $('[data-save-msg]');
   if (saveBtn) {

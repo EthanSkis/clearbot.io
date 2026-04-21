@@ -112,6 +112,26 @@ export function getProfile(userId) {
   );
 }
 
+// Triggers the Supabase password-reset email via the Next.js API route.
+// The route is same-origin on client.clearbot.io (served through middleware),
+// so the browser session cookie rides along automatically.
+export async function requestPasswordReset(email) {
+  try {
+    const res = await fetch('/api/auth/password-reset', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ email }),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      return { ok: false, error: body.error || 'Could not send reset email.' };
+    }
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: (e && e.message) || 'Network error' };
+  }
+}
+
 export async function upsertProfile(userId, patch) {
   try {
     const { error } = await supabase
