@@ -662,7 +662,9 @@ async function renderDashboard(user) {
     renderDataErrorBanner(projWrap, err);
   }
 
-  const name = (profile && profile.company_name) || orgName(user);
+  const metaFullName = String((user.user_metadata && user.user_metadata.full_name) || '').trim();
+  const metaFirst = metaFullName.split(/\s+/).filter(Boolean)[0] || '';
+  const name = (profile && profile.first_name) || metaFirst || orgName(user);
   const greet = $('[data-greeting]');
   if (greet) greet.innerHTML = 'Good ' + greetingPart() + ', <em>' + escapeHtml(name) + '</em>.';
 
@@ -943,6 +945,78 @@ async function renderMessages(user) {
     await loadThreads();
     selectThread(newId || (state.threads[0] && state.threads[0].id));
   });
+
+  // Deep link: open the new-thread modal with a pre-filled subject when the
+  // user arrives from the invoices page's "Question about an invoice?" button.
+  const params = new URLSearchParams(location.search);
+  if (params.get('new') === 'invoice') {
+    const projects = await data.getProjects(user.id);
+    openNewThreadModal(user, projects, async (newId) => {
+      await loadThreads();
+      selectThread(newId || (state.threads[0] && state.threads[0].id));
+    }, 'Invoice Question');
+    // Strip the query so a refresh doesn't reopen the modal.
+    try { history.replaceState(null, '', location.pathname + location.hash); } catch (_) {}
+  }
+}
+
+function openNewThreadModal(user, projects, onCreated, initialSubject) {
+  const subject = initialSubject || '';
+  const projectOptionsHtml = ['<option value="">\u2014 No project \u2014</option>']
+    .concat(projects.map(p =>
+      '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.name || 'Untitled') + '</option>'
+    )).join('');
+
+  openModal({
+    eyebrow: 'New Thread',
+    title: 'Start a <em>conversation</em>.',
+    bodyHtml:
+      '<div class="modal-field">' +
+        '<label class="form-label" for="modal-thread-title">Subject</label>' +
+        '<input class="input" id="modal-thread-title" type="text" placeholder="What\u2019s this about?" autocomplete="off" maxlength="120" value="' + escapeHtml(subject) + '" />' +
+      '</div>' +
+      '<div class="modal-field">' +
+        '<label class="form-label" for="modal-thread-project">Project</label>' +
+        '<select class="select" id="modal-thread-project">' + projectOptionsHtml + '</select>' +
+      '</div>' +
+      '<div class="modal-field">' +
+        '<label class="form-label" for="modal-thread-body">Message</label>' +
+        '<textarea class="textarea" id="modal-thread-body" rows="4" placeholder="Give us the context you have." maxlength="4000"></textarea>' +
+      '</div>' +
+      '<div class="modal-error" data-modal-error hidden></div>',
+    confirmLabel: 'Send',
+    cancelLabel: 'Cancel',
+    initialFocus: subject ? '#modal-thread-body' : '#modal-thread-title',
+    onConfirm: async (root) => {
+      const titleEl = root.querySelector('#modal-thread-title');
+      const projEl  = root.querySelector('#modal-thread-project');
+      const bodyEl  = root.querySelector('#modal-thread-body');
+      const title = (titleEl.value || '').trim();
+      const body  = (bodyEl.value || '').trim();
+      if (!title) { setModalError(root, 'Give your thread a subject.'); titleEl.focus(); return false; }
+      if (!body)  { setModalError(root, 'Type a first message.'); bodyEl.focus(); return false; }
+      const projectId = projEl.value || null;
+      const projectName = projectId
+        ? ((projects.find(p => p.id === projectId) || {}).name || null)
+        : null;
+      setModalError(root, '');
+      setModalBusy(root, true, 'Sending\u2026');
+      const res = await data.createThread(user.id, {
+        title,
+        projectId,
+        projectName,
+        firstMessage: body,
+        senderId: user.id,
+      });
+      if (!res.ok) {
+        setModalBusy(root, false);
+        setModalError(root, 'Could not create thread: ' + (res.error || 'Unknown error'));
+        return false;
+      }
+      if (onCreated) await onCreated(res.thread && res.thread.id);
+      return true;
+    },
+  });
 }
 
 async function wireNewThreadButton(user, onCreated) {
@@ -954,61 +1028,7 @@ async function wireNewThreadButton(user, onCreated) {
   const projects = await data.getProjects(user.id);
 
   btn.addEventListener('click', () => {
-    const projectOptionsHtml = ['<option value="">\u2014 No project \u2014</option>']
-      .concat(projects.map(p =>
-        '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.name || 'Untitled') + '</option>'
-      )).join('');
-
-    openModal({
-      eyebrow: 'New Thread',
-      title: 'Start a <em>conversation</em>.',
-      bodyHtml:
-        '<div class="modal-field">' +
-          '<label class="form-label" for="modal-thread-title">Subject</label>' +
-          '<input class="input" id="modal-thread-title" type="text" placeholder="What\u2019s this about?" autocomplete="off" maxlength="120" />' +
-        '</div>' +
-        '<div class="modal-field">' +
-          '<label class="form-label" for="modal-thread-project">Project</label>' +
-          '<select class="select" id="modal-thread-project">' + projectOptionsHtml + '</select>' +
-        '</div>' +
-        '<div class="modal-field">' +
-          '<label class="form-label" for="modal-thread-body">Message</label>' +
-          '<textarea class="textarea" id="modal-thread-body" rows="4" placeholder="Give us the context you have." maxlength="4000"></textarea>' +
-        '</div>' +
-        '<div class="modal-error" data-modal-error hidden></div>',
-      confirmLabel: 'Send',
-      cancelLabel: 'Cancel',
-      initialFocus: '#modal-thread-title',
-      onConfirm: async (root) => {
-        const titleEl = root.querySelector('#modal-thread-title');
-        const projEl  = root.querySelector('#modal-thread-project');
-        const bodyEl  = root.querySelector('#modal-thread-body');
-        const title = (titleEl.value || '').trim();
-        const body  = (bodyEl.value || '').trim();
-        if (!title) { setModalError(root, 'Give your thread a subject.'); titleEl.focus(); return false; }
-        if (!body)  { setModalError(root, 'Type a first message.'); bodyEl.focus(); return false; }
-        const projectId = projEl.value || null;
-        const projectName = projectId
-          ? ((projects.find(p => p.id === projectId) || {}).name || null)
-          : null;
-        setModalError(root, '');
-        setModalBusy(root, true, 'Sending\u2026');
-        const res = await data.createThread(user.id, {
-          title,
-          projectId,
-          projectName,
-          firstMessage: body,
-          senderId: user.id,
-        });
-        if (!res.ok) {
-          setModalBusy(root, false);
-          setModalError(root, 'Could not create thread: ' + (res.error || 'Unknown error'));
-          return false;
-        }
-        if (onCreated) await onCreated(res.thread && res.thread.id);
-        return true;
-      },
-    });
+    openNewThreadModal(user, projects, onCreated);
   });
 }
 
