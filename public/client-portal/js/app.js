@@ -1092,14 +1092,14 @@ function invoiceRowHtml(inv) {
   if (status === 'paid' && inv.paid_at) metaBits.push('Paid ' + fmtShortDate(inv.paid_at));
   else if (inv.due_at) metaBits.push((status === 'overdue' ? 'Overdue · Due ' : 'Due ') + fmtShortDate(inv.due_at));
   return (
-    '<button type="button" class="file inv-row" data-invoice-id="' + escapeHtml(inv.id) + '" style="grid-template-columns:56px 1fr auto auto auto;text-align:left;font-family:inherit;color:inherit;cursor:pointer;width:100%;">' +
+    '<button type="button" class="file inv-row" data-invoice-id="' + escapeHtml(inv.id) + '" style="grid-template-columns:56px 1fr 110px 120px auto;text-align:left;font-family:inherit;color:inherit;cursor:pointer;width:100%;">' +
       '<span class="file-ico">INV</span>' +
       '<div>' +
         '<div class="file-name">' + escapeHtml(inv.number || 'INV-' + inv.id) + '</div>' +
         '<div class="file-meta">' + escapeHtml(inv.project_name || 'General') + (metaBits.length ? ' · ' + escapeHtml(metaBits.join(' · ')) : '') + '</div>' +
       '</div>' +
       statusBadge(status) +
-      '<span style="font-family:var(--display);font-size:16px;letter-spacing:-0.005em;">' + fmtMoney(inv.amount_cents) + '</span>' +
+      '<span style="font-family:var(--display);font-size:16px;letter-spacing:-0.005em;text-align:right;">' + fmtMoney(inv.amount_cents) + '</span>' +
       (inv.pdf_url
         ? '<a class="btn btn-sm" href="' + escapeHtml(inv.pdf_url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation();">PDF</a>'
         : '<span class="btn btn-sm" style="opacity:0.45;cursor:default;" aria-disabled="true">PDF</span>') +
