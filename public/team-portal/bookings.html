@@ -12,16 +12,17 @@
 <style>
   :root {
     --bg: #0a0b0d; --bg-elev: #101114; --bg-elev-2: #14151a;
-    --ink: #f3f1ea; --ink-dim: #8a8880; --ink-faint: #3a3a38;
-    --rule: rgba(243,241,234,0.08); --rule-strong: rgba(243,241,234,0.16);
-    --accent: #ffffff; --accent-dim: #c8c6bf;
+    --ink: #f3f1ea; --ink-dim: #cfcdc5; --ink-faint: #908e86;
+    --rule: rgba(243,241,234,0.14); --rule-strong: rgba(243,241,234,0.26);
+    --accent: #ffffff; --accent-dim: #d8d6cf;
+    --accent-blue: #6aa9ff; --accent-blue-hover: #8fc0ff; --accent-blue-glow: rgba(106, 169, 255, 0.28);
     --ok: #9ccc9f; --warn: #d8c177; --bad: #d88c7c;
     --display: "Fraunces","Times New Roman",serif;
     --mono: "JetBrains Mono",ui-monospace,Menlo,monospace;
     --ease: cubic-bezier(0.22,1,0.36,1);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { background: var(--bg); color: var(--ink); font-family: var(--mono); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  html, body { background: var(--bg); color: var(--ink); font-family: var(--mono); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
   /* ==========================================================
      Scrollbar — slim, monochrome, matches editorial aesthetic
      ========================================================== */
@@ -65,7 +66,7 @@
 
   body { min-height: 100vh; min-height: 100dvh; padding: 28px 40px; max-width: 1200px; margin: 0 auto; }
   .splash { position: fixed; inset: 0; z-index: 9999; background: var(--bg); display: flex; align-items: center; justify-content: center; gap: 14px; color: var(--ink-dim); font-size: 10px; text-transform: uppercase; letter-spacing: 0.24em; }
-  .splash .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px rgba(255,255,255,0.35); animation: pulse 1.6s ease-in-out infinite; }
+  .splash .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue-glow); animation: pulse 1.6s ease-in-out infinite; }
   html[data-auth="signed-in"] .splash { display: none; }
   .app { opacity: 0; transition: opacity 0.25s var(--ease); }
   html[data-auth="signed-in"] .app { opacity: 1; }
@@ -85,20 +86,20 @@
   .btn:hover { background: rgba(243,241,234,0.06); border-color: rgba(243,241,234,0.22); }
   .btn[disabled] { opacity: 0.6; cursor: wait; }
   .btn-sm { padding: 7px 12px; font-size: 10px; letter-spacing: 0.14em; }
-  .btn-primary { background: var(--accent); color: #0a0b0d; border-color: var(--accent); }
-  .btn-primary:hover { background: #f5f5f5; border-color: #f5f5f5; }
+  .btn-primary { background: var(--accent-blue); color: #0a0b0d; border-color: var(--accent-blue); box-shadow: 0 0 0 0 var(--accent-blue-glow); transition: background 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.25s var(--ease); }
+  .btn-primary:hover { background: var(--accent-blue-hover); border-color: var(--accent-blue-hover); box-shadow: 0 0 20px 0 var(--accent-blue-glow); }
   .btn-danger { background: var(--bad); color: #1a0f0c; border-color: var(--bad); }
   .btn-danger:hover { background: #e29e90; border-color: #e29e90; }
 
   .intro { padding: 16px 18px; border: 1px solid var(--rule-strong); background: rgba(243,241,234,0.02); border-radius: 2px; margin-bottom: 20px; font-family: var(--display); font-weight: 300; font-size: 14px; line-height: 1.55; color: var(--ink-dim); position: relative; }
   .intro::before, .intro::after { content: ""; position: absolute; width: 12px; height: 12px; }
-  .intro::before { top: -1px; left: -1px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
-  .intro::after { bottom: -1px; right: -1px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+  .intro::before { top: -1px; left: -1px; border-top: 1px solid var(--accent-blue); border-left: 1px solid var(--accent-blue); }
+  .intro::after { bottom: -1px; right: -1px; border-bottom: 1px solid var(--accent-blue); border-right: 1px solid var(--accent-blue); }
   .intro strong { color: var(--ink); font-weight: 500; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; }
 
   .controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
   .controls input, .controls select { background: var(--bg-elev); border: 1px solid var(--rule-strong); color: var(--ink); font-family: var(--mono); font-size: 13px; padding: 10px 14px; border-radius: 2px; outline: 0; }
-  .controls input:focus, .controls select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
+  .controls input:focus, .controls select:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-blue-glow); }
   .controls input { flex: 1; min-width: 240px; }
   .controls select { padding: 10px 14px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; }
   .controls .count { font-size: 10px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.18em; white-space: nowrap; }
@@ -119,7 +120,7 @@
   .badge.ok { color: var(--ok); border-color: rgba(156,204,159,0.28); }
   .badge.warn { color: var(--warn); border-color: rgba(216,193,119,0.28); }
   .badge.bad { color: var(--bad); border-color: rgba(216,140,124,0.28); }
-  .badge.accent { color: var(--accent); border-color: rgba(255,255,255,0.28); }
+  .badge.accent { color: var(--accent-blue); border-color: rgba(106, 169, 255, 0.42); }
 
   .empty { text-align: center; color: var(--ink-dim); padding: 48px 24px; border: 1px solid var(--rule); border-radius: 2px; }
   .empty .headline { font-family: var(--display); font-size: 22px; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
@@ -127,8 +128,8 @@
 
   .modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 24px; background: rgba(5,6,8,0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   .modal { position: relative; width: 100%; max-width: 620px; background: var(--bg-elev); border: 1px solid var(--rule-strong); border-radius: 2px; padding: 30px 32px 26px; max-height: calc(100vh - 48px); overflow-y: auto; box-shadow: 0 30px 80px rgba(0,0,0,0.55); }
-  .modal::before { content: ""; position: absolute; top: -1px; left: -1px; width: 14px; height: 14px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
-  .modal::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 14px; height: 14px; border-bottom: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+  .modal::before { content: ""; position: absolute; top: -1px; left: -1px; width: 14px; height: 14px; border-top: 1px solid var(--accent-blue); border-left: 1px solid var(--accent-blue); }
+  .modal::after { content: ""; position: absolute; bottom: -1px; right: -1px; width: 14px; height: 14px; border-bottom: 1px solid var(--accent-blue); border-right: 1px solid var(--accent-blue); }
   .modal-close { position: absolute; top: 12px; right: 12px; background: transparent; border: 0; color: var(--ink-dim); padding: 8px; cursor: pointer; line-height: 0; font-size: 18px; }
   .modal-close:hover { color: var(--ink); }
   .modal-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.24em; color: var(--ink-dim); margin-bottom: 10px; }
@@ -139,7 +140,7 @@
   .prose { font-family: var(--display); font-size: 15px; font-weight: 300; line-height: 1.55; color: var(--ink); margin-top: 8px; white-space: pre-wrap; }
   .actions-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding-top: 18px; border-top: 1px dashed var(--rule); }
   .actions-row .spacer { flex: 1; }
-  .status-btn[data-active="true"] { border-color: var(--accent); color: var(--accent); }
+  .status-btn[data-active="true"] { border-color: var(--accent-blue); color: var(--accent-blue); }
   .modal-error { margin-top: 14px; padding: 10px 12px; border: 1px solid rgba(216,140,124,0.28); border-radius: 2px; background: rgba(216,140,124,0.06); color: var(--bad); font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; }
   .modal-error[hidden] { display: none; }
 
