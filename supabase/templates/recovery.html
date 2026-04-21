@@ -21,7 +21,7 @@
     .px-inner { padding-left: 22px !important; padding-right: 22px !important; }
     .h1 { font-size: 38px !important; line-height: 1.05 !important; }
     .lede { font-size: 17px !important; }
-    .code { font-size: 12px !important; letter-spacing: 0.02em !important; }
+    .code { font-size: 40px !important; letter-spacing: -0.03em !important; }
     .stack { display: block !important; width: 100% !important; padding-bottom: 18px !important; }
     .stack-last { padding-bottom: 0 !important; }
     .cta { display: block !important; text-align: center !important; }
@@ -125,23 +125,19 @@
                     </tr>
                   </tbody></table>
 
-                  <div class="code" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 500; font-size: 13px; letter-spacing: 0.02em; color: #0a0b0d; line-height: 1.6; padding: 28px 0 26px 0; text-align: center; word-break: break-all;">
-                    <a href="{{ .ConfirmationURL }}" style="color:#0a0b0d; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(10,11,13,0.35);">{{ .ConfirmationURL }}</a>
+                  <div class="code" style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 54px; letter-spacing: -0.035em; line-height: 1; padding: 28px 0 26px 0; text-align: center;">
+                    <a href="{{ .ConfirmationURL }}" style="color:#0a0b0d; text-decoration: underline; text-underline-offset: 8px; text-decoration-thickness: 1px; text-decoration-color: rgba(10,11,13,0.35);"><em style="font-style: italic; font-weight: 300;">Reset</em></a>
                   </div>
 
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top: 1px dashed rgba(10,11,13,0.10);">
                     <tbody><tr>
-                      <td class="stack" width="33%" align="left" valign="top" style="padding: 22px 12px 0 0;">
+                      <td class="stack" width="50%" align="left" valign="top" style="padding: 22px 12px 0 0;">
                         <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Expires in</div>
                         <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">1 <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">hour</span></div>
                       </td>
-                      <td class="stack" width="33%" align="left" valign="top" style="padding: 22px 12px 0 12px;">
+                      <td class="stack stack-last" width="50%" align="left" valign="top" style="padding: 22px 0 0 12px;">
                         <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Code type</div>
                         <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">One-time <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">Recovery</span></div>
-                      </td>
-                      <td class="stack stack-last" width="34%" align="left" valign="top" style="padding: 22px 0 0 12px;">
-                        <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Sent to</div>
-                        <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 400; font-size: 13px; letter-spacing: 0.02em; color: #0a0b0d; word-break: break-all;">{{ .Email }}</div>
                       </td>
                     </tr>
                   </tbody></table>
