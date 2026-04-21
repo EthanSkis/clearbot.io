@@ -30,6 +30,7 @@ const CLIENT_PAGES: Record<string, string> = {
   '': 'index.html',
   '/': 'index.html',
   '/messages': 'messages.html',
+  '/invoices': 'invoices.html',
   '/settings': 'settings.html'
 };
 

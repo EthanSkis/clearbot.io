@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Invoices · ClearBot Portal</title>
+<meta name="description" content="ClearBot Client Portal — your invoices and billing history." />
+<link rel="icon" type="image/svg+xml" href="/client-portal/assets/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/client-portal/css/styles.css" />
+</head>
+<body data-page="invoices">
+<div class="splash" aria-hidden="true"><span class="dot"></span><span>Checking session…</span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<div class="app">
+
+  <div data-chrome data-crumb="Invoices"></div>
+
+  <main class="main">
+
+    <div class="page-head">
+      <div>
+        <div class="eyebrow">§ Invoices</div>
+        <h1>Your <em>billing history</em>.</h1>
+      </div>
+      <div class="actions">
+        <a href="/messages" class="btn">Question about an invoice?</a>
+      </div>
+    </div>
+
+    <section class="inv-summary" data-inv-summary>
+      <div class="inv-summary-card">
+        <div class="inv-summary-label">Outstanding</div>
+        <div class="inv-summary-value" data-inv-outstanding>—</div>
+        <div class="inv-summary-meta" data-inv-outstanding-meta>&nbsp;</div>
+      </div>
+      <div class="inv-summary-card">
+        <div class="inv-summary-label">Overdue</div>
+        <div class="inv-summary-value" data-inv-overdue>—</div>
+        <div class="inv-summary-meta" data-inv-overdue-meta>&nbsp;</div>
+      </div>
+      <div class="inv-summary-card">
+        <div class="inv-summary-label">Paid (last 12 mo)</div>
+        <div class="inv-summary-value" data-inv-paid>—</div>
+        <div class="inv-summary-meta" data-inv-paid-meta>&nbsp;</div>
+      </div>
+    </section>
+
+    <section class="panel bracketed" style="margin-bottom:28px;">
+      <div class="panel-head">
+        <div class="panel-head-text">
+          <h2>All invoices</h2>
+          <span class="panel-sub" data-inv-count></span>
+        </div>
+      </div>
+
+      <div class="search-bar" style="margin-top:14px;">
+        <input class="input" type="search" placeholder="Search by number or project…" data-inv-search />
+        <select class="select" data-inv-filter style="width:auto;min-width:160px;">
+          <option value="all">All statuses</option>
+          <option value="due">Due</option>
+          <option value="overdue">Overdue</option>
+          <option value="paid">Paid</option>
+        </select>
+        <span class="count" data-inv-visible></span>
+      </div>
+
+      <div data-inv-list></div>
+    </section>
+
+    <p class="mono" style="margin-top:28px;font-size:11px;color:var(--ink-dim);letter-spacing:0.04em;">
+      Invoices are issued from ClearBot Studio. Pay securely via the Stripe link on each PDF — or save a card on
+      <a href="/settings" style="color:var(--ink);text-decoration:underline;text-underline-offset:3px;">Settings</a>
+      to auto-charge new invoices.
+    </p>
+
+  </main>
+
+</div>
+
+<script type="module" src="/client-portal/js/app.js"></script>
+</body>
+</html>
