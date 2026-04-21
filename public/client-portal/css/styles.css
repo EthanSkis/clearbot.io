@@ -1107,6 +1107,60 @@ body[data-page="messages"] .msg-shell {
   letter-spacing: 0.2em;
 }
 
+/* ============ Invoices ============ */
+.inv-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.inv-summary-card {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: rgba(243, 241, 234, 0.012);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.inv-summary-card:hover { border-color: var(--rule-strong); background: rgba(243, 241, 234, 0.025); }
+.inv-summary-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--ink-dim);
+}
+.inv-summary-value {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.inv-summary-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.inv-row {
+  background: rgba(243, 241, 234, 0.012);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+.inv-row:hover { border-color: var(--rule-strong); background: rgba(243, 241, 234, 0.025); }
+.inv-row:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 2px; }
+
+@media (max-width: 720px) {
+  .inv-summary { grid-template-columns: 1fr; }
+  .inv-row { grid-template-columns: 48px 1fr auto !important; gap: 12px !important; }
+  .inv-row .badge, .inv-row .btn-sm { grid-column: 2 / -1; justify-self: start; }
+}
+
 /* ============ Responsive ============ */
 @media (max-width: 960px) {
   .app { grid-template-columns: 1fr; grid-template-rows: var(--topbar-h) auto 1fr; }

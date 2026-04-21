@@ -1012,6 +1012,198 @@ async function wireNewThreadButton(user, onCreated) {
   });
 }
 
+// --- Invoices ---
+function invoiceDerivedStatus(inv) {
+  const raw = (inv.status || '').toLowerCase();
+  if (raw === 'paid' || inv.paid_at) return 'paid';
+  if (inv.due_at) {
+    const due = new Date(inv.due_at).getTime();
+    if (!isNaN(due) && due < Date.now()) return 'overdue';
+  }
+  if (raw === 'overdue') return 'overdue';
+  return 'due';
+}
+
+function invoiceDetailBody(inv) {
+  const status = invoiceDerivedStatus(inv);
+  const rows = [
+    ['Invoice', inv.number || 'INV-' + inv.id],
+    ['Project', inv.project_name || '—'],
+    ['Amount', fmtMoney(inv.amount_cents)],
+    ['Issued', inv.issued_at ? new Date(inv.issued_at).toLocaleDateString() : '—'],
+    ['Due', inv.due_at ? new Date(inv.due_at).toLocaleDateString() : '—'],
+    ['Paid', inv.paid_at ? new Date(inv.paid_at).toLocaleDateString() : '—'],
+  ];
+  const dl = rows.map(([k, v]) =>
+    '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:10px 0;border-bottom:1px dashed var(--rule);">' +
+      '<span class="mono" style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-dim);">' + escapeHtml(k) + '</span>' +
+      '<span style="font-family:var(--display);font-size:15px;color:var(--ink);">' + escapeHtml(v) + '</span>' +
+    '</div>'
+  ).join('');
+  const pdf = inv.pdf_url
+    ? '<a class="btn btn-primary" href="' + escapeHtml(inv.pdf_url) + '" target="_blank" rel="noopener" style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;">Open PDF →</a>'
+    : '<p class="modal-prose" style="font-size:13px;margin-top:16px;color:var(--ink-dim);">No PDF attached yet. Message us and we’ll resend.</p>';
+  return (
+    '<div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-bottom:18px;">' +
+      statusBadge(status) +
+      '<span style="font-family:var(--display);font-size:22px;letter-spacing:-0.01em;">' + fmtMoney(inv.amount_cents) + '</span>' +
+    '</div>' +
+    '<div>' + dl + '</div>' +
+    pdf
+  );
+}
+
+function showInvoiceDetail(inv) {
+  openModal({
+    eyebrow: '§ Invoice',
+    title: '<em>' + escapeHtml(inv.number || 'INV-' + inv.id) + '</em>',
+    bodyHtml: invoiceDetailBody(inv),
+    confirmLabel: 'Close',
+    cancelLabel: 'Message us',
+    onCancel: () => { location.assign('/messages'); },
+    onConfirm: () => true,
+  });
+}
+
+function invoiceRowHtml(inv) {
+  const status = invoiceDerivedStatus(inv);
+  const metaBits = [];
+  if (inv.issued_at) metaBits.push('Issued ' + fmtShortDate(inv.issued_at));
+  if (status === 'paid' && inv.paid_at) metaBits.push('Paid ' + fmtShortDate(inv.paid_at));
+  else if (inv.due_at) metaBits.push((status === 'overdue' ? 'Overdue · Due ' : 'Due ') + fmtShortDate(inv.due_at));
+  return (
+    '<button type="button" class="file inv-row" data-invoice-id="' + escapeHtml(inv.id) + '" style="grid-template-columns:56px 1fr auto auto auto;text-align:left;font-family:inherit;color:inherit;cursor:pointer;width:100%;">' +
+      '<span class="file-ico">INV</span>' +
+      '<div>' +
+        '<div class="file-name">' + escapeHtml(inv.number || 'INV-' + inv.id) + '</div>' +
+        '<div class="file-meta">' + escapeHtml(inv.project_name || 'General') + (metaBits.length ? ' · ' + escapeHtml(metaBits.join(' · ')) : '') + '</div>' +
+      '</div>' +
+      statusBadge(status) +
+      '<span style="font-family:var(--display);font-size:16px;letter-spacing:-0.005em;">' + fmtMoney(inv.amount_cents) + '</span>' +
+      (inv.pdf_url
+        ? '<a class="btn btn-sm" href="' + escapeHtml(inv.pdf_url) + '" target="_blank" rel="noopener" onclick="event.stopPropagation();">PDF</a>'
+        : '<span class="btn btn-sm" style="opacity:0.45;cursor:default;" aria-disabled="true">PDF</span>') +
+    '</button>'
+  );
+}
+
+async function renderInvoices(user) {
+  const listEl = $('[data-inv-list]');
+  const countEl = $('[data-inv-count]');
+  const visibleEl = $('[data-inv-visible]');
+  const searchEl = $('[data-inv-search]');
+  const filterEl = $('[data-inv-filter]');
+  if (!listEl) return;
+
+  const invoices = await data.getInvoices(user.id);
+
+  if (invoices._error && !document.querySelector('.data-error-banner')) {
+    renderDataErrorBanner(listEl, invoices._error);
+  }
+
+  // Summary totals.
+  const now = Date.now();
+  const yearAgo = now - 365 * 24 * 3600 * 1000;
+  let outstandingCents = 0, outstandingCount = 0;
+  let overdueCents = 0, overdueCount = 0;
+  let paidCents = 0, paidCount = 0;
+  for (const inv of invoices) {
+    const s = invoiceDerivedStatus(inv);
+    if (s === 'paid') {
+      const paidTs = inv.paid_at ? new Date(inv.paid_at).getTime() : 0;
+      if (paidTs && paidTs >= yearAgo) {
+        paidCents += inv.amount_cents || 0;
+        paidCount += 1;
+      }
+    } else {
+      outstandingCents += inv.amount_cents || 0;
+      outstandingCount += 1;
+      if (s === 'overdue') {
+        overdueCents += inv.amount_cents || 0;
+        overdueCount += 1;
+      }
+    }
+  }
+
+  const setText = (sel, txt) => { const el = $(sel); if (el) el.textContent = txt; };
+  setText('[data-inv-outstanding]', fmtMoney(outstandingCents));
+  setText('[data-inv-outstanding-meta]', outstandingCount
+    ? outstandingCount + (outstandingCount === 1 ? ' invoice' : ' invoices')
+    : 'Nothing due');
+  setText('[data-inv-overdue]', fmtMoney(overdueCents));
+  setText('[data-inv-overdue-meta]', overdueCount
+    ? overdueCount + (overdueCount === 1 ? ' invoice past due' : ' invoices past due')
+    : 'All caught up');
+  setText('[data-inv-paid]', fmtMoney(paidCents));
+  setText('[data-inv-paid-meta]', paidCount
+    ? paidCount + (paidCount === 1 ? ' invoice cleared' : ' invoices cleared')
+    : 'No payments in the last year');
+
+  if (countEl) {
+    countEl.textContent = invoices.length
+      ? invoices.length + (invoices.length === 1 ? ' invoice' : ' invoices')
+      : '';
+  }
+
+  const state = { query: '', filter: 'all' };
+
+  function apply() {
+    const q = state.query.trim().toLowerCase();
+    const filtered = invoices.filter((inv) => {
+      if (state.filter !== 'all' && invoiceDerivedStatus(inv) !== state.filter) return false;
+      if (!q) return true;
+      const hay = ((inv.number || '') + ' ' + (inv.project_name || '')).toLowerCase();
+      return hay.includes(q);
+    });
+
+    if (visibleEl) {
+      visibleEl.textContent = filtered.length === invoices.length
+        ? ''
+        : filtered.length + ' / ' + invoices.length;
+    }
+
+    if (!invoices.length) {
+      listEl.innerHTML = emptyState(
+        'No invoices yet',
+        'Once we issue an invoice it will show up here with a secure payment link.'
+      );
+      return;
+    }
+    if (!filtered.length) {
+      listEl.innerHTML = emptyState(
+        'Nothing matches',
+        'Try a different search term or status filter.'
+      );
+      return;
+    }
+    listEl.innerHTML = '<div class="files">' + filtered.map(invoiceRowHtml).join('') + '</div>';
+    listEl.querySelectorAll('[data-invoice-id]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        // Let anchor clicks (PDF link) behave normally.
+        if (e.target instanceof HTMLAnchorElement) return;
+        const id = el.getAttribute('data-invoice-id');
+        const inv = invoices.find((x) => String(x.id) === String(id));
+        if (inv) showInvoiceDetail(inv);
+      });
+    });
+  }
+
+  if (searchEl) {
+    searchEl.addEventListener('input', () => {
+      state.query = searchEl.value || '';
+      apply();
+    });
+  }
+  if (filterEl) {
+    filterEl.addEventListener('change', () => {
+      state.filter = filterEl.value || 'all';
+      apply();
+    });
+  }
+
+  apply();
+}
+
 async function renderSettings(user) {
   const profile = (await data.getProfile(user.id)) || {};
   const meta = user.user_metadata || {};
@@ -1076,6 +1268,7 @@ async function renderSettings(user) {
 const RENDERERS = {
   dashboard: renderDashboard,
   messages: renderMessages,
+  invoices: renderInvoices,
   settings: renderSettings,
 };
 
