@@ -33,7 +33,7 @@ export default function NotFound() {
           </div>
         </header>
 
-        <main style={{ flex: 1 }}>
+        <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <section className="hero">
             <span className="eyebrow">
               <span className="pulse-dot" />
@@ -67,6 +67,40 @@ export default function NotFound() {
               <a className="email-link" href="mailto:ethan@clearbot.io">or · ethan@clearbot.io</a>
             </div>
           </section>
+
+          <div
+            aria-hidden="true"
+            style={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 24,
+              padding: '48px 0'
+            }}
+          >
+            <svg
+              className="mark-logo"
+              width={160}
+              height={160}
+              style={{ filter: 'drop-shadow(0 0 40px rgba(255,255,255,0.18))' }}
+            >
+              <use href="#clearbot-logo" />
+            </svg>
+            <span
+              style={{
+                fontFamily: 'var(--cb-display)',
+                fontSize: 'clamp(40px, 7vw, 96px)',
+                fontWeight: 500,
+                letterSpacing: '-0.04em',
+                color: 'var(--cb-ink)',
+                lineHeight: 1
+              }}
+            >
+              ClearBot
+            </span>
+          </div>
         </main>
 
         <footer className="foot">
