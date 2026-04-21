@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { SERVICES, PROCESS, COLLABORATORS, TIER_GROUPS, type Service, type ServiceTier } from './automations';
+import { SERVICES, PROCESS, COLLABORATORS, TIER_GROUPS, type Collaborator, type Service, type ServiceTier } from './automations';
 import { SIGNUP_URL } from '@/lib/env';
 
 const TIER_CODES: Record<ServiceTier, string> = {
@@ -102,33 +102,23 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
   );
 }
 
-function LogoMark({ collaborator }: { collaborator: { name: string; logoSrc: string; href?: string } }) {
-  const content = (
-    <Image
-      src={collaborator.logoSrc}
-      alt=""
-      width={280}
-      height={88}
-      className="logo-marquee-img"
-      unoptimized
-    />
-  );
-  if (collaborator.href) {
-    return (
-      <a
-        className="logo-marquee-item"
-        href={collaborator.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={collaborator.name}
-      >
-        {content}
-      </a>
-    );
-  }
+function LogoMark({ collaborator }: { collaborator: Collaborator }) {
   return (
-    <span className="logo-marquee-item" aria-label={collaborator.name}>
-      {content}
-    </span>
+    <a
+      className="logo-marquee-item"
+      href={collaborator.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={collaborator.name}
+    >
+      <Image
+        src={collaborator.logoSrc}
+        alt=""
+        width={280}
+        height={88}
+        className="logo-marquee-img"
+        unoptimized
+      />
+    </a>
   );
 }
