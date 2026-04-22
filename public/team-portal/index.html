@@ -169,7 +169,7 @@ html[data-auth="signed-in"] .app { opacity: 1; }
 .topbar {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: var(--sidebar-w) 1fr auto;
+  grid-template-columns: var(--sidebar-w) 1fr auto auto;
   align-items: center;
   border-bottom: 1px solid var(--rule);
   background: rgba(10, 11, 13, 0.72);
@@ -1123,6 +1123,343 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================
+   Quick Add menu in topbar + Command palette
+   ========================================================== */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-left: 1px solid var(--rule);
+}
+.topbar-btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid var(--rule);
+  cursor: pointer;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 0 18px;
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease);
+}
+.topbar-btn:hover { background: rgba(243, 241, 234, 0.04); color: var(--ink); }
+.topbar-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.topbar-btn .kbd {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 6px;
+  margin-left: 4px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+.topbar-btn.is-primary {
+  background: var(--accent-blue);
+  color: #0a0b0d;
+}
+.topbar-btn.is-primary .kbd { border-color: rgba(10,11,13,0.24); color: rgba(10,11,13,0.7); }
+.topbar-btn.is-primary:hover { background: var(--accent-blue-hover); color: #0a0b0d; }
+
+/* Quick-add dropdown */
+.qa-menu {
+  position: fixed;
+  min-width: 280px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(106,169,255,0.12);
+  z-index: 100;
+  overflow: hidden;
+  padding: 6px 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+  pointer-events: none;
+}
+.qa-menu.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.qa-menu .qa-section {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  padding: 10px 16px 6px;
+}
+.qa-item {
+  appearance: none;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-align: left;
+  transition: background 0.15s var(--ease);
+}
+.qa-item:hover,
+.qa-item:focus,
+.qa-item.is-focused { background: rgba(106,169,255,0.12); outline: none; }
+.qa-item svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink-dim); }
+.qa-item .qa-shortcut {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
+.qa-item-sub {
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-top: 2px;
+}
+
+/* Command palette */
+.cp-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 6, 8, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 20px 20px;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.cp-backdrop.is-open { opacity: 1; }
+.cp {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  box-shadow: 0 20px 80px rgba(0,0,0,0.7);
+  transform: translateY(-10px);
+  transition: transform 0.2s var(--ease);
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+  overflow: hidden;
+}
+.cp-backdrop.is-open .cp { transform: translateY(0); }
+.cp-input {
+  appearance: none;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 15px;
+  outline: none;
+}
+.cp-input::placeholder { color: var(--ink-faint); }
+.cp-hint {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 20px;
+  border-top: 1px solid var(--rule);
+  font-size: 9px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.cp-hint .kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  font-size: 9px;
+  color: var(--ink-dim);
+  letter-spacing: 0.08em;
+}
+.cp-list {
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.cp-group-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--ink-faint);
+  padding: 12px 20px 6px;
+}
+.cp-row {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 10px 20px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  text-align: left;
+  transition: background 0.12s var(--ease);
+}
+.cp-row:hover,
+.cp-row.is-focused { background: rgba(106,169,255,0.14); outline: none; }
+.cp-row svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--ink-dim); }
+.cp-row .cp-title { color: var(--ink); }
+.cp-row .cp-sub {
+  margin-left: auto;
+  color: var(--ink-faint);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+.cp-empty {
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+
+/* Home quick-actions row */
+.qactions {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.qaction {
+  appearance: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px 18px 16px;
+  background: rgba(243, 241, 234, 0.015);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  color: var(--ink);
+  font-family: var(--mono);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.18s var(--ease), border-color 0.18s var(--ease), transform 0.18s var(--ease);
+  position: relative;
+}
+.qaction:hover {
+  background: rgba(106,169,255,0.06);
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+.qaction .qaction-ico {
+  width: 34px; height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  color: var(--accent-blue);
+}
+.qaction .qaction-ico svg { width: 18px; height: 18px; }
+.qaction .qaction-title {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.qaction .qaction-sub {
+  font-size: 10px;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  line-height: 1.3;
+}
+
+/* Client combobox (used inside modals when creating from aggregate view) */
+.client-combo {
+  position: relative;
+}
+.client-combo .combo-list {
+  position: absolute;
+  left: 0; right: 0; top: calc(100% + 4px);
+  max-height: 240px;
+  overflow-y: auto;
+  background: var(--bg-elev-2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  z-index: 20;
+  display: none;
+}
+.client-combo.is-open .combo-list { display: block; }
+.client-combo .combo-row {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-align: left;
+  line-height: 1.3;
+}
+.client-combo .combo-row:hover,
+.client-combo .combo-row.is-focused { background: rgba(106,169,255,0.14); }
+.client-combo .combo-row .sub {
+  font-size: 9px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-top: 2px;
+}
+.client-combo .combo-empty {
+  padding: 14px 12px;
+  color: var(--ink-faint);
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Aggregate-view toolbar: + New button + count */
+.page-head .actions .btn-primary svg { width: 14px; height: 14px; }
+
+/* Row action cells in aggregate tables */
+.table .row-actions {
+  display: inline-flex;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .qactions { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 820px) {
+  .topbar-btn .label-lg { display: none; }
+  .topbar-btn .kbd { display: none; }
+  .qactions { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -1145,6 +1482,18 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
     <nav class="crumbs" aria-label="Breadcrumb">
       <span>Team</span><span class="sep">/</span><span class="here" data-crumb>Home</span>
     </nav>
+    <div class="topbar-actions">
+      <button class="topbar-btn" type="button" data-open-palette aria-label="Jump to anything">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <span class="label-lg">Jump to&hellip;</span>
+        <span class="kbd">&#8984;K</span>
+      </button>
+      <button class="topbar-btn is-primary" type="button" data-open-quickadd aria-label="Quick add">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span class="label-lg">New</span>
+        <span class="kbd">N</span>
+      </button>
+    </div>
     <button class="user" data-signout type="button" aria-label="Sign out">
       <span class="name" data-user-name>&hellip;</span>
       <span class="avatar" data-user-initial aria-hidden="true">&bull;</span>
@@ -1207,9 +1556,40 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <h1>Good <em data-daypart>day</em>, <em data-team-name>team</em>.</h1>
         </div>
         <div class="actions">
+          <button type="button" class="btn btn-ghost" data-open-palette>Jump to&hellip; <span class="mono" style="margin-left:6px;padding:1px 6px;border:1px solid var(--rule);border-radius:2px;font-size:9px;color:var(--ink-faint);">&#8984;K</span></button>
           <button type="button" class="btn" data-view-link="users">Browse clients</button>
+          <button type="button" class="btn btn-primary" data-open-quickadd>+ New</button>
         </div>
       </div>
+
+      <div class="qactions">
+        <button type="button" class="qaction" data-action="new-project">
+          <span class="qaction-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h12"/></svg></span>
+          <span class="qaction-title">New project</span>
+          <span class="qaction-sub">Scope a client engagement</span>
+        </button>
+        <button type="button" class="qaction" data-action="new-invoice">
+          <span class="qaction-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg></span>
+          <span class="qaction-title">New invoice</span>
+          <span class="qaction-sub">Bill a client with a PDF</span>
+        </button>
+        <button type="button" class="qaction" data-action="new-deliverable">
+          <span class="qaction-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/></svg></span>
+          <span class="qaction-title">Add deliverable</span>
+          <span class="qaction-sub">Drop a file or artifact</span>
+        </button>
+        <button type="button" class="qaction" data-action="compose-message">
+          <span class="qaction-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v12H8l-4 3z"/></svg></span>
+          <span class="qaction-title">Compose message</span>
+          <span class="qaction-sub">Start a new client thread</span>
+        </button>
+        <button type="button" class="qaction" data-action="log-activity">
+          <span class="qaction-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg></span>
+          <span class="qaction-title">Log activity</span>
+          <span class="qaction-sub">Post a client-facing note</span>
+        </button>
+      </div>
+
       <div class="tiles" style="grid-template-columns: repeat(6, 1fr);">
         <div class="tile" data-tile="total-users">
           <div class="label">Clients</div>
@@ -1474,6 +1854,9 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <div class="eyebrow">§ All clients</div>
           <h1>Projects <em>aggregate</em>.</h1>
         </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="new-project">+ New project</button>
+        </div>
       </div>
       <div class="search-bar">
         <input class="input" id="projects-all-search" type="search" placeholder="Search project, description, client, status&hellip;" autocomplete="off" />
@@ -1496,6 +1879,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
               <th>Status</th>
               <th>Progress</th>
               <th>Updated</th>
+              <th></th>
             </tr>
           </thead>
           <tbody data-projects-all-tbody></tbody>
@@ -1511,9 +1895,18 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <div class="eyebrow">§ All clients</div>
           <h1>Invoices <em>ledger</em>.</h1>
         </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="new-invoice">+ New invoice</button>
+        </div>
       </div>
       <div class="search-bar">
         <input class="input" id="invoices-all-search" type="search" placeholder="Search number, client, project, status&hellip;" autocomplete="off" />
+        <select class="select" id="invoices-all-status" aria-label="Filter by status" style="max-width:180px;">
+          <option value="">All statuses</option>
+          <option value="due">Due</option>
+          <option value="overdue">Overdue</option>
+          <option value="paid">Paid</option>
+        </select>
         <span class="count" data-invoices-all-count>&mdash;</span>
       </div>
       <div class="tiles" style="grid-template-columns: repeat(3, 1fr);">
@@ -1559,6 +1952,9 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
           <div class="eyebrow">§ All clients</div>
           <h1>Deliverables <em>library</em>.</h1>
         </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="new-deliverable">+ Add deliverable</button>
+        </div>
       </div>
       <div class="search-bar">
         <input class="input" id="deliverables-all-search" type="search" placeholder="Search file, client, project, status&hellip;" autocomplete="off" />
@@ -1574,7 +1970,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
               <th>Status</th>
               <th>Version</th>
               <th>Updated</th>
-              <th></th>
+              <th style="width:1%;text-align:right;">Actions</th>
             </tr>
           </thead>
           <tbody data-deliverables-all-tbody></tbody>
@@ -1589,6 +1985,9 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
         <div>
           <div class="eyebrow">§ All clients</div>
           <h1>Messages <em>inbox</em>.</h1>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="compose-message">+ Compose</button>
         </div>
       </div>
       <div class="search-bar">
@@ -1610,6 +2009,9 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
         <div>
           <div class="eyebrow">§ All clients</div>
           <h1>Activity <em>stream</em>.</h1>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" data-action="log-activity">+ Log activity</button>
         </div>
       </div>
       <section class="panel bracketed">
@@ -2321,6 +2723,25 @@ async function showView(name) {
   } catch (e) { console.error('[team] render failed for', name, e); }
 }
 
+// Refresh whichever view is currently visible. Used after create/edit/delete
+// so callers can invoke a single helper no matter where the action was
+// triggered (Home, aggregate view, or user detail).
+async function refreshCurrentView() {
+  try {
+    const name = state.currentView || 'home';
+    if (name === 'home')                   await renderHome();
+    else if (name === 'users')             await renderUsers($('#user-search') && $('#user-search').value || '');
+    else if (name === 'user-detail')       await renderUserDetail();
+    else if (name === 'projects-all')      await renderProjectsAll();
+    else if (name === 'invoices-all')      await renderInvoicesAll();
+    else if (name === 'deliverables-all')  await renderDeliverablesAll();
+    else if (name === 'messages-all')      await renderMessagesAll();
+    else if (name === 'activity-all')      await renderActivityAll();
+    else if (name === 'codes-all')         await renderCodesAll();
+    else if (name === 'bookings-all')      await renderBookingsAll();
+  } catch (e) { console.error('[team] refresh failed:', e); }
+}
+
 function showSubtab(name) {
   state.currentSubtab = name;
   $$('.subtab').forEach(el => {
@@ -3021,13 +3442,21 @@ function serviceSelectOptions(current) {
   return head + groups;
 }
 
-function showProjectModal(existing) {
-  if (!state.selectedUserId) return;
+function showProjectModal(existing, opts = {}) {
   const isEdit = !!existing;
+  // Resolve which client this project belongs to. For edits we always use the
+  // existing row's user_id; for creates we fall back to any explicit userId,
+  // then the currently-open client, and otherwise render a client picker.
+  const presetUserId = isEdit
+    ? (existing.user_id || null)
+    : (opts.userId || state.selectedUserId || null);
+  const needsClientPicker = !isEdit && !presetUserId;
+
   openModal({
     eyebrow: isEdit ? 'Edit project' : 'New project',
     title: isEdit ? 'Edit <em>project</em>.' : 'Brief a new <em>project</em>.',
     bodyHtml:
+      (needsClientPicker ? clientComboHtml('p-client') : '') +
       '<div class="modal-field"><label class="form-label" for="p-name">Name</label>' +
         '<input class="input" id="p-name" type="text" value="' + escapeHtml(existing ? (existing.name || '') : '') + '" /></div>' +
       '<div class="modal-field"><label class="form-label" for="p-service">Service</label>' +
@@ -3044,8 +3473,13 @@ function showProjectModal(existing) {
         '<input class="input" id="p-milestone" type="text" value="' + escapeHtml(existing ? (existing.next_milestone || '') : '') + '" /></div>' +
       '<div class="modal-error" data-modal-error hidden></div>',
     confirmLabel: isEdit ? 'Save' : 'Create',
-    initialFocus: '#p-name',
+    initialFocus: needsClientPicker ? '#p-client-input' : '#p-name',
     onConfirm: async (root) => {
+      let userId = presetUserId;
+      if (needsClientPicker) {
+        userId = getClientComboValue(root, 'p-client');
+        if (!userId) { setModalError(root, 'Pick a client.'); return false; }
+      }
       const name = (root.querySelector('#p-name').value || '').trim();
       if (!name) { setModalError(root, 'Name is required.'); return false; }
       const patch = {
@@ -3059,13 +3493,14 @@ function showProjectModal(existing) {
       setModalBusy(root, true, 'Saving…');
       const res = isEdit
         ? await updateProject(existing.id, patch)
-        : await createProject(state.selectedUserId, patch);
+        : await createProject(userId, patch);
       if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
       toast(isEdit ? 'Project updated' : 'Project created');
-      await renderUserDetail();
+      await refreshCurrentView();
       return true;
     },
   });
+  if (needsClientPicker) wireClientCombo('p-client');
 }
 
 function confirmDeleteProject(proj) {
@@ -3081,16 +3516,24 @@ function confirmDeleteProject(proj) {
       const res = await deleteProject(proj.id);
       if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
       toast('Project deleted');
-      await renderUserDetail();
+      await refreshCurrentView();
       return true;
     },
   });
 }
 
-function showInvoiceModal(existing) {
-  if (!state.selectedUserId) return;
+function showInvoiceModal(existing, opts = {}) {
   const isEdit = !!existing;
-  const projects = (state.selectedBundle && state.selectedBundle.projects) || [];
+  const presetUserId = isEdit
+    ? (existing.user_id || null)
+    : (opts.userId || state.selectedUserId || null);
+  const needsClientPicker = !isEdit && !presetUserId;
+
+  // Projects scoped to the pre-selected client (if any). If the client is picked
+  // inside the modal, the project dropdown will be populated on change.
+  let projects = (presetUserId && state.selectedBundle && state.selectedBundle.projects)
+    ? state.selectedBundle.projects
+    : [];
   const projOptions = ['<option value="">— No project —</option>'].concat(
     projects.map(p => '<option value="' + escapeHtml(p.id) + '"' +
       (existing && existing.project_id === p.id ? ' selected' : '') + '>' +
@@ -3101,6 +3544,7 @@ function showInvoiceModal(existing) {
     eyebrow: isEdit ? 'Edit invoice' : 'New invoice',
     title: isEdit ? 'Edit <em>invoice</em>.' : 'Create an <em>invoice</em>.',
     bodyHtml:
+      (needsClientPicker ? clientComboHtml('i-client') : '') +
       '<div class="form-grid">' +
         '<div class="modal-field"><label class="form-label" for="i-number">Number</label>' +
           '<input class="input" id="i-number" type="text" value="' + escapeHtml(existing ? (existing.number || '') : suggestInvoiceNumber()) + '" /></div>' +
@@ -3121,8 +3565,13 @@ function showInvoiceModal(existing) {
         '<input class="input" id="i-pdf" type="url" placeholder="https://…" value="' + escapeHtml(existing ? (existing.pdf_url || '') : '') + '" /></div>' +
       '<div class="modal-error" data-modal-error hidden></div>',
     confirmLabel: isEdit ? 'Save' : 'Create',
-    initialFocus: '#i-number',
+    initialFocus: needsClientPicker ? '#i-client-input' : '#i-number',
     onConfirm: async (root) => {
+      let userId = presetUserId;
+      if (needsClientPicker) {
+        userId = getClientComboValue(root, 'i-client');
+        if (!userId) { setModalError(root, 'Pick a client.'); return false; }
+      }
       const number = (root.querySelector('#i-number').value || '').trim();
       if (!number) { setModalError(root, 'Invoice number is required.'); return false; }
       const amtRaw = (root.querySelector('#i-amount').value || '').replace(/[^0-9.]/g, '');
@@ -3147,13 +3596,28 @@ function showInvoiceModal(existing) {
       setModalBusy(root, true, 'Saving…');
       const res = isEdit
         ? await updateInvoice(existing.id, patch)
-        : await createInvoice(state.selectedUserId, patch);
+        : await createInvoice(userId, patch);
       if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
       toast(isEdit ? 'Invoice updated' : 'Invoice created');
-      await renderUserDetail();
+      await refreshCurrentView();
       return true;
     },
   });
+  if (needsClientPicker) {
+    wireClientCombo('i-client', async (uid) => {
+      // When a client is picked, load their projects so the project dropdown
+      // is accurate for the invoice being created.
+      projects = await safeList(() =>
+        supabase.from('projects').select('id, name').eq('user_id', uid).order('updated_at', { ascending: false })
+      );
+      const sel = document.querySelector('#i-project');
+      if (sel) {
+        sel.innerHTML = '<option value="">— No project —</option>' + projects.map(p =>
+          '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.name || 'Untitled') + '</option>'
+        ).join('');
+      }
+    });
+  }
 }
 
 function suggestInvoiceNumber() {
@@ -3177,17 +3641,23 @@ function confirmDeleteInvoice(inv) {
       const res = await deleteInvoice(inv.id);
       if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
       toast('Invoice deleted');
-      await renderUserDetail();
+      await refreshCurrentView();
       return true;
     },
   });
 }
 
 const DELIVERABLE_STATUSES = ['draft', 'in_review', 'approved', 'shipped', 'archived'];
-function showDeliverableModal(existing) {
-  if (!state.selectedUserId) return;
+function showDeliverableModal(existing, opts = {}) {
   const isEdit = !!existing;
-  const projects = (state.selectedBundle && state.selectedBundle.projects) || [];
+  const presetUserId = isEdit
+    ? (existing.user_id || null)
+    : (opts.userId || state.selectedUserId || null);
+  const needsClientPicker = !isEdit && !presetUserId;
+
+  let projects = (presetUserId && state.selectedBundle && state.selectedBundle.projects)
+    ? state.selectedBundle.projects
+    : [];
   const projOptions = ['<option value="">— No project —</option>'].concat(
     projects.map(p => '<option value="' + escapeHtml(p.id) + '"' +
       (existing && existing.project_id === p.id ? ' selected' : '') + '>' +
@@ -3197,6 +3667,7 @@ function showDeliverableModal(existing) {
     eyebrow: isEdit ? 'Edit deliverable' : 'New deliverable',
     title: isEdit ? 'Edit <em>deliverable</em>.' : 'Add a <em>deliverable</em>.',
     bodyHtml:
+      (needsClientPicker ? clientComboHtml('d-client') : '') +
       '<div class="modal-field"><label class="form-label" for="d-name">Name</label>' +
         '<input class="input" id="d-name" type="text" value="' + escapeHtml(existing ? (existing.name || '') : '') + '" /></div>' +
       '<div class="modal-field"><label class="form-label" for="d-project">Project</label>' +
@@ -3217,8 +3688,13 @@ function showDeliverableModal(existing) {
         '<input class="input" id="d-url" type="url" placeholder="https://…" value="' + escapeHtml(existing ? (existing.url || '') : '') + '" /></div>' +
       '<div class="modal-error" data-modal-error hidden></div>',
     confirmLabel: isEdit ? 'Save' : 'Add',
-    initialFocus: '#d-name',
+    initialFocus: needsClientPicker ? '#d-client-input' : '#d-name',
     onConfirm: async (root) => {
+      let userId = presetUserId;
+      if (needsClientPicker) {
+        userId = getClientComboValue(root, 'd-client');
+        if (!userId) { setModalError(root, 'Pick a client.'); return false; }
+      }
       const name = (root.querySelector('#d-name').value || '').trim();
       if (!name) { setModalError(root, 'Name is required.'); return false; }
       const projId = root.querySelector('#d-project').value || null;
@@ -3236,13 +3712,26 @@ function showDeliverableModal(existing) {
       setModalBusy(root, true, 'Saving…');
       const res = isEdit
         ? await updateDeliverable(existing.id, patch)
-        : await createDeliverable(state.selectedUserId, patch);
+        : await createDeliverable(userId, patch);
       if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
       toast(isEdit ? 'Deliverable updated' : 'Deliverable added');
-      await renderUserDetail();
+      await refreshCurrentView();
       return true;
     },
   });
+  if (needsClientPicker) {
+    wireClientCombo('d-client', async (uid) => {
+      projects = await safeList(() =>
+        supabase.from('projects').select('id, name').eq('user_id', uid).order('updated_at', { ascending: false })
+      );
+      const sel = document.querySelector('#d-project');
+      if (sel) {
+        sel.innerHTML = '<option value="">— No project —</option>' + projects.map(p =>
+          '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.name || 'Untitled') + '</option>'
+        ).join('');
+      }
+    });
+  }
 }
 
 function confirmDeleteDeliverable(item) {
@@ -3258,7 +3747,7 @@ function confirmDeleteDeliverable(item) {
       const res = await deleteDeliverable(item.id);
       if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
       toast('Deliverable deleted');
-      await renderUserDetail();
+      await refreshCurrentView();
       return true;
     },
   });
@@ -3433,7 +3922,7 @@ async function renderProjectsAll() {
       : filtered.length + (filtered.length === 1 ? ' project' : ' projects');
     if (!rows.length) {
       tbody.innerHTML = '';
-      if (empty) empty.innerHTML = emptyState('No projects', 'Projects across all clients will appear here.');
+      if (empty) empty.innerHTML = emptyState('No projects', 'Click “+ New project” above to scope the first engagement.');
       return;
     }
     if (!filtered.length) {
@@ -3449,21 +3938,39 @@ async function renderProjectsAll() {
         ? '<div class="mono" style="font-size:10.5px;color:var(--ink-dim);letter-spacing:0.04em;">' + escapeHtml(serviceCode(p.service_id)) + '</div>' +
           '<div>' + escapeHtml(svc.name) + '</div>'
         : '<span class="mono" style="color:var(--ink-faint);">\u2014</span>';
-      return '<tr class="is-clickable" data-open-user="' + escapeHtml(p.user_id) + '">' +
+      return '<tr>' +
         '<td><div class="proj-name">' + escapeHtml(p.name || 'Untitled') + '</div>' +
             (p.description ? '<div class="sub">' + escapeHtml(p.description) + '</div>' : '') + '</td>' +
         '<td>' + svcCell + '</td>' +
-        '<td>' + escapeHtml(userDisplayName(pf)) + '</td>' +
+        '<td><button class="btn btn-sm btn-ghost" type="button" data-open-user="' + escapeHtml(p.user_id) + '">' + escapeHtml(userDisplayName(pf)) + '</button></td>' +
         '<td>' + statusBadge(p.status) + '</td>' +
         '<td style="min-width:160px;"><div style="display:flex;align-items:center;gap:10px;">' +
           '<span class="progress"><span class="progress-bar" style="width:' + (p.progress || 0) + '%"></span></span>' +
           '<span class="mono">' + (p.progress || 0) + '%</span>' +
         '</div></td>' +
         '<td class="mono">' + (p.updated_at ? fmtRelTime(p.updated_at) : '—') + '</td>' +
+        '<td style="text-align:right;white-space:nowrap;"><div class="row-actions">' +
+          '<button type="button" class="btn btn-sm" data-edit-project-g="' + escapeHtml(p.id) + '">Edit</button>' +
+          '<button type="button" class="btn btn-sm" data-delete-project-g="' + escapeHtml(p.id) + '">Delete</button>' +
+        '</div></td>' +
       '</tr>';
     }).join('');
-    tbody.querySelectorAll('[data-open-user]').forEach(tr => {
-      tr.addEventListener('click', () => openUser(tr.getAttribute('data-open-user')));
+    tbody.querySelectorAll('[data-open-user]').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openUser(btn.getAttribute('data-open-user')); });
+    });
+    tbody.querySelectorAll('[data-edit-project-g]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const p = rows.find(r => r.id === btn.getAttribute('data-edit-project-g'));
+        if (p) showProjectModal(p);
+      });
+    });
+    tbody.querySelectorAll('[data-delete-project-g]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const p = rows.find(r => r.id === btn.getAttribute('data-delete-project-g'));
+        if (p) confirmDeleteProject(p);
+      });
     });
   };
 
@@ -3497,23 +4004,37 @@ async function renderInvoicesAll() {
   const empty = $('[data-invoices-all-empty]');
   const countEl = $('[data-invoices-all-count]');
   const searchEl = $('#invoices-all-search');
+  const statusEl = $('#invoices-all-status');
   if (!tbody) return;
 
   const draw = (q) => {
-    const filtered = !q ? rows : rows.filter(i => {
-      const pf = profileFor(i.user_id);
-      const hay = [
-        i.number, i.project_name, i.status, i.notes,
-        userDisplayName(pf), pf && pf.company_name, pf && pf.email, pf && pf.primary_domain,
-      ].filter(Boolean).join(' ');
-      return matchAll(hay, q);
-    });
-    if (countEl) countEl.textContent = q
+    const statusFilter = (statusEl && statusEl.value || '').toLowerCase();
+    let filtered = rows;
+    if (statusFilter) {
+      filtered = filtered.filter(i => {
+        const s = (i.status || 'due').toLowerCase();
+        if (statusFilter === 'overdue') {
+          return s !== 'paid' && i.due_at && new Date(i.due_at).getTime() < now;
+        }
+        return s === statusFilter;
+      });
+    }
+    if (q) {
+      filtered = filtered.filter(i => {
+        const pf = profileFor(i.user_id);
+        const hay = [
+          i.number, i.project_name, i.status, i.notes,
+          userDisplayName(pf), pf && pf.company_name, pf && pf.email, pf && pf.primary_domain,
+        ].filter(Boolean).join(' ');
+        return matchAll(hay, q);
+      });
+    }
+    if (countEl) countEl.textContent = (q || statusFilter)
       ? filtered.length + (filtered.length === 1 ? ' match' : ' matches')
       : filtered.length + (filtered.length === 1 ? ' invoice' : ' invoices');
     if (!rows.length) {
       tbody.innerHTML = '';
-      if (empty) empty.innerHTML = emptyState('No invoices', 'Invoices across all clients will appear here.');
+      if (empty) empty.innerHTML = emptyState('No invoices', 'Click “+ New invoice” above to bill your first client.');
       return;
     }
     if (!filtered.length) {
@@ -3524,14 +4045,22 @@ async function renderInvoicesAll() {
     if (empty) empty.innerHTML = '';
     tbody.innerHTML = filtered.map(i => {
       const pf = profileFor(i.user_id);
+      const isPaid = (i.status || '').toLowerCase() === 'paid';
       return '<tr>' +
         '<td><div class="proj-name">' + escapeHtml(i.number || 'INV-' + i.id) + '</div></td>' +
-        '<td><button class="btn btn-sm" type="button" data-open-user="' + escapeHtml(i.user_id) + '">' + escapeHtml(userDisplayName(pf)) + '</button></td>' +
+        '<td><button class="btn btn-sm btn-ghost" type="button" data-open-user="' + escapeHtml(i.user_id) + '">' + escapeHtml(userDisplayName(pf)) + '</button></td>' +
         '<td class="mono">' + escapeHtml(i.project_name || '—') + '</td>' +
         '<td class="num">' + fmtMoney(i.amount_cents) + '</td>' +
         '<td class="mono">' + fmtShortDate(i.due_at) + '</td>' +
         '<td>' + statusBadge(i.status) + '</td>' +
-        '<td><button class="btn btn-sm" type="button" data-pdf-global="' + escapeHtml(i.id) + '">PDF</button></td>' +
+        '<td style="text-align:right;white-space:nowrap;"><div class="row-actions">' +
+          '<button class="btn btn-sm" type="button" data-pdf-global="' + escapeHtml(i.id) + '">PDF</button>' +
+          (!isPaid
+            ? '<button class="btn btn-sm" type="button" data-paid-global="' + escapeHtml(i.id) + '">Mark Paid</button>'
+            : '') +
+          '<button class="btn btn-sm" type="button" data-edit-invoice-g="' + escapeHtml(i.id) + '">Edit</button>' +
+          '<button class="btn btn-sm" type="button" data-delete-invoice-g="' + escapeHtml(i.id) + '">Delete</button>' +
+        '</div></td>' +
       '</tr>';
     }).join('');
     tbody.querySelectorAll('[data-open-user]').forEach(btn => {
@@ -3543,9 +4072,33 @@ async function renderInvoicesAll() {
         if (inv) downloadInvoicePDF(inv, profileFor(inv.user_id));
       });
     });
+    tbody.querySelectorAll('[data-paid-global]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        btn.setAttribute('disabled', 'true');
+        const res = await markInvoicePaid(btn.getAttribute('data-paid-global'));
+        if (res.ok) { toast('Invoice marked paid'); await refreshCurrentView(); }
+        else { toast('Error: ' + res.error, 'bad'); btn.removeAttribute('disabled'); }
+      });
+    });
+    tbody.querySelectorAll('[data-edit-invoice-g]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const inv = rows.find(r => r.id === btn.getAttribute('data-edit-invoice-g'));
+        if (inv) showInvoiceModal(inv);
+      });
+    });
+    tbody.querySelectorAll('[data-delete-invoice-g]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const inv = rows.find(r => r.id === btn.getAttribute('data-delete-invoice-g'));
+        if (inv) confirmDeleteInvoice(inv);
+      });
+    });
   };
 
   wireAllViewSearch(searchEl, draw);
+  if (statusEl && statusEl.dataset.bound !== '1') {
+    statusEl.dataset.bound = '1';
+    statusEl.addEventListener('change', () => draw((searchEl && searchEl.value || '').trim().toLowerCase()));
+  }
   draw((searchEl && searchEl.value || '').trim().toLowerCase());
 }
 
@@ -3574,7 +4127,7 @@ async function renderDeliverablesAll() {
       : filtered.length + (filtered.length === 1 ? ' file' : ' files');
     if (!rows.length) {
       tbody.innerHTML = '';
-      if (empty) empty.innerHTML = emptyState('No deliverables', 'Files and artifacts across all clients will appear here.');
+      if (empty) empty.innerHTML = emptyState('No deliverables', 'Click “+ Add deliverable” above to drop your first file.');
       return;
     }
     if (!filtered.length) {
@@ -3585,21 +4138,34 @@ async function renderDeliverablesAll() {
     if (empty) empty.innerHTML = '';
     tbody.innerHTML = filtered.map(d => {
       const pf = profileFor(d.user_id);
-      return '<tr class="is-clickable" data-open-user="' + escapeHtml(d.user_id) + '">' +
+      return '<tr>' +
         '<td><div class="proj-name">' + escapeHtml(d.name || 'Untitled') + '</div>' +
             '<div class="sub">' + escapeHtml((d.file_type || 'FILE').toString().toUpperCase()) + (d.size_label ? ' · ' + escapeHtml(d.size_label) : '') + '</div></td>' +
-        '<td>' + escapeHtml(userDisplayName(pf)) + '</td>' +
+        '<td><button class="btn btn-sm btn-ghost" type="button" data-open-user="' + escapeHtml(d.user_id) + '">' + escapeHtml(userDisplayName(pf)) + '</button></td>' +
         '<td class="mono">' + escapeHtml(d.project_name || '—') + '</td>' +
         '<td>' + statusBadge(d.status) + '</td>' +
         '<td class="mono">' + escapeHtml(d.version || '—') + '</td>' +
         '<td class="mono">' + (d.updated_at ? fmtRelTime(d.updated_at) : '—') + '</td>' +
-        '<td>' + (d.url ? '<a class="btn btn-sm" href="' + escapeHtml(d.url) + '" target="_blank" rel="noopener">Open</a>' : '—') + '</td>' +
+        '<td style="text-align:right;white-space:nowrap;"><div class="row-actions">' +
+          (d.url ? '<a class="btn btn-sm" href="' + escapeHtml(d.url) + '" target="_blank" rel="noopener">Open</a>' : '') +
+          '<button class="btn btn-sm" type="button" data-edit-deliv-g="' + escapeHtml(d.id) + '">Edit</button>' +
+          '<button class="btn btn-sm" type="button" data-delete-deliv-g="' + escapeHtml(d.id) + '">Delete</button>' +
+        '</div></td>' +
       '</tr>';
     }).join('');
-    tbody.querySelectorAll('[data-open-user]').forEach(tr => {
-      tr.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A') return;
-        openUser(tr.getAttribute('data-open-user'));
+    tbody.querySelectorAll('[data-open-user]').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openUser(btn.getAttribute('data-open-user')); });
+    });
+    tbody.querySelectorAll('[data-edit-deliv-g]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const d = rows.find(r => r.id === btn.getAttribute('data-edit-deliv-g'));
+        if (d) showDeliverableModal(d);
+      });
+    });
+    tbody.querySelectorAll('[data-delete-deliv-g]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const d = rows.find(r => r.id === btn.getAttribute('data-delete-deliv-g'));
+        if (d) confirmDeleteDeliverable(d);
       });
     });
   };
@@ -3989,6 +4555,515 @@ function confirmDeleteAccessCode(row) {
 }
 
 // ============================================================================
+// Client combobox — a type-ahead picker embedded in create modals so team can
+// pick any client without navigating out of the view they started from.
+// ============================================================================
+function clientComboHtml(prefix) {
+  return (
+    '<div class="modal-field client-combo" data-combo="' + escapeHtml(prefix) + '">' +
+      '<label class="form-label" for="' + escapeHtml(prefix) + '-input">Client</label>' +
+      '<input class="input" id="' + escapeHtml(prefix) + '-input" type="text" placeholder="Search by name, company, domain, email…" autocomplete="off" />' +
+      '<input type="hidden" id="' + escapeHtml(prefix) + '-value" value="" />' +
+      '<div class="combo-list" data-combo-list></div>' +
+    '</div>'
+  );
+}
+
+async function wireClientCombo(prefix, onPick) {
+  const root = document.querySelector('[data-combo="' + prefix + '"]');
+  if (!root) return;
+  const input = root.querySelector('#' + prefix + '-input');
+  const hidden = root.querySelector('#' + prefix + '-value');
+  const list = root.querySelector('[data-combo-list]');
+  if (!input || !hidden || !list) return;
+
+  // Load once from the canonical cache so results are instant as the user types.
+  await ensureProfilesCache();
+  const profiles = state.allProfilesCache.slice();
+
+  let focusIdx = -1;
+  const renderOptions = (q) => {
+    const query = (q || '').trim().toLowerCase();
+    const scored = profiles
+      .map(p => {
+        const hay = [
+          p.company_name, p.email, p.primary_domain, p.first_name, p.last_name,
+          userDisplayName(p),
+        ].filter(Boolean).join(' ').toLowerCase();
+        return { p, hay };
+      })
+      .filter(x => !query || query.split(/\s+/).every(part => x.hay.indexOf(part) !== -1))
+      .slice(0, 50);
+    if (!scored.length) {
+      list.innerHTML = '<div class="combo-empty">No matching client.</div>';
+      focusIdx = -1;
+      return;
+    }
+    list.innerHTML = scored.map((x, i) =>
+      '<button type="button" class="combo-row' + (i === focusIdx ? ' is-focused' : '') + '" data-combo-id="' + escapeHtml(x.p.user_id) + '">' +
+        escapeHtml(userDisplayName(x.p)) +
+        '<div class="sub">' + escapeHtml(x.p.company_name || x.p.email || x.p.primary_domain || '') + '</div>' +
+      '</button>'
+    ).join('');
+    list.querySelectorAll('[data-combo-id]').forEach((el) => {
+      el.addEventListener('mousedown', (e) => { e.preventDefault(); }); // keep input focused
+      el.addEventListener('click', () => {
+        const id = el.getAttribute('data-combo-id');
+        const hit = profiles.find(pp => pp.user_id === id);
+        if (!hit) return;
+        hidden.value = id;
+        input.value = userDisplayName(hit);
+        root.classList.remove('is-open');
+        if (typeof onPick === 'function') onPick(id, hit);
+      });
+    });
+  };
+
+  input.addEventListener('focus', () => { root.classList.add('is-open'); renderOptions(input.value); });
+  input.addEventListener('input', () => {
+    focusIdx = -1;
+    hidden.value = '';
+    root.classList.add('is-open');
+    renderOptions(input.value);
+  });
+  input.addEventListener('keydown', (e) => {
+    const rows = list.querySelectorAll('[data-combo-id]');
+    if (e.key === 'ArrowDown' && rows.length) {
+      e.preventDefault();
+      focusIdx = (focusIdx + 1) % rows.length;
+      rows.forEach((r, i) => r.classList.toggle('is-focused', i === focusIdx));
+      rows[focusIdx].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'ArrowUp' && rows.length) {
+      e.preventDefault();
+      focusIdx = focusIdx <= 0 ? rows.length - 1 : focusIdx - 1;
+      rows.forEach((r, i) => r.classList.toggle('is-focused', i === focusIdx));
+      rows[focusIdx].scrollIntoView({ block: 'nearest' });
+    } else if (e.key === 'Enter' && focusIdx >= 0 && rows[focusIdx]) {
+      e.preventDefault();
+      rows[focusIdx].click();
+    } else if (e.key === 'Escape') {
+      root.classList.remove('is-open');
+    }
+  });
+  // Close when focus leaves the combo.
+  document.addEventListener('click', (e) => {
+    if (!root.contains(e.target)) root.classList.remove('is-open');
+  });
+}
+
+function getClientComboValue(root, prefix) {
+  const hidden = root.querySelector('#' + prefix + '-value');
+  return hidden && hidden.value ? hidden.value : null;
+}
+
+// ============================================================================
+// Compose new message thread — starts a new client-facing thread from scratch.
+// The table-level flow creates the thread row, then optionally sends an initial
+// message inside the same transaction.
+// ============================================================================
+async function createMessageThread({ userId, title, projectName, initialBody }) {
+  const payload = {
+    user_id: userId,
+    title: (title || 'New thread').slice(0, 200),
+    preview: (initialBody || '').slice(0, 200),
+    project_name: projectName || null,
+    status: 'active',
+    unread_count: 0,
+    unread_count_team: 0,
+    updated_at: new Date().toISOString(),
+  };
+  const res = await safeWrite(() =>
+    supabase.from('message_threads').insert(payload).select('*').single()
+  );
+  if (!res.ok) return res;
+  const thread = res.data;
+  if (initialBody && thread && thread.id) {
+    const meId = state.currentUser && state.currentUser.id;
+    const send = await sendThreadMessage({
+      threadId: thread.id,
+      userId,
+      senderId: meId,
+      body: initialBody,
+    });
+    if (!send.ok) return { ok: false, error: send.error || 'Thread created but first message failed.' };
+  }
+  return { ok: true, data: thread };
+}
+
+function showComposeMessageModal(opts = {}) {
+  const presetUserId = opts.userId || state.selectedUserId || null;
+  const needsClientPicker = !presetUserId;
+
+  let projects = (presetUserId && state.selectedBundle && state.selectedBundle.projects)
+    ? state.selectedBundle.projects
+    : [];
+  const projOpts = () => ['<option value="">— General —</option>'].concat(
+    projects.map(p => '<option value="' + escapeHtml(p.name || '') + '">' + escapeHtml(p.name || 'Untitled') + '</option>')
+  ).join('');
+
+  openModal({
+    eyebrow: 'New message',
+    title: 'Compose a <em>thread</em>.',
+    bodyHtml:
+      (needsClientPicker ? clientComboHtml('m-client') : '') +
+      '<div class="modal-field"><label class="form-label" for="m-title">Subject</label>' +
+        '<input class="input" id="m-title" type="text" placeholder="What is this about?" /></div>' +
+      '<div class="modal-field"><label class="form-label" for="m-project">Project (optional)</label>' +
+        '<select class="select" id="m-project">' + projOpts() + '</select></div>' +
+      '<div class="modal-field"><label class="form-label" for="m-body">First message</label>' +
+        '<textarea class="textarea" id="m-body" rows="5" placeholder="Write the first message…" maxlength="4000"></textarea></div>' +
+      '<div class="modal-error" data-modal-error hidden></div>',
+    confirmLabel: 'Send',
+    initialFocus: needsClientPicker ? '#m-client-input' : '#m-title',
+    onConfirm: async (root) => {
+      let userId = presetUserId;
+      if (needsClientPicker) {
+        userId = getClientComboValue(root, 'm-client');
+        if (!userId) { setModalError(root, 'Pick a client.'); return false; }
+      }
+      const title = (root.querySelector('#m-title').value || '').trim();
+      if (!title) { setModalError(root, 'Add a subject.'); return false; }
+      const body = (root.querySelector('#m-body').value || '').trim();
+      const projectName = (root.querySelector('#m-project').value || '') || null;
+      setModalBusy(root, true, 'Sending…');
+      const res = await createMessageThread({ userId, title, projectName, initialBody: body });
+      if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
+      toast('Thread created');
+      // If we're on messages-all, refresh it; otherwise jump to it to show the new thread.
+      if (state.currentView === 'messages-all') await refreshCurrentView();
+      else await showView('messages-all');
+      return true;
+    },
+  });
+  if (needsClientPicker) {
+    wireClientCombo('m-client', async (uid) => {
+      projects = await safeList(() =>
+        supabase.from('projects').select('id, name').eq('user_id', uid).order('updated_at', { ascending: false })
+      );
+      const sel = document.querySelector('#m-project');
+      if (sel) sel.innerHTML = projOpts();
+    });
+  }
+}
+
+// ============================================================================
+// Log activity — post a client-facing activity note from anywhere in the app.
+// ============================================================================
+function showLogActivityModal(opts = {}) {
+  const presetUserId = opts.userId || state.selectedUserId || null;
+  const needsClientPicker = !presetUserId;
+
+  let projects = (presetUserId && state.selectedBundle && state.selectedBundle.projects)
+    ? state.selectedBundle.projects
+    : [];
+  const projOpts = () => ['<option value="">— No project —</option>'].concat(
+    projects.map(p => '<option value="' + escapeHtml(p.id) + '">' + escapeHtml(p.name || 'Untitled') + '</option>')
+  ).join('');
+
+  openModal({
+    eyebrow: 'Log activity',
+    title: 'Post an <em>activity note</em>.',
+    bodyHtml:
+      (needsClientPicker ? clientComboHtml('a-client') : '') +
+      '<div class="modal-field"><label class="form-label" for="a-project">Project (optional)</label>' +
+        '<select class="select" id="a-project">' + projOpts() + '</select></div>' +
+      '<div class="modal-field"><label class="form-label" for="a-text">Note</label>' +
+        '<textarea class="textarea" id="a-text" rows="4" placeholder="Something the client should see…" maxlength="2000"></textarea></div>' +
+      '<div class="modal-error" data-modal-error hidden></div>',
+    confirmLabel: 'Post',
+    initialFocus: needsClientPicker ? '#a-client-input' : '#a-text',
+    onConfirm: async (root) => {
+      let userId = presetUserId;
+      if (needsClientPicker) {
+        userId = getClientComboValue(root, 'a-client');
+        if (!userId) { setModalError(root, 'Pick a client.'); return false; }
+      }
+      const text = (root.querySelector('#a-text').value || '').trim();
+      if (!text) { setModalError(root, 'Write something first.'); return false; }
+      const projId = root.querySelector('#a-project').value || null;
+      const projName = projId ? (projects.find(p => p.id === projId) || {}).name || null : null;
+      setModalBusy(root, true, 'Posting…');
+      const res = await postActivity(userId, text, projId, projName);
+      if (!res.ok) { setModalError(root, res.error || 'Failed.'); setModalBusy(root, false); return false; }
+      toast('Activity posted');
+      await refreshCurrentView();
+      return true;
+    },
+  });
+  if (needsClientPicker) {
+    wireClientCombo('a-client', async (uid) => {
+      projects = await safeList(() =>
+        supabase.from('projects').select('id, name').eq('user_id', uid).order('updated_at', { ascending: false })
+      );
+      const sel = document.querySelector('#a-project');
+      if (sel) sel.innerHTML = projOpts();
+    });
+  }
+}
+
+// ============================================================================
+// Topbar Quick Add menu — global new-thing popover available from any view.
+// ============================================================================
+const QUICK_ADD_ITEMS = [
+  { id: 'new-project',      label: 'New project',      sub: 'Scope a client engagement',    icon: '<path d="M3 6h18M3 12h18M3 18h12"/>' },
+  { id: 'new-invoice',      label: 'New invoice',      sub: 'Bill a client',                icon: '<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h4"/>' },
+  { id: 'new-deliverable',  label: 'Add deliverable',  sub: 'Drop a file or artifact',      icon: '<path d="M4 4h11l5 5v11H4z"/><path d="M15 4v5h5"/>' },
+  { id: 'compose-message',  label: 'Compose message',  sub: 'Start a thread with a client', icon: '<path d="M4 5h16v12H8l-4 3z"/>' },
+  { id: 'log-activity',     label: 'Log activity',     sub: 'Post a client-facing note',    icon: '<path d="M3 12h4l2-7 4 14 2-7h6"/>' },
+  { id: 'new-code',         label: 'Access code',      sub: 'Invite a new prospect',        icon: '<rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>' },
+];
+
+let quickAddMenuEl = null;
+function closeQuickAddMenu() {
+  if (!quickAddMenuEl) return;
+  quickAddMenuEl.classList.remove('is-open');
+  const el = quickAddMenuEl;
+  quickAddMenuEl = null;
+  setTimeout(() => { if (el && el.parentNode) el.remove(); }, 200);
+  document.removeEventListener('click', onQuickAddOutside, true);
+  document.removeEventListener('keydown', onQuickAddKey, true);
+}
+
+function onQuickAddOutside(e) {
+  if (!quickAddMenuEl) return;
+  const btn = document.querySelector('[data-open-quickadd]');
+  if (quickAddMenuEl.contains(e.target) || (btn && btn.contains(e.target))) return;
+  closeQuickAddMenu();
+}
+
+function onQuickAddKey(e) {
+  if (!quickAddMenuEl) return;
+  const items = Array.from(quickAddMenuEl.querySelectorAll('.qa-item'));
+  if (!items.length) return;
+  const cur = items.findIndex(el => el.classList.contains('is-focused'));
+  if (e.key === 'Escape') { e.preventDefault(); closeQuickAddMenu(); return; }
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = (cur + 1) % items.length;
+    items.forEach((el, i) => el.classList.toggle('is-focused', i === next));
+    items[next].focus();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    const next = cur <= 0 ? items.length - 1 : cur - 1;
+    items.forEach((el, i) => el.classList.toggle('is-focused', i === next));
+    items[next].focus();
+  }
+}
+
+function openQuickAddMenu() {
+  if (quickAddMenuEl) { closeQuickAddMenu(); return; }
+  const btn = document.querySelector('[data-open-quickadd]');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  const menu = document.createElement('div');
+  menu.className = 'qa-menu';
+  menu.innerHTML =
+    '<div class="qa-section">Create</div>' +
+    QUICK_ADD_ITEMS.map((it) =>
+      '<button type="button" class="qa-item" data-qa-action="' + escapeHtml(it.id) + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + it.icon + '</svg>' +
+        '<span>' + escapeHtml(it.label) + '<span class="qa-item-sub">' + escapeHtml(it.sub) + '</span></span>' +
+      '</button>'
+    ).join('') +
+    '<div class="qa-section">Navigate</div>' +
+    '<button type="button" class="qa-item" data-qa-action="palette">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>' +
+      '<span>Jump to a client or view<span class="qa-item-sub">Search everything</span></span>' +
+      '<span class="qa-shortcut">⌘K</span>' +
+    '</button>';
+  document.body.appendChild(menu);
+  // Position aligned to the right edge of the button.
+  const top = rect.bottom + 6;
+  const right = Math.max(12, window.innerWidth - rect.right);
+  menu.style.top = top + 'px';
+  menu.style.right = right + 'px';
+  requestAnimationFrame(() => menu.classList.add('is-open'));
+  menu.querySelectorAll('[data-qa-action]').forEach(el => {
+    el.addEventListener('click', () => {
+      const action = el.getAttribute('data-qa-action');
+      closeQuickAddMenu();
+      runQuickAddAction(action);
+    });
+  });
+  quickAddMenuEl = menu;
+  // Close on outside click or Escape.
+  setTimeout(() => {
+    document.addEventListener('click', onQuickAddOutside, true);
+    document.addEventListener('keydown', onQuickAddKey, true);
+  }, 0);
+}
+
+function runQuickAddAction(action) {
+  if (action === 'new-project')      showProjectModal(null);
+  else if (action === 'new-invoice')     showInvoiceModal(null);
+  else if (action === 'new-deliverable') showDeliverableModal(null);
+  else if (action === 'compose-message') showComposeMessageModal();
+  else if (action === 'log-activity')    showLogActivityModal();
+  else if (action === 'new-code')        showAccessCodeModal();
+  else if (action === 'palette')         openCommandPalette();
+}
+
+// ============================================================================
+// Command palette — Cmd/Ctrl+K to jump anywhere. Searches clients + views.
+// ============================================================================
+let palette = null;
+function closeCommandPalette() {
+  if (!palette) return;
+  palette.classList.remove('is-open');
+  const el = palette;
+  palette = null;
+  setTimeout(() => { if (el && el.parentNode) el.remove(); }, 200);
+  document.removeEventListener('keydown', onPaletteKey, true);
+}
+
+function onPaletteKey(e) {
+  if (!palette) return;
+  const rows = Array.from(palette.querySelectorAll('.cp-row'));
+  if (e.key === 'Escape') { e.preventDefault(); closeCommandPalette(); return; }
+  if (!rows.length) return;
+  const cur = rows.findIndex(r => r.classList.contains('is-focused'));
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    const next = (cur + 1) % rows.length;
+    rows.forEach((r, i) => r.classList.toggle('is-focused', i === next));
+    rows[next].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    const next = cur <= 0 ? rows.length - 1 : cur - 1;
+    rows.forEach((r, i) => r.classList.toggle('is-focused', i === next));
+    rows[next].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter') {
+    const idx = cur >= 0 ? cur : 0;
+    if (rows[idx]) { e.preventDefault(); rows[idx].click(); }
+  }
+}
+
+const PALETTE_VIEWS = [
+  { id: 'home',             label: 'Home',              sub: 'Command center' },
+  { id: 'users',            label: 'Clients',           sub: 'Directory' },
+  { id: 'projects-all',     label: 'Projects',          sub: 'All clients' },
+  { id: 'invoices-all',     label: 'Invoices',          sub: 'All clients' },
+  { id: 'deliverables-all', label: 'Deliverables',      sub: 'All clients' },
+  { id: 'messages-all',     label: 'Messages',          sub: 'Inbox' },
+  { id: 'activity-all',     label: 'Activity',          sub: 'All clients' },
+  { id: 'bookings-all',     label: 'Bookings',          sub: 'Inbound requests' },
+  { id: 'codes-all',        label: 'Access Codes',      sub: 'Signup gate' },
+];
+
+const PALETTE_ACTIONS = [
+  { id: 'new-project',     label: 'New project…',     sub: 'Create' },
+  { id: 'new-invoice',     label: 'New invoice…',     sub: 'Create' },
+  { id: 'new-deliverable', label: 'Add deliverable…', sub: 'Create' },
+  { id: 'compose-message', label: 'Compose message…', sub: 'Create' },
+  { id: 'log-activity',    label: 'Log activity…',    sub: 'Create' },
+  { id: 'new-code',        label: 'Access code…',     sub: 'Create' },
+];
+
+async function openCommandPalette() {
+  if (palette) return;
+  await ensureProfilesCache();
+  const profiles = state.allProfilesCache.slice();
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'cp-backdrop';
+  backdrop.innerHTML =
+    '<div class="cp" role="dialog" aria-modal="true" aria-label="Jump to">' +
+      '<input type="search" class="cp-input" placeholder="Search clients, views, or actions…" autocomplete="off" />' +
+      '<div class="cp-list" data-cp-list></div>' +
+      '<div class="cp-hint">' +
+        '<span><span class="kbd">↑</span><span class="kbd">↓</span> navigate</span>' +
+        '<span><span class="kbd">↵</span> open</span>' +
+        '<span><span class="kbd">esc</span> close</span>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(backdrop);
+  palette = backdrop;
+  requestAnimationFrame(() => backdrop.classList.add('is-open'));
+  const input = backdrop.querySelector('.cp-input');
+  const listEl = backdrop.querySelector('[data-cp-list]');
+
+  const viewSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>';
+  const actionSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>';
+  const clientSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>';
+
+  const draw = (q) => {
+    const query = (q || '').trim().toLowerCase();
+    const viewHits = PALETTE_VIEWS.filter(v => !query ||
+      (v.label + ' ' + v.sub).toLowerCase().indexOf(query) !== -1);
+    const actionHits = PALETTE_ACTIONS.filter(a => !query ||
+      (a.label + ' ' + a.sub).toLowerCase().indexOf(query) !== -1);
+    const clientHits = profiles
+      .map(p => {
+        const hay = [p.company_name, p.email, p.primary_domain, p.first_name, p.last_name, userDisplayName(p)]
+          .filter(Boolean).join(' ').toLowerCase();
+        return { p, hay };
+      })
+      .filter(x => !query || query.split(/\s+/).every(part => x.hay.indexOf(part) !== -1))
+      .slice(0, 20);
+
+    let html = '';
+    if (viewHits.length) {
+      html += '<div class="cp-group-label">Go to</div>' + viewHits.map(v =>
+        '<button type="button" class="cp-row" data-cp-view="' + escapeHtml(v.id) + '">' +
+          viewSvg +
+          '<span class="cp-title">' + escapeHtml(v.label) + '</span>' +
+          '<span class="cp-sub">' + escapeHtml(v.sub) + '</span>' +
+        '</button>'
+      ).join('');
+    }
+    if (actionHits.length) {
+      html += '<div class="cp-group-label">Create</div>' + actionHits.map(a =>
+        '<button type="button" class="cp-row" data-cp-action="' + escapeHtml(a.id) + '">' +
+          actionSvg +
+          '<span class="cp-title">' + escapeHtml(a.label) + '</span>' +
+          '<span class="cp-sub">' + escapeHtml(a.sub) + '</span>' +
+        '</button>'
+      ).join('');
+    }
+    if (clientHits.length) {
+      html += '<div class="cp-group-label">Clients</div>' + clientHits.map(x =>
+        '<button type="button" class="cp-row" data-cp-client="' + escapeHtml(x.p.user_id) + '">' +
+          clientSvg +
+          '<span class="cp-title">' + escapeHtml(userDisplayName(x.p)) + '</span>' +
+          '<span class="cp-sub">' + escapeHtml(x.p.company_name || x.p.email || x.p.primary_domain || '') + '</span>' +
+        '</button>'
+      ).join('');
+    }
+    if (!html) html = '<div class="cp-empty">No matches.</div>';
+    listEl.innerHTML = html;
+    const rows = listEl.querySelectorAll('.cp-row');
+    if (rows.length) rows[0].classList.add('is-focused');
+    rows.forEach(row => {
+      row.addEventListener('click', () => {
+        if (row.hasAttribute('data-cp-view')) {
+          const name = row.getAttribute('data-cp-view');
+          closeCommandPalette();
+          showView(name);
+        } else if (row.hasAttribute('data-cp-action')) {
+          const a = row.getAttribute('data-cp-action');
+          closeCommandPalette();
+          runQuickAddAction(a);
+        } else if (row.hasAttribute('data-cp-client')) {
+          const id = row.getAttribute('data-cp-client');
+          closeCommandPalette();
+          openUser(id);
+        }
+      });
+      row.addEventListener('mouseenter', () => {
+        listEl.querySelectorAll('.cp-row.is-focused').forEach(el => el.classList.remove('is-focused'));
+        row.classList.add('is-focused');
+      });
+    });
+  };
+
+  draw('');
+  input.focus();
+  input.addEventListener('input', () => draw(input.value));
+  backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeCommandPalette(); });
+  document.addEventListener('keydown', onPaletteKey, true);
+}
+
+// ============================================================================
 // Wiring — nav, subtabs, profile save, activity post
 // ============================================================================
 function wireNav() {
@@ -4016,7 +5091,36 @@ function wireNav() {
   $$('[data-action="new-project"]').forEach(el => el.addEventListener('click', () => showProjectModal(null)));
   $$('[data-action="new-invoice"]').forEach(el => el.addEventListener('click', () => showInvoiceModal(null)));
   $$('[data-action="new-deliverable"]').forEach(el => el.addEventListener('click', () => showDeliverableModal(null)));
+  $$('[data-action="compose-message"]').forEach(el => el.addEventListener('click', () => showComposeMessageModal()));
+  $$('[data-action="log-activity"]').forEach(el => el.addEventListener('click', () => showLogActivityModal()));
   $$('[data-action="new-code"]').forEach(el => el.addEventListener('click', () => showAccessCodeModal()));
+
+  // Topbar shortcuts and global keyboard bindings.
+  $$('[data-open-quickadd]').forEach(el => el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openQuickAddMenu();
+  }));
+  $$('[data-open-palette]').forEach(el => el.addEventListener('click', (e) => {
+    e.preventDefault();
+    openCommandPalette();
+  }));
+  document.addEventListener('keydown', (e) => {
+    const activeTag = (document.activeElement && document.activeElement.tagName) || '';
+    const typing = activeTag === 'INPUT' || activeTag === 'TEXTAREA' || activeTag === 'SELECT' ||
+      (document.activeElement && document.activeElement.isContentEditable);
+    // Cmd/Ctrl+K opens the palette anywhere.
+    if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+      e.preventDefault();
+      if (palette) closeCommandPalette(); else openCommandPalette();
+      return;
+    }
+    // Bare "N" opens Quick Add (only when not typing and no modal is open).
+    if (!typing && !e.metaKey && !e.ctrlKey && !e.altKey && (e.key === 'n' || e.key === 'N')) {
+      if (document.querySelector('.modal-backdrop') || document.querySelector('.cp-backdrop')) return;
+      e.preventDefault();
+      if (quickAddMenuEl) closeQuickAddMenu(); else openQuickAddMenu();
+    }
+  });
 
   const save = $('[data-save-profile]');
   if (save) {
