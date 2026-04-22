@@ -179,8 +179,15 @@ export function LoginForm() {
             <button
               type="button"
               className="toggle"
-              aria-label={showPw ? 'Hide password' : 'Show password'}
-              onClick={() => setShowPw((s) => !s)}
+              aria-label="Hold to show password"
+              onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); setShowPw(true); }}
+              onPointerUp={() => setShowPw(false)}
+              onPointerCancel={() => setShowPw(false)}
+              onPointerLeave={() => setShowPw(false)}
+              onKeyDown={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setShowPw(true); } }}
+              onKeyUp={(e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setShowPw(false); } }}
+              onBlur={() => setShowPw(false)}
+              onContextMenu={(e) => e.preventDefault()}
             >
               {showPw ? 'Hide' : 'Show'}
             </button>
