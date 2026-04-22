@@ -5352,18 +5352,23 @@ function showBookingDetail(booking) {
         '<div class="modal-eyebrow" style="margin-bottom:10px;">Update status</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">' +
           statusButtons +
-          '<button type="button" class="btn btn-sm btn-danger" data-booking-delete style="margin-left:auto;">Delete</button>' +
+          '<a href="' + mailHref + '" class="btn btn-sm" style="margin-left:auto;">Reply by email</a>' +
+          '<button type="button" class="btn btn-sm btn-danger" data-booking-delete>Delete</button>' +
         '</div>' +
       '</section>' +
       '<div class="modal-error" data-modal-error hidden></div>',
     confirmLabel: 'Close',
-    cancelLabel: 'Reply by email',
-    onCancel: () => { window.location.href = mailHref; },
+    cancelLabel: 'Close',
     onConfirm: () => true,
   });
 
   const root = document.querySelector('.modal-backdrop');
   if (!root) return;
+  // The footer duplicates the close action from the X / backdrop / Escape
+  // handlers. Hide the redundant ghost cancel button so only the primary
+  // Close remains.
+  const redundantCancel = root.querySelector('[data-modal-cancel]');
+  if (redundantCancel) redundantCancel.hidden = true;
   root.querySelectorAll('[data-booking-status]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const s = btn.getAttribute('data-booking-status');
