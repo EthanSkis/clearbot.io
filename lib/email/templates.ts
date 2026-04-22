@@ -22,15 +22,18 @@ export function renderNewMessage(input: MessageInput): { subject: string; html: 
     ? `New message · ${input.threadTitle}`
     : 'New message on your ClearBot project';
 
+  const excerpt = `
+    <div style="border-left: 2px solid #0a0b0d; padding: 4px 0 4px 16px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.65; letter-spacing: 0.01em; color: #0a0b0d; white-space: pre-wrap; word-break: break-word;">&ldquo;${esc(trimmedPreview)}&rdquo;</div>`;
+
   const html = renderShell({
     eyebrow: 'Messages',
     headlineEmphasis: `Hi ${greet},`,
     headline: 'you have a new message.',
     lede: `<em style="font-style: italic; color:#6f6d65;">${esc(input.senderLabel)}</em> just sent you a note${
       input.threadTitle ? ` on <em style="font-style: italic;">${esc(input.threadTitle)}</em>` : ''
-    }. The excerpt is below — open the thread to read the rest and reply.`,
+    }. Here's the excerpt &mdash; open the thread to read the rest and reply.`,
+    body: excerpt,
     meta,
-    closing: `<span style="font-family:'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-style: normal; font-size: 13px; letter-spacing: 0.01em; color:#0a0b0d; white-space: pre-wrap;">&ldquo;${esc(trimmedPreview)}&rdquo;</span>`,
     ctaLabel: 'Open thread',
     ctaHref: `${CLIENT_URL}/messages`,
   });
