@@ -1372,8 +1372,7 @@ body:has(.view-pane[data-view-pane="messages-all"]:not([hidden])) .msg-shell {
               <label class="toggle"><input type="checkbox" id="det-notif-deliverables" />Deliverables</label>
               <label class="toggle"><input type="checkbox" id="det-notif-messages" />Messages</label>
               <label class="toggle"><input type="checkbox" id="det-notif-invoices" />Invoices</label>
-              <label class="toggle"><input type="checkbox" id="det-notif-digest" />Digest</label>
-              <label class="toggle"><input type="checkbox" id="det-notif-slack" />Slack</label>
+              <label class="toggle"><input type="checkbox" id="det-notif-digest" disabled />Digest</label>
             </div>
           </div>
           <div style="display: flex; gap: 14px; align-items: center; margin-top: 22px;">
@@ -2621,7 +2620,6 @@ function fillProfileForm(profile) {
   setCheck('det-notif-messages',     profile.notif_messages !== false);
   setCheck('det-notif-invoices',     profile.notif_invoices !== false);
   setCheck('det-notif-digest',       !!profile.notif_digest);
-  setCheck('det-notif-slack',        !!profile.notif_slack);
   const msg = $('[data-save-msg]'); if (msg) msg.textContent = '';
 }
 
@@ -4038,7 +4036,6 @@ function wireNav() {
         notif_messages:     !!document.getElementById('det-notif-messages').checked,
         notif_invoices:     !!document.getElementById('det-notif-invoices').checked,
         notif_digest:       !!document.getElementById('det-notif-digest').checked,
-        notif_slack:        !!document.getElementById('det-notif-slack').checked,
       };
       const res = await upsertProfile(state.selectedUserId, patch);
       save.removeAttribute('disabled');
