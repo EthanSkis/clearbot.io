@@ -19,10 +19,10 @@ export interface TierGroup {
 }
 
 export const TIER_GROUPS: TierGroup[] = [
-  { tier: 'core',       code: '§ 01a', label: 'Core · flagship',       blurb: 'The three lanes most engagements land in.' },
-  { tier: 'fast',       code: '§ 01b', label: 'Fast-turn add-ons',     blurb: 'Pure-LLM deliverables. Sprints, not projects.' },
-  { tier: 'production', code: '§ 01c', label: 'Production · series',   blurb: 'Multi-asset output, often on retainer.' },
-  { tier: 'specialty',  code: '§ 01d', label: 'Specialty',             blurb: 'Craft-heavy, scope-specific commissions.' }
+  { tier: 'core',       code: '§ 01a', label: '$500–$1,200 / location / year · plans',  blurb: 'For operators with 1 to 500 locations. Pick a tier, upgrade as trust is built.' },
+  { tier: 'fast',       code: '§ 01b', label: 'Day-1 setup · included on every plan',   blurb: 'Every license mapped before the first renewal hits your calendar.' },
+  { tier: 'production', code: '§ 01c', label: 'Always-on automations · daily',          blurb: 'The systems that run every day across every location you operate.' },
+  { tier: 'specialty',  code: '§ 01d', label: '20+ locations · custom pricing',         blurb: 'Enterprise operators and jurisdiction-intelligence buyers.' }
 ];
 
 export interface ProcessStep {
@@ -39,89 +39,89 @@ export interface Collaborator {
 
 export const SERVICES: Service[] = [
   {
-    id: 'brand',
+    id: 'essential',
     tier: 'core',
-    name: 'Brand & graphic design',
-    meta: 'identity · graphics',
-    body: 'Logos, identity systems, and one-off graphics. Shipped as a Figma library plus a PDF guide, so every poster, post, and page stays on-brand.'
+    name: 'Essential',
+    meta: '$500 / location / yr · 1+ locations',
+    body: 'Deadline tracking across every license, a document vault for COIs and certifications, and 90/60/30-day alerts with exactly what each renewal needs. You file. We make sure you never forget.'
   },
   {
-    id: 'web',
+    id: 'standard',
     tier: 'core',
-    name: 'Website design',
-    meta: 'new builds',
-    body: 'Marketing sites and landing pages, built from scratch. On-brand, fast, analytics-wired. Next.js, Framer, or Webflow — whichever fits the job.'
+    name: 'Standard',
+    meta: '$800 / location / yr · 3+ locations',
+    body: 'Everything in Essential, plus prep packets — pre-filled renewal forms, assembled documents, and the exact fee, delivered ready-to-submit. You review and file.'
   },
   {
-    id: 'rescue',
+    id: 'professional',
     tier: 'core',
-    name: 'Website rescues',
-    meta: 'fixes · redesigns',
-    body: 'Your site isn’t landing. I take what’s there, keep what works, and redesign the rest until it reads like the business you actually are.'
+    name: 'Professional',
+    meta: '$1,200 / location / yr · 5+ locations',
+    body: 'Everything in Standard, plus auto-submission. ClearBot logs into agency portals under your account, fills the form, pays the fee, and downloads the confirmation. You approve in-app.'
   },
   {
-    id: 'copy',
+    id: 'mapping',
     tier: 'fast',
-    name: 'Landing-page copy',
-    meta: 'words · conversion',
-    body: 'Headlines, hero, features, FAQ, CTAs. Three angles drafted fast, then tightened until the page actually sounds like you and earns the click.'
+    name: 'License discovery',
+    meta: 'included · week 1',
+    body: 'Upload your current licenses or connect your state portal. Claude extracts every expiration date, license number, and issuing agency in under an hour — nothing missed.'
   },
   {
-    id: 'audit',
+    id: 'gaps',
     tier: 'fast',
-    name: 'Site & brand audit',
-    meta: 'teardown · 48h',
-    body: 'A written teardown of your site or brand — hierarchy, clarity, tone, consistency — with five prioritized fixes. Flat fee, back in your inbox in 48 hours.'
+    name: 'Gap audit',
+    meta: 'included · week 1',
+    body: 'We compare your license set to what the knowledge base says a business of your type and location should hold. Missing permits, lapsed certificates, and stale documents are surfaced on day one.'
   },
   {
-    id: 'naming',
+    id: 'vault',
     tier: 'fast',
-    name: 'Naming & taglines',
-    meta: 'sprint · 2 days',
-    body: 'Twenty name candidates, ten taglines, domain checks, and a shortlist with rationale. Two-day sprint for new ventures or products that need a sharper hook.'
+    name: 'Document vault',
+    meta: 'always-on · every plan',
+    body: 'Manager certifications, certificates of insurance, food-handler permits, health inspections — every recurring document your renewals need, stored once and attached automatically.'
   },
   {
-    id: 'ads',
+    id: 'alerts',
     tier: 'production',
-    name: 'Ad creative packs',
-    meta: 'static · motion',
-    body: 'Static and motion ad variants for Meta, Google, and LinkedIn. Ten creatives a pack, each in three aspect ratios, copy hooks and layouts tuned to your audience.'
+    name: 'Deadline engine',
+    meta: 'daily · email + SMS + portal',
+    body: '90, 60, and 30-day alerts tailored per license. Each one ships with the current form, the current fee, a checklist of required documents, and a one-click start-renewal link.'
   },
   {
-    id: 'content',
+    id: 'prep',
     tier: 'production',
-    name: 'Content engine',
-    meta: 'retainer · monthly',
-    body: 'A monthly drop of on-brand social graphics and captions for LinkedIn, Instagram, and X. You stay posting without stopping to design every single tile.'
+    name: 'Prep packets',
+    meta: 'Standard + Pro · per filing',
+    body: 'For every upcoming renewal, a packet with the form pre-filled from your license record, every required document attached from the vault, and the exact fee total. Ready to submit in minutes.'
   },
   {
-    id: 'video',
+    id: 'autofile',
     tier: 'production',
-    name: 'Motion & video',
-    meta: 'loops · teasers',
-    body: 'Animated logos, hero loops, and short product teasers. Fast turnarounds for sites, ads, and launches that need something moving, not another still.'
+    name: 'Portal auto-submission',
+    meta: 'Professional · per filing',
+    body: 'For agencies with online portals, a Playwright agent logs in under your credentials, completes the form, pays the fee, and captures the confirmation number — with a human fallback if anything breaks.'
   },
   {
-    id: 'deck',
+    id: 'enterprise',
     tier: 'specialty',
-    name: 'Pitch-deck design',
-    meta: 'narrative · slides',
-    body: 'Investor and sales decks, ten to fifteen slides. Narrative structured first, then designed as a system you can extend yourself without breaking the look.'
+    name: 'Enterprise',
+    meta: 'custom · 20+ locations',
+    body: 'Dedicated ops lead, SLA on every filing, data exports, API access, custom jurisdiction coverage, and role-based access for your legal, finance, and operations teams.'
   },
   {
-    id: 'icons',
+    id: 'data',
     tier: 'specialty',
-    name: 'Illustration & icon packs',
-    meta: 'custom set',
-    body: 'Custom icon sets or spot-illustration packs matched to your brand. Twenty icons or ten illustrations, shipped as editable vector for wherever they need to go.'
+    name: 'Jurisdiction intelligence',
+    meta: 'data license · from $15k/yr',
+    body: 'Aggregated, anonymized data on real-world agency processing times, fee changes, and rejection patterns by metro — licensed to CRE, insurance underwriters, franchise brokers, and PE operators.'
   }
 ];
 
 export const PROCESS: ProcessStep[] = [
-  { n: '01', name: 'Brief',   body: 'A quick form, or a 30-minute call. I learn what you sell, who buys it, and what the work needs to do.' },
-  { n: '02', name: 'Concept', body: 'I come back within a couple days with a direction — mood, sketches, rationale. You react; I sharpen.' },
-  { n: '03', name: 'Make',    body: 'I build the thing end to end — identity, site, graphic. You see progress, not a black box.' },
-  { n: '04', name: 'Ship',    body: 'Work goes live in your channels. I stick around to tune anything that isn’t earning its keep.' }
+  { n: 'Day 1',    name: 'Kickoff call',       body: 'A 30-minute working session. We pull your current license list from uploads or your state portal account and map each one to our knowledge base. Gaps and lapses surface live on the call.' },
+  { n: 'Week 1',   name: 'Full license map',   body: 'Every license, every location, every deadline — in one dashboard. Document vault populated with COIs, manager certifications, and any recurring paperwork your renewals need.' },
+  { n: 'Week 2',   name: 'First renewal live', body: 'Within two weeks the first upcoming renewal is pre-prepped, approved by your team, and filed. You watch the full loop end-to-end before we run the next one.' },
+  { n: 'Always-on',name: 'Runs itself',        body: 'Deadlines become alerts. Alerts become prep packets. Prep packets become filings. You approve in-app or let Auto mode handle portal-friendly agencies hands-off.' }
 ];
 
 // Collaborators / clients the studio has shipped work for.

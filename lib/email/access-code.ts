@@ -304,7 +304,7 @@ export function renderAccessCodeEmail(input: AcceptanceInput): { subject: string
             <div class="signature-name" style="font-family: Fraunces, Georgia, serif; font-weight: 400; font-size: 22px; letter-spacing: -0.01em; color: rgb(10, 11, 13); margin-top: 8px;">
               <em style="font-style: italic; font-weight: 300;">Ethan</em> Gardner</div>
             <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgb(111, 109, 101); margin-top: 4px;">
-              Founder &middot; ClearBot Solutions</div>
+              Founder &middot; ClearBot</div>
           </td>
         </tr>
 
@@ -312,7 +312,7 @@ export function renderAccessCodeEmail(input: AcceptanceInput): { subject: string
         <tr>
           <td class="px-inner closing-line" style="padding: 26px 40px 40px 40px;">
             <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; color: #6f6d65;">
-              Built for the quiet efficient future.
+              So a missed renewal is no longer possible.
             </div>
           </td>
         </tr>
@@ -323,7 +323,7 @@ export function renderAccessCodeEmail(input: AcceptanceInput): { subject: string
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
               <tbody><tr>
                 <td align="left" valign="top" class="footer-col" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgb(111, 109, 101);">
-                  ClearBot Solutions<br>
+                  ClearBot<br>
                   <span style="color:#b7b4ab;">mccall, id</span></td>
                 <td align="right" valign="top" class="footer-col" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab;">
                   <a href="https://clearbot.io/unsubscribe" style="color:#6f6d65; text-decoration: none;">Unsubscribe</a> &nbsp;&middot;&nbsp; <a href="https://clearbot.io/preferences" style="color:#6f6d65; text-decoration: none;">Preferences</a><br>

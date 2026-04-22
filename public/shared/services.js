@@ -3,24 +3,24 @@
 // Used by the static client/team portals which can't import .ts directly.
 
 export const TIER_GROUPS = [
-  { tier: 'core',       code: '§ 01a', label: 'Core · flagship',     blurb: 'The three lanes most engagements land in.' },
-  { tier: 'fast',       code: '§ 01b', label: 'Fast-turn add-ons',   blurb: 'Pure-LLM deliverables. Sprints, not projects.' },
-  { tier: 'production', code: '§ 01c', label: 'Production · series', blurb: 'Multi-asset output, often on retainer.' },
-  { tier: 'specialty',  code: '§ 01d', label: 'Specialty',           blurb: 'Craft-heavy, scope-specific commissions.' }
+  { tier: 'core',       code: '§ 01a', label: 'Plans · per location / year', blurb: 'Start where you are comfortable. Upgrade as trust is built.' },
+  { tier: 'fast',       code: '§ 01b', label: 'Onboarding & discovery',      blurb: 'Get every license mapped before the first renewal hits.' },
+  { tier: 'production', code: '§ 01c', label: 'Ongoing automations',         blurb: 'The systems that run every day across every location.' },
+  { tier: 'specialty',  code: '§ 01d', label: 'Enterprise & data',           blurb: 'Tailored for 20+ location operators and intelligence buyers.' }
 ];
 
 export const SERVICES = [
-  { id: 'brand',   tier: 'core',       name: 'Brand & graphic design',     meta: 'identity · graphics' },
-  { id: 'web',     tier: 'core',       name: 'Website design',             meta: 'new builds' },
-  { id: 'rescue',  tier: 'core',       name: 'Website rescues',            meta: 'fixes · redesigns' },
-  { id: 'copy',    tier: 'fast',       name: 'Landing-page copy',          meta: 'words · conversion' },
-  { id: 'audit',   tier: 'fast',       name: 'Site & brand audit',         meta: 'teardown · 48h' },
-  { id: 'naming',  tier: 'fast',       name: 'Naming & taglines',          meta: 'sprint · 2 days' },
-  { id: 'ads',     tier: 'production', name: 'Ad creative packs',          meta: 'static · motion' },
-  { id: 'content', tier: 'production', name: 'Content engine',             meta: 'retainer · monthly' },
-  { id: 'video',   tier: 'production', name: 'Motion & video',             meta: 'loops · teasers' },
-  { id: 'deck',    tier: 'specialty',  name: 'Pitch-deck design',          meta: 'narrative · slides' },
-  { id: 'icons',   tier: 'specialty',  name: 'Illustration & icon packs',  meta: 'custom set' }
+  { id: 'essential',    tier: 'core',       name: 'Essential',                 meta: '$500 / loc / yr · 1+ locations' },
+  { id: 'standard',     tier: 'core',       name: 'Standard',                  meta: '$800 / loc / yr · 3+ locations' },
+  { id: 'professional', tier: 'core',       name: 'Professional',              meta: '$1,200 / loc / yr · 5+ locations' },
+  { id: 'mapping',      tier: 'fast',       name: 'License discovery',        meta: 'included · week 1' },
+  { id: 'gaps',         tier: 'fast',       name: 'Gap audit',                 meta: 'included · week 1' },
+  { id: 'vault',        tier: 'fast',       name: 'Document vault',            meta: 'always-on · every plan' },
+  { id: 'alerts',       tier: 'production', name: 'Deadline engine',          meta: 'daily · email + SMS + portal' },
+  { id: 'prep',         tier: 'production', name: 'Prep packets',              meta: 'Standard + Pro · per filing' },
+  { id: 'autofile',     tier: 'production', name: 'Portal auto-submission',    meta: 'Professional · per filing' },
+  { id: 'enterprise',   tier: 'specialty',  name: 'Enterprise',                meta: 'custom · 20+ locations' },
+  { id: 'data',         tier: 'specialty',  name: 'Jurisdiction intelligence', meta: 'data license · from $15k/yr' }
 ];
 
 const TIER_LETTER = { core: 'a', fast: 'b', production: 'c', specialty: 'd' };

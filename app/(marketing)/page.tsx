@@ -13,7 +13,7 @@ export default function MarketingHome() {
             <span>ClearBot</span>
           </a>
           <span className="bar-sep">/</span>
-          <span className="bar-tag">Your idea. Perfected.</span>
+          <span className="bar-tag">Business license automation.</span>
         </div>
         <div className="bar-actions">
           <a className="ghost-btn bar-action-inline" href={`${SIGNUP_URL}/book`}>Book intro</a>
@@ -39,20 +39,40 @@ export default function MarketingHome() {
         <section className="hero" id="workflows">
           <span className="eyebrow">
             <span className="pulse-dot" />
-            AI-assisted design studio
+            Built for operators running 5 to 500 locations
           </span>
 
           <h1 className="hero-headline">
-            <span className="it">Your idea. </span>
-            <span className="rm">Perfected.</span>
+            <span className="it">Stop managing license renewals </span>
+            <span className="rm">in spreadsheets.</span>
           </h1>
 
-         <p className="lede">
-  From identity to ad creative to rescues. One designer, AI-powered, shipping work
-  that converts.{' '}
-  <em>Brand, growth, converts.</em>
-</p>
+          <p className="lede">
+            ClearBot tracks, prepares, and files every renewal across every location —{' '}
+            <em>so a lapse is no longer possible.</em>
+          </p>
 
+          <aside className="fear-hook" aria-label="What a lapsed license actually costs">
+            <div className="fear-hook-stat">
+              <span className="fear-hook-k">CA</span>
+              <span className="fear-hook-v">
+                A lapsed liquor license triggers full re-application — an{' '}
+                <em>18-month process</em>.
+              </span>
+            </div>
+            <div className="fear-hook-stat">
+              <span className="fear-hook-k">TX</span>
+              <span className="fear-hook-v">
+                A missed food-service permit: <em>$500/day</em> in fines until cured.
+              </span>
+            </div>
+            <div className="fear-hook-stat">
+              <span className="fear-hook-k">NY</span>
+              <span className="fear-hook-v">
+                Health-department lapse: <em>mandatory closure</em> pending reinstatement.
+              </span>
+            </div>
+          </aside>
 
           <MarketingHomeClient />
         </section>
@@ -65,7 +85,7 @@ export default function MarketingHome() {
           <span className="bracket bracket-tl" />
           <span className="bracket bracket-br" />
           <header className="panel-head">
-            <span>INTAKE · CLEARBOT SOLUTIONS</span>
+            <span>INTAKE · CLEARBOT</span>
             <span className="status-tag">
               <span className="pulse-dot" />
               <span>OPEN</span>
@@ -74,12 +94,13 @@ export default function MarketingHome() {
           <div className="cta-body">
             <div className="cta-copy">
               <h2 className="cta-title">
-                <span className="it">Tell me what you need </span>
-                <span className="rm">made.</span>
+                <span className="it">Book a free </span>
+                <span className="rm">15-minute call.</span>
               </h2>
               <p className="cta-text">
-                A 30-minute intro call is free. You&rsquo;ll leave with a direction for the work, a rough
-                timeline, and a price.
+                You&rsquo;ll leave with a <em>map of every license we&rsquo;d manage for you</em>, a
+                renewal calendar showing every upcoming deadline, and a flat per-location
+                price. No obligation.
               </p>
             </div>
             <div className="cta-actions">
@@ -96,8 +117,8 @@ export default function MarketingHome() {
       </main>
 
       <footer className="foot">
-        <div className="foot-left">© 2026 ClearBot Solutions</div>
-        <div className="foot-mid">Your idea. Perfected.</div>
+        <div className="foot-left">© 2026 ClearBot</div>
+        <div className="foot-mid">Business license renewals, automated.</div>
         <div className="foot-right">
           <a href={SIGNUP_URL}>Sign up</a>
           <a href="https://twitter.com/TheClearBot" target="_blank" rel="noopener noreferrer">Twitter</a>
