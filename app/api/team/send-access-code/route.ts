@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   }
   const { email, code, firstName } = parsed.data;
 
-  const { data: row, error: lookupErr } = await admin
+  const { data: rawRow, error: lookupErr } = await admin
     .from('access_codes')
     .select('code, name')
     .eq('code', code)
@@ -28,9 +28,10 @@ export async function POST(req: Request) {
   if (lookupErr) {
     return NextResponse.json({ error: lookupErr.message }, { status: 500 });
   }
-  if (!row) {
+  if (!rawRow) {
     return NextResponse.json({ error: 'Access code not found' }, { status: 404 });
   }
+  const row = rawRow as { code: string; name: string | null };
 
   const resolvedFirstName = (firstName || deriveFirstName(row.name)).trim();
   const { subject, html } = renderAccessCodeEmail({
