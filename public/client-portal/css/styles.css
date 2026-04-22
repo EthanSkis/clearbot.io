@@ -43,6 +43,7 @@ html, body {
 
 /* Firefox */
 html {
+  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: rgba(243, 241, 234, 0.18) transparent;
 }
