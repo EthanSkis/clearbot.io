@@ -101,15 +101,8 @@
           <div style="display:flex; flex-direction:column; gap:12px;">
             <label class="toggle"><input id="settings-notif-deliverables" type="checkbox" /> New deliverables</label>
             <label class="toggle"><input id="settings-notif-messages" type="checkbox" /> New messages</label>
-            <label class="toggle"><input id="settings-notif-digest" type="checkbox" /> Weekly project digest</label>
-            <label class="toggle"><input id="settings-notif-invoices" type="checkbox" /> Invoice issued · due reminder</label>
-          </div>
-        </div>
-        <div class="form-row">
-          <label class="form-label">Slack</label>
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <label class="toggle"><input id="settings-notif-slack" type="checkbox" /> Mirror email notifications to Slack</label>
-            <a class="btn btn-sm" href="#" style="align-self:flex-start;">Connect Slack</a>
+            <label class="toggle toggle-disabled" style="opacity:0.55;"><input id="settings-notif-digest" type="checkbox" disabled /> Weekly project digest <span style="font-size:10px;color:var(--ink-dim);letter-spacing:0.08em;text-transform:uppercase;margin-left:6px;">Coming soon</span></label>
+            <label class="toggle"><input id="settings-notif-invoices" type="checkbox" /> Invoice issued &middot; due reminder</label>
           </div>
         </div>
       </div>

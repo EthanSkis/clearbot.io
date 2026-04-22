@@ -1248,7 +1248,6 @@ async function renderSettings(user) {
     'settings-notif-messages':     profile.notif_messages !== false,
     'settings-notif-digest':       !!profile.notif_digest,
     'settings-notif-invoices':     profile.notif_invoices !== false,
-    'settings-notif-slack':        !!profile.notif_slack,
   };
   for (const [id, checked] of Object.entries(toggles)) {
     const el = document.getElementById(id);
@@ -1299,7 +1298,6 @@ async function renderSettings(user) {
         notif_messages:     !!document.getElementById('settings-notif-messages')?.checked,
         notif_digest:       !!document.getElementById('settings-notif-digest')?.checked,
         notif_invoices:     !!document.getElementById('settings-notif-invoices')?.checked,
-        notif_slack:        !!document.getElementById('settings-notif-slack')?.checked,
       };
       const res = await data.upsertProfile(user.id, patch);
       saveBtn.removeAttribute('disabled');
