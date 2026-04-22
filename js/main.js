@@ -193,10 +193,10 @@ const SERVICES = [
 ];
 
 const PROCESS = [
-  { n: '01', name: 'Onboard',    body: 'Upload your current licenses or connect your state portal account. We extract every expiration date, license number, and agency in under an hour.' },
-  { n: '02', name: 'Map',        body: 'Each license is matched to our knowledge base. Missing licenses, lapsed permits, and gaps in your document vault are surfaced on day one.' },
-  { n: '03', name: 'Track',      body: 'Deadlines become alerts. 90, 60, 30 days out — every renewal with the exact form, exact fee, and exact document list, routed to the right owner.' },
-  { n: '04', name: 'File',       body: 'Choose Alert, Prep, or Auto mode per license. We file, pay, and log confirmations. Every filing becomes evidence in an audit-ready trail.' },
+  { n: 'Day 1',     name: 'Kickoff call',       body: 'A 30-minute working session. We pull your current license list from uploads or your state portal and map each one to our knowledge base. Gaps and lapses surface live on the call.' },
+  { n: 'Week 1',    name: 'Full license map',   body: 'Every license, every location, every deadline — in one dashboard. Document vault populated with COIs, manager certifications, and any recurring paperwork your renewals need.' },
+  { n: 'Week 2',    name: 'First renewal live', body: 'Within two weeks the first upcoming renewal is pre-prepped, approved by your team, and filed. You watch the full loop end-to-end before the next one runs.' },
+  { n: 'Always-on', name: 'Runs itself',        body: 'Deadlines become alerts. Alerts become prep packets. Prep packets become filings. You approve in-app or let Auto mode handle portal-friendly agencies hands-off.' },
 ];
 
 // ── State & layout constants ────────────────────────────────
@@ -257,9 +257,6 @@ function renderServices() {
       </div>
       <h3 class="service-name">${escape(s.name)}</h3>
       <p class="service-body">${escape(s.body)}</p>
-      <a class="service-cta" href="https://signup.clearbot.io/book?focus=${encodeURIComponent(s.id)}">Book a call about this
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
     </article>
   `).join('');
 }

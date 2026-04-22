@@ -1,6 +1,5 @@
 import Image from 'next/image';
 import { SERVICES, PROCESS, COLLABORATORS, TIER_GROUPS, type Collaborator, type Service, type ServiceTier } from './automations';
-import { SIGNUP_URL } from '@/lib/env';
 
 const TIER_CODES: Record<ServiceTier, string> = {
   core:       'CORE',
@@ -46,7 +45,7 @@ export function MarketingHomeClient() {
       })}
 
       <div className="divider" id="process">
-        <span>§ 02 · Onboarding</span>
+        <span>§ 02 · Live in two weeks</span>
         <span className="divider-line" />
       </div>
       <div className="process">
@@ -83,21 +82,6 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       </div>
       <h3 className="service-name">{service.name}</h3>
       <p className="service-body">{service.body}</p>
-      <a
-        className="service-cta"
-        href={`${SIGNUP_URL}/book?focus=${encodeURIComponent(service.id)}`}
-      >
-        Book a call about this
-        <svg width={12} height={12} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M5 12h14M13 6l6 6-6 6"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </a>
     </article>
   );
 }

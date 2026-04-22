@@ -39,19 +39,40 @@ export default function MarketingHome() {
         <section className="hero" id="workflows">
           <span className="eyebrow">
             <span className="pulse-dot" />
-            License renewal automation · for multi-location operators
+            Built for operators running 5 to 500 locations
           </span>
 
           <h1 className="hero-headline">
-            <span className="it">Every license. </span>
-            <span className="rm">Never late.</span>
+            <span className="it">Stop managing license renewals </span>
+            <span className="rm">in spreadsheets.</span>
           </h1>
 
           <p className="lede">
-            ClearBot tracks, prepares, and files business license renewals for every
-            location you operate — across every agency, every jurisdiction, every form.{' '}
-            <em>A missed renewal is no longer possible.</em>
+            ClearBot tracks, prepares, and files every renewal across every location —{' '}
+            <em>so a lapse is no longer possible.</em>
           </p>
+
+          <aside className="fear-hook" aria-label="What a lapsed license actually costs">
+            <div className="fear-hook-stat">
+              <span className="fear-hook-k">CA</span>
+              <span className="fear-hook-v">
+                A lapsed liquor license triggers full re-application — an{' '}
+                <em>18-month process</em>.
+              </span>
+            </div>
+            <div className="fear-hook-stat">
+              <span className="fear-hook-k">TX</span>
+              <span className="fear-hook-v">
+                A missed food-service permit: <em>$500/day</em> in fines until cured.
+              </span>
+            </div>
+            <div className="fear-hook-stat">
+              <span className="fear-hook-k">NY</span>
+              <span className="fear-hook-v">
+                Health-department lapse: <em>mandatory closure</em> pending reinstatement.
+              </span>
+            </div>
+          </aside>
 
           <MarketingHomeClient />
         </section>
@@ -73,12 +94,13 @@ export default function MarketingHome() {
           <div className="cta-body">
             <div className="cta-copy">
               <h2 className="cta-title">
-                <span className="it">Tell us about your </span>
-                <span className="rm">locations.</span>
+                <span className="it">Book a free </span>
+                <span className="rm">15-minute call.</span>
               </h2>
               <p className="cta-text">
-                A 15-minute intro call is free. You&rsquo;ll leave with a map of every license we&rsquo;d manage
-                for you, a renewal calendar, and a per-location price.
+                You&rsquo;ll leave with a <em>map of every license we&rsquo;d manage for you</em>, a
+                renewal calendar showing every upcoming deadline, and a flat per-location
+                price. No obligation.
               </p>
             </div>
             <div className="cta-actions">

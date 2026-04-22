@@ -19,10 +19,10 @@ export interface TierGroup {
 }
 
 export const TIER_GROUPS: TierGroup[] = [
-  { tier: 'core',       code: '§ 01a', label: 'Plans · per location / year', blurb: 'Start where you are comfortable. Upgrade as trust is built.' },
-  { tier: 'fast',       code: '§ 01b', label: 'Onboarding & discovery',      blurb: 'Get every license mapped before the first renewal hits.' },
-  { tier: 'production', code: '§ 01c', label: 'Ongoing automations',         blurb: 'The systems that run every day across every location.' },
-  { tier: 'specialty',  code: '§ 01d', label: 'Enterprise & data',           blurb: 'Tailored for 20+ location operators and intelligence buyers.' }
+  { tier: 'core',       code: '§ 01a', label: '$500–$1,200 / location / year · plans',  blurb: 'For operators with 1 to 500 locations. Pick a tier, upgrade as trust is built.' },
+  { tier: 'fast',       code: '§ 01b', label: 'Day-1 setup · included on every plan',   blurb: 'Every license mapped before the first renewal hits your calendar.' },
+  { tier: 'production', code: '§ 01c', label: 'Always-on automations · daily',          blurb: 'The systems that run every day across every location you operate.' },
+  { tier: 'specialty',  code: '§ 01d', label: '20+ locations · custom pricing',         blurb: 'Enterprise operators and jurisdiction-intelligence buyers.' }
 ];
 
 export interface ProcessStep {
@@ -118,10 +118,10 @@ export const SERVICES: Service[] = [
 ];
 
 export const PROCESS: ProcessStep[] = [
-  { n: '01', name: 'Onboard', body: 'Upload your current licenses or connect your state portal account. We extract every expiration date, license number, and agency in under an hour.' },
-  { n: '02', name: 'Map',     body: 'Each license is matched to our knowledge base. Missing licenses, lapsed permits, and gaps in your document vault are surfaced on day one.' },
-  { n: '03', name: 'Track',   body: 'Deadlines become alerts. 90, 60, 30 days out — every renewal with the exact form, exact fee, and exact document list, routed to the right owner.' },
-  { n: '04', name: 'File',    body: 'Choose Alert, Prep, or Auto mode per license. We file, pay, and log confirmations. Every filing becomes evidence in an audit-ready trail.' }
+  { n: 'Day 1',    name: 'Kickoff call',       body: 'A 30-minute working session. We pull your current license list from uploads or your state portal account and map each one to our knowledge base. Gaps and lapses surface live on the call.' },
+  { n: 'Week 1',   name: 'Full license map',   body: 'Every license, every location, every deadline — in one dashboard. Document vault populated with COIs, manager certifications, and any recurring paperwork your renewals need.' },
+  { n: 'Week 2',   name: 'First renewal live', body: 'Within two weeks the first upcoming renewal is pre-prepped, approved by your team, and filed. You watch the full loop end-to-end before we run the next one.' },
+  { n: 'Always-on',name: 'Runs itself',        body: 'Deadlines become alerts. Alerts become prep packets. Prep packets become filings. You approve in-app or let Auto mode handle portal-friendly agencies hands-off.' }
 ];
 
 // Collaborators / clients the studio has shipped work for.
