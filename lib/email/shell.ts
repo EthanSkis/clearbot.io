@@ -9,6 +9,10 @@ type ShellArgs = {
   headline: string;
   headlineEmphasis?: string;
   lede: string;
+  // Optional block rendered directly under the lede, before the meta row
+  // and CTA. Useful for inline quotes/excerpts that belong with the
+  // narrative rather than after the button.
+  body?: string;
   ctaLabel?: string;
   ctaHref?: string;
   // Optional 2-column metadata row rendered under the lede. Labels are
@@ -20,6 +24,14 @@ type ShellArgs = {
 
 export function renderShell(args: ShellArgs): string {
   const meta = args.meta?.length ? renderMetaRow(args.meta) : '';
+  const body = args.body
+    ? `
+        <tr>
+          <td class="px-inner" style="padding: 0 40px 28px 40px;">
+            ${args.body}
+          </td>
+        </tr>`
+    : '';
   const cta =
     args.ctaHref && args.ctaLabel
       ? `
@@ -99,6 +111,8 @@ export function renderShell(args: ShellArgs): string {
             ${args.lede}
           </td>
         </tr>
+
+        ${body}
 
         ${meta}
 
