@@ -1,0 +1,360 @@
+import 'server-only';
+import { SIGNUP_URL } from '@/lib/env';
+
+type AcceptanceInput = {
+  firstName?: string | null;
+  code: string;
+  date?: Date;
+};
+
+export function renderAccessCodeEmail(input: AcceptanceInput): { subject: string; html: string } {
+  const firstName = (input.firstName || '').trim() || 'there';
+  const code = input.code;
+  const date = (input.date || new Date()).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  const signupUrl = SIGNUP_URL.replace(/\/$/, '') || 'https://signup.clearbot.io';
+
+  const subject = "You're in — ClearBot Founding Operators, Cohort 001";
+
+  const html = `<!DOCTYPE html><html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>You're in &mdash; ClearBot Founding Operators, Cohort 001</title>
+
+<!-- Preheader (shows in inbox preview, hidden in body) -->
+<style>
+  .preheader { display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; overflow:hidden; mso-hide:all; }
+  /* Google Fonts &mdash; ignored by Outlook/Gmail-app but works in modern web clients */
+  @import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400&family=JetBrains+Mono:wght@400;500&display=swap");
+
+  /* Links */
+  a { color: #0a0b0d; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; text-decoration-color: rgba(10,11,13,0.35); }
+  a:hover { color: #0a0b0d; text-decoration-color: #0a0b0d; text-decoration-thickness: 1.5px; }
+
+  /* Mobile */
+  @media only screen and (max-width: 620px) {
+    .container { width: 100% !important; }
+    .px-outer { padding-left: 20px !important; padding-right: 20px !important; }
+    .px-inner { padding-left: 22px !important; padding-right: 22px !important; }
+    .h1 { font-size: 38px !important; line-height: 1.05 !important; }
+    .lede { font-size: 17px !important; }
+    .code { font-size: 26px !important; letter-spacing: 0.08em !important; }
+    .stack { display: block !important; width: 100% !important; padding-bottom: 18px !important; }
+    .stack-last { padding-bottom: 0 !important; }
+    .cta { display: block !important; text-align: center !important; }
+    .hide-mobile { display: none !important; }
+  }
+</style>
+</head>
+
+<body style="margin: 0px; padding: 0px; background: rgb(243, 241, 234); color: rgb(10, 11, 13); -webkit-font-smoothing: antialiased; text-size-adjust: 100%;">
+
+<!-- Inbox preview text -->
+<div class="preheader">Out of 1,180 applicants, you're one of 24. Your access code is inside &mdash; redeem before April 27.</div>
+
+<!-- Outer wrapper -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f3f1ea; margin:0; padding:0;">
+  <tbody><tr>
+    <td align="center" class="px-outer" style="padding: 40px 24px;">
+
+      <!-- Container -->
+      <table role="presentation" width="600" class="container" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:600px; background:#f3f1ea; border:1px solid rgba(10,11,13,0.10);">
+
+        <!-- Masthead -->
+        <tbody><tr>
+          <td class="px-inner" style="padding: 28px 40px 24px 40px; border-bottom: 1px solid rgba(10,11,13,0.10);">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td align="left" valign="middle" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; color: #0a0b0d;">
+                  <span style="display:inline-block; vertical-align:middle; width:18px; height:18px; margin-right:10px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1008 1008" width="18" height="18" style="display:block;"><path fill="#0a0b0d" fill-rule="evenodd" d="M599.65 123.37c-.83.06-44.73.2-97.55.31-85.09.19-96.86.3-103.34 1.04-21.83 2.49-45.91 7.29-65.03 12.98-14.13 4.2-34.84 11.28-43.39 14.84-12.29 5.11-21.53 9.58-34.62 16.76-26.27 14.4-41.77 24.38-57.6 37.09-7.51 6.02-20.58 17.42-28.48 24.83-15.24 14.28-32.19 33.33-46.11 51.82-7.21 9.58-12.3 17.3-20.8 31.53-10.8 18.11-17.67 31.24-23.84 45.62-5.08 11.83-14.8 40.16-19.11 55.67-4.67 16.8-8.72 37.2-10.83 54.48-1.93 15.86-2.66 27.93-2.67 44.37-.02 21.33 1.22 41.17 3.68 58.98 2.04 14.72 7.12 37.27 12.38 54.95 2.57 8.63 13.24 38.92 15.8 44.84 2.67 6.18 10.68 22.54 14.08 28.76 1.75 3.19 7.92 13.4 13.73 22.68 8.04 12.85 12.46 19.31 18.47 27.01 14.59 18.67 23.24 28.35 40.74 45.59 14.64 14.42 21.23 20.3 31.95 28.55 19.01 14.62 27.45 20.58 38.96 27.5 9.03 5.43 29.81 16.17 42.87 22.16 22.2 10.19 44.51 17.97 64.62 22.53 31.03 7.04 47.42 9.82 66.29 11.23 11.78.88 58.74.9 67.3.03 17.46-1.78 37.66-5.12 55.45-9.16 7.49-1.7 15.54-3.64 17.9-4.29 14.14-3.97 35.58-11.68 47.83-17.23 4.61-2.08 16.2-7.73 25.77-12.55 12.48-6.29 20.25-10.58 27.51-15.2 11.75-7.48 20.66-13.66 29.31-20.34 3.39-2.61 8.61-6.61 11.6-8.88 2.99-2.28 7.02-5.54 8.96-7.25 7.92-6.99 37.18-36.45 42.26-42.56 7.76-9.31 23.42-30.3 29.93-40.08 8.46-12.73 13.24-21.05 21.56-37.56 10.22-20.25 15.05-31.44 20.92-48.39 6.54-18.92 12.52-44.08 17.38-73.1 3.63-21.75 4.42-40.39 3.32-78.39-.45-15.54-1.03-21.52-3.82-39.57-1.68-10.88-7.93-40.89-10.1-48.48-2.81-9.86-8.81-27.25-13.72-39.74-5.63-14.34-6.98-18.24-6.51-18.71.59-.6 53.38-1.14 114.42-1.17l56.84-.04v-33.85-33.85l-91.88.33c-50.53.18-165.03.38-254.45.44-89.42.06-171.99.27-183.5.45-21.56.34-31.09 1-42.6 2.97-8.48 1.44-33.09 7.6-40.33 10.09-16.9 5.81-34.34 14.65-52.43 26.57-10.11 6.67-15.73 10.83-22.73 16.83-22.89 19.63-40.94 42.19-55.82 69.76-2.4 4.44-5.71 11.18-7.36 14.99-3.64 8.4-11.37 31.69-13.83 41.73-2.09 8.49-3.43 15.99-4.68 26.21-.71 5.75-.9 11.08-.89 24.95.01 10.02.28 20.48.63 24.2 1.88 19.81 5.76 37.1 13.36 59.51 3.6 10.62 6.67 17.75 12.02 27.94 4.35 8.29 7.06 12.66 13.93 22.45 11.29 16.1 15.56 21.31 26.03 31.78 14.76 14.76 29.34 27.03 39.98 33.64 5.41 3.36 19.11 10.9 26.59 14.62 10.66 5.31 22.53 10.17 33.28 13.63 12.08 3.89 20.23 5.86 32.5 7.85 15.45 2.5 19 2.74 40.33 2.76 18.34.02 21.27-.09 28.74-1.09 23.7-3.19 39.57-7.11 57.97-14.32 14.99-5.87 34.41-15.94 48.13-24.96 13.7-9.01 19.54-13.88 35.48-29.61 12.32-12.15 17.79-18.29 23.83-26.74 7.64-10.68 15.44-23.93 21.65-36.8 7.89-16.31 12.26-28.38 16.59-45.83 2.96-11.9 4.73-21.97 5.61-31.8.38-4.24.63-15.11.62-27.23-.01-22.64-.31-26.03-3.71-43.1-3.27-16.34-7.04-28.43-13.96-44.73-4.05-9.56-9.02-19.35-15.52-30.63-8.26-14.35-14.88-23.6-23.25-32.52-5.08-5.42-9.94-10.97-11.96-13.67l-1.36-1.83 2.91-.31c1.6-.17 27.09-.46 56.65-.64l53.74-.34 2.53 4.49c7.52 13.35 18.87 38.55 24.81 55.1 3.31 9.23 5.61 17.23 8.31 28.96 4.46 19.32 7.44 36.75 8.85 51.75.3 3.19.68 12.94.85 21.68.45 23.56-.66 39.72-4.17 60.74-2.8 16.72-7.46 36.67-11.34 48.53-3.11 9.49-8.44 22.95-12.92 32.64-3.97 8.59-13.62 27.05-18.14 34.71-4.12 6.97-13.95 21.25-19.98 29.01-8.35 10.76-19.09 22.9-29.03 32.84-13.47 13.47-26.93 24.87-42.74 36.19-9.96 7.12-14.07 9.74-25.1 15.97-21.2 11.99-36.75 19.35-53.82 25.48-10.05 3.61-13.38 4.62-24.57 7.47-13.17 3.36-24.68 5.79-35.86 7.59-15.93 2.56-19.92 2.81-46.31 2.8-19.59 0-26.35-.18-34.03-.9-18.38-1.74-30.75-3.85-51.16-8.75-20.64-4.96-30.1-8.17-49.21-16.73-13.64-6.11-20.57-9.63-33.72-17.11-17.12-9.75-23.8-14.45-45.12-31.77-7.7-6.26-13.91-11.89-21.44-19.45-11.31-11.36-23.56-24.72-28.72-31.31-4.33-5.54-20.99-30.41-25.32-37.81-4.35-7.42-11.24-20.87-14.33-27.98-3.11-7.12-7.51-18.65-10.78-28.2-7.29-21.31-10.84-36.06-15.17-63.05l-1.82-11.34-.24-20.42c-.26-20.8.2-33.8 1.61-46.12 2.83-24.69 6.75-42.54 14.34-65.29 11.47-34.4 22.23-56.13 42.31-85.44 9.46-13.8 21.02-27.62 35.61-42.55 9.72-9.95 18.95-18.33 29.83-27.1 10.88-8.76 12.59-10.01 22.6-16.39 27.27-17.4 42.97-25.44 65.08-33.36 14.03-5.02 30.96-10.35 40.11-12.64 4.06-1.01 13.48-3.1 20.92-4.64l13.53-2.79 265.42-.22c145.98-.12 275.01-.36 286.72-.53l21.3-.3v-33.78-33.78l-186.4.19c-102.52.1-187.08.24-187.91.3M420.18 348.62c-14.84 1.97-37.35 8.35-49.17 13.94-13.89 6.58-30.11 17.31-43.58 28.83-11.99 10.26-28.92 31.77-36.74 46.69-5.35 10.22-10.92 25.24-14.48 39.1-1.36 5.29-2.81 11.87-3.23 14.62-1.73 11.33-1.43 40.1.53 51.53 1.86 10.8 5.91 25.31 10.16 36.41 4.41 11.5 10.29 22.6 17.23 32.51 6.57 9.39 19.85 24.2 28.28 31.54 5.18 4.51 16.85 12.69 26.17 18.34 9.06 5.49 22.48 11.7 33.07 15.3 14.82 5.03 30.8 7.81 48.65 8.46 10.45.38 26.96-.4 34.03-1.6 6.63-1.12 14.6-3.28 25.32-6.84 6.85-2.28 12.04-4.43 18.79-7.79 14.75-7.35 27.89-15.71 37.56-23.9 2.21-1.88 8.01-7.47 12.87-12.41 11.67-11.87 18.46-20.95 26.84-35.93 6.01-10.73 10.28-20.76 13.65-32.05 5.97-20 7.91-36.3 6.9-57.97-.29-6.1-.87-13.23-1.29-15.83-3.09-18.93-7.52-31.95-17.73-52.1-5.27-10.41-12.39-21.61-18.66-29.37-7.58-9.37-23.92-24.41-35.41-32.57-6.49-4.61-17.44-11.14-24.53-14.61-8.38-4.1-22.25-8.62-36.24-11.8-12.61-2.87-17.34-3.28-36.7-3.22-11.11.04-19.04.29-22.29.72"></path></svg>
+                  </span>
+                  <span style="vertical-align:middle;">ClearBot</span>
+                  <span style="color:#b7b4ab; padding: 0 10px; vertical-align:middle;">/</span>
+                  <span style="color:#6f6d65; font-weight: 400; vertical-align:middle;">Cohort 001</span>
+                </td>
+                <td align="right" valign="middle" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab;">
+                  ${esc(date)}
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <!-- Eyebrow + H1 -->
+        <tr>
+          <td class="px-inner" style="padding: 56px 40px 0 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td valign="middle" style="padding-right: 10px;">
+                  <span style="display:inline-block; width:6px; height:6px; background:#0a0b0d; border-radius:50%; line-height:6px;">&nbsp;</span>
+                </td>
+                <td valign="middle" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 11px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.22em; color: #6f6d65;">
+                  Decision &nbsp;&middot;&nbsp; Accepted &nbsp;&middot;&nbsp; Seat 09 of 24
+                </td>
+              </tr>
+            </tbody></table>
+
+            <h1 class="h1" style="margin: 22px 0 28px 0; font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 54px; line-height: 1.02; letter-spacing: -0.035em; color: #0a0b0d;">
+              <em style="font-style: italic; font-weight: 300; color: #0a0b0d;">Congratulations</em>, ${esc(firstName)}&nbsp;&mdash;<br>
+              you're one of the first 24 operators we're letting in.
+            </h1>
+          </td>
+        </tr>
+
+        <!-- Lede -->
+        <tr>
+          <td class="px-inner lede" style="padding: 0 40px 32px 40px; font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 300; font-size: 20px; line-height: 1.5; letter-spacing: -0.005em; color: #0a0b0d;">
+            Out of 1,180 applicants, we picked <em style="font-style: italic; color: #6f6d65;">you</em>. Not because your deck was loud, but because your workflow notes read like a spec. <em style="font-style: italic; color: #6f6d65;">Welcome to the quiet efficient future.</em>
+          </td>
+        </tr>
+
+        <!-- Body paragraph -->
+        <tr>
+          <td class="px-inner" style="padding: 0 40px 12px 40px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; font-weight: 400; line-height: 1.7; letter-spacing: 0.02em; color: #0a0b0d;">
+            <span style="color:#6f6d65;">We read every line of your application.</span> Your notes on the ops layer &mdash; the handoff between CS and Finance, the Zapier stack you described as <span style="font-family:'Fraunces',Georgia,serif; font-style:italic; font-weight:300; font-size:15px; color:#6f6d65; letter-spacing:0;">&ldquo;a Rube Goldberg machine that occasionally bills people&rdquo; &mdash;</span> that's exactly the kind of problem Cohort 001 was built for.
+          </td>
+        </tr>
+
+        <!-- Access code panel with corner brackets -->
+        <tr>
+          <td class="px-inner" style="padding: 32px 40px 8px 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fbfaf5; border:1px solid rgba(10,11,13,0.10);">
+              <tbody><tr>
+                <td style="padding:0; line-height:0; font-size:0; height:14px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tbody><tr>
+                      <td width="14" style="height:14px; border-top:1px solid #0a0b0d; border-left:1px solid #0a0b0d; font-size:0; line-height:0;">&nbsp;</td>
+                      <td style="height:14px; font-size:0; line-height:0;">&nbsp;</td>
+                      <td width="14" style="height:14px; border-top:1px solid #0a0b0d; border-right:1px solid #0a0b0d; font-size:0; line-height:0;">&nbsp;</td>
+                    </tr>
+                  </tbody></table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding: 18px 32px 28px 32px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom: 1px dashed rgba(10,11,13,0.10); padding-bottom: 18px;">
+                    <tbody><tr>
+                      <td align="left" style="padding-bottom: 18px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: #6f6d65;">
+                        Your access code
+                      </td>
+                      <td align="right" style="padding-bottom: 18px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.14em; color: #b7b4ab;">
+                        Ref &middot; CB-COH001-0427
+                      </td>
+                    </tr>
+                  </tbody></table>
+
+                  <div class="code" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-weight: 500; font-size: 38px; letter-spacing: 0.18em; color: #0a0b0d; line-height: 1; padding: 24px 0 22px 0; text-align: center;">
+                    ${esc(code)}
+                  </div>
+
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top: 1px dashed rgba(10,11,13,0.10);">
+                    <tbody><tr>
+                      <td class="stack" width="33%" align="left" valign="top" style="padding: 22px 12px 0 0;">
+                        <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Cohort</div>
+                        <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">001 <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">Founding</span></div>
+                      </td>
+                      <td class="stack" width="33%" align="left" valign="top" style="padding: 22px 12px 0 12px;">
+                        <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Seat</div>
+                        <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">09 <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">of 24</span></div>
+                      </td>
+                      <td class="stack stack-last" width="34%" align="left" valign="top" style="padding: 22px 0 0 12px;">
+                        <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; margin-bottom: 8px;">Expires</div>
+                        <div style="font-family: 'Fraunces', 'Times New Roman', Georgia, serif; font-weight: 400; font-size: 20px; letter-spacing: -0.01em; color: #0a0b0d;">Apr 27 <span style="font-family: 'JetBrains Mono', Menlo, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: #b7b4ab; margin-left: 4px;">23:59 PDT</span></div>
+                      </td>
+                    </tr>
+                  </tbody></table>
+                </td>
+              </tr>
+
+              <tr>
+                <td style="padding:0; line-height:0; font-size:0; height:14px;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                    <tbody><tr>
+                      <td width="14" style="height:14px; border-bottom:1px solid #0a0b0d; border-left:1px solid #0a0b0d; font-size:0; line-height:0;">&nbsp;</td>
+                      <td style="height:14px; font-size:0; line-height:0;">&nbsp;</td>
+                      <td width="14" style="height:14px; border-bottom:1px solid #0a0b0d; border-right:1px solid #0a0b0d; font-size:0; line-height:0;">&nbsp;</td>
+                    </tr>
+                  </tbody></table>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <!-- Sign up line -->
+        <tr>
+          <td class="px-inner" style="padding: 24px 40px 8px 40px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.7; letter-spacing: 0.02em; color: #0a0b0d;">
+            <span style="color:#6f6d65;">Sign up at </span><a href="${esc(signupUrl)}" style="color:#0a0b0d; text-decoration: underline; text-underline-offset:3px; text-decoration-color:rgba(10,11,13,0.35);">signup.clearbot.io</a><span style="color:#6f6d65;"> to claim your seat and unlock the onboarding packet. </span><span style="font-family:'Fraunces',Georgia,serif; font-style:italic; font-weight:300; font-size:15px; color:#6f6d65; letter-spacing:0;">It's single-use, tied to this email, and it quietly expires in nine days.</span>
+          </td>
+        </tr>
+
+        <!-- CTA button -->
+        <tr>
+          <td class="px-inner" align="left" style="padding: 28px 40px 8px 40px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse: separate;">
+              <tbody><tr>
+                <td align="center" bgcolor="#0a0b0d" style="background:#0a0b0d; border-radius: 2px;">
+                  <a href="${esc(signupUrl)}" class="cta" style="display: inline-block; padding: 18px 30px; font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.22em; color: #f3f1ea; text-decoration: none; border: 1px solid #0a0b0d; border-radius: 2px; mso-padding-alt: 18px 30px;">
+                    Get access now &nbsp;&rarr;
+                  </a>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <!-- Reply line -->
+        <tr>
+          <td class="px-inner" style="padding: 14px 40px 32px 40px; font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 14px; color: #6f6d65;">
+            &mdash; or just reply to this email and we'll handle it.
+          </td>
+        </tr>
+
+        <!-- Next steps -->
+        <tr>
+          <td class="px-inner" style="padding: 16px 40px 0 40px;">
+            <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: #6f6d65; padding-bottom: 10px; border-bottom: 1px solid rgba(10,11,13,0.10);">Next &middot; Four small things</div>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="px-inner" style="padding: 18px 40px; border-bottom: 1px dashed rgba(10,11,13,0.10);">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td valign="top" width="50" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.22em; color: #b7b4ab; padding-top: 2px;">01 &nbsp;&mdash;</td>
+                <td valign="top" style="padding-right: 12px;">
+                  <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.04em; color: #0a0b0d; margin-bottom: 4px;">Book your 20-minute intake call</div>
+                  <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.5; color: #6f6d65;">One of us &mdash; probably me &mdash; walks through your current stack and what we'll automate first.</div>
+                </td>
+                <td valign="top" align="right" class="hide-mobile" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #0a0b0d; white-space: nowrap; padding-top: 2px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:#0a0b0d; border-radius:50%; vertical-align:middle; margin-right: 8px;">&nbsp;</span>Ready
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="px-inner" style="padding: 18px 40px; border-bottom: 1px dashed rgba(10,11,13,0.10);">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td valign="top" width="50" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.22em; color: #b7b4ab; padding-top: 2px;">02 &nbsp;&mdash;</td>
+                <td valign="top" style="padding-right: 12px;">
+                  <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.04em; color: #0a0b0d; margin-bottom: 4px;">Redeem your access code</div>
+                  <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.5; color: #6f6d65;">Takes about 40 seconds. Sets your workspace handle and timezone.</div>
+                </td>
+                <td valign="top" align="right" class="hide-mobile" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; white-space: nowrap; padding-top: 2px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:rgba(10,11,13,0.28); border-radius:50%; vertical-align:middle; margin-right: 8px;">&nbsp;</span>Queued
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="px-inner" style="padding: 18px 40px; border-bottom: 1px dashed rgba(10,11,13,0.10);">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td valign="top" width="50" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.22em; color: #b7b4ab; padding-top: 2px;">03 &nbsp;&mdash;</td>
+                <td valign="top" style="padding-right: 12px;">
+                  <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.04em; color: #0a0b0d; margin-bottom: 4px;">Kickoff &middot; Tuesday, April 28</div>
+                  <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.5; color: #6f6d65;">Cohort 001 meets live at 10:00 PDT. Async-friendly; no slides, just a shared doc and a terminal.</div>
+                </td>
+                <td valign="top" align="right" class="hide-mobile" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; white-space: nowrap; padding-top: 2px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:rgba(10,11,13,0.28); border-radius:50%; vertical-align:middle; margin-right: 8px;">&nbsp;</span>Scheduled
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="px-inner" style="padding: 18px 40px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td valign="top" width="50" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; letter-spacing: 0.22em; color: #b7b4ab; padding-top: 2px;">04 &nbsp;&mdash;</td>
+                <td valign="top" style="padding-right: 12px;">
+                  <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 12px; letter-spacing: 0.04em; color: #0a0b0d; margin-bottom: 4px;">Ship your first automation by May 9</div>
+                  <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; line-height: 1.5; color: #6f6d65;">Two weeks in, one thing off your team's plate. That's the whole deal.</div>
+                </td>
+                <td valign="top" align="right" class="hide-mobile" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab; white-space: nowrap; padding-top: 2px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:rgba(10,11,13,0.28); border-radius:50%; vertical-align:middle; margin-right: 8px;">&nbsp;</span>Queued
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+        <!-- Signature -->
+        <tr>
+          <td class="px-inner" style="padding: 36px 40px 8px 40px; border-top: 1px solid rgba(10,11,13,0.10);">
+            <p style="margin: 0 0 18px 0; font-family: 'Fraunces', Georgia, serif; font-weight: 300; font-size: 17px; line-height: 1.5; color: #0a0b0d;">
+              <em style="font-style: italic; color: #6f6d65;">Written on a quiet Saturday morning,</em><br>
+              with a proper coffee and a short list.
+            </p>
+            <div style="font-family: Fraunces, Georgia, serif; font-weight: 400; font-size: 22px; letter-spacing: -0.01em; color: rgb(10, 11, 13); margin-top: 8px;">
+              <em style="font-style: italic; font-weight: 300;">Ethan</em> Gardner</div>
+            <div style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgb(111, 109, 101); margin-top: 4px;">
+              Founder &middot; ClearBot Solutions</div>
+          </td>
+        </tr>
+
+        <!-- Closing line -->
+        <tr>
+          <td class="px-inner" style="padding: 26px 40px 40px 40px;">
+            <div style="font-family: 'Fraunces', Georgia, serif; font-style: italic; font-weight: 300; font-size: 15px; color: #6f6d65;">
+              Built for the quiet efficient future.
+            </div>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td class="px-inner" style="padding: 24px 40px 32px 40px; border-top: 1px solid rgba(10,11,13,0.10);">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tbody><tr>
+                <td align="left" valign="top" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: rgb(111, 109, 101);">
+                  ClearBot Solutions<br>
+                  <span style="color:#b7b4ab;">mccall, id</span></td>
+                <td align="right" valign="top" style="font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.22em; color: #b7b4ab;">
+                  <a href="https://clearbot.io/unsubscribe" style="color:#6f6d65; text-decoration: none;">Unsubscribe</a> &nbsp;&middot;&nbsp; <a href="https://clearbot.io/preferences" style="color:#6f6d65; text-decoration: none;">Preferences</a><br>
+                  <span style="color:#b7b4ab;">No spam &middot; Launch only</span>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+
+      </tbody></table>
+
+      <div style="max-width: 600px; padding: 18px 8px 0px; font-family: Fraunces, Georgia, serif; font-style: italic; font-weight: 300; font-size: 12px; color: rgb(183, 180, 171); text-align: center;"><br></div>
+
+    </td>
+  </tr>
+</tbody></table>
+
+
+
+</body></html>`;
+
+  return { subject, html };
+}
+
+function esc(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}

@@ -4486,6 +4486,7 @@ async function renderCodesAll() {
         '<td class="mono">' + (r.created_at ? fmtRelTime(r.created_at) : '—') + '</td>' +
         '<td style="text-align:right;white-space:nowrap;">' +
           '<button type="button" class="btn btn-sm" data-copy-code="' + escapeHtml(r.code) + '">Copy</button> ' +
+          '<button type="button" class="btn btn-sm" data-send-code="' + escapeHtml(r.code) + '">Send</button> ' +
           '<button type="button" class="btn btn-sm" data-delete-code="' + escapeHtml(r.code) + '">Delete</button>' +
         '</td>' +
       '</tr>'
@@ -4495,6 +4496,13 @@ async function renderCodesAll() {
         const code = btn.getAttribute('data-copy-code');
         try { await navigator.clipboard.writeText(code); toast('Copied ' + code); }
         catch (_) { toast('Copy failed'); }
+      });
+    });
+    tbody.querySelectorAll('[data-send-code]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const code = btn.getAttribute('data-send-code');
+        const row = rows.find(r => r.code === code);
+        showSendAccessCodeModal(row || { code });
       });
     });
     tbody.querySelectorAll('[data-delete-code]').forEach(btn => {
@@ -4530,6 +4538,54 @@ function showAccessCodeModal() {
       try { await navigator.clipboard.writeText(res.code); toast('Code ' + res.code + ' copied'); }
       catch (_) { toast('Code ' + res.code + ' created'); }
       await renderCodesAll();
+      return true;
+    },
+  });
+}
+
+function showSendAccessCodeModal(row) {
+  if (!row || !row.code) return;
+  const derivedFirstName = (row.name || '').trim().split(/\s+/)[0] || '';
+  const bodyHtml =
+    '<p class="modal-prose">Emails the acceptance letter with <span class="mono">' + escapeHtml(row.code) + '</span> to the recipient.</p>' +
+    '<div class="modal-field"><label class="form-label" for="send-code-email">Recipient email</label>' +
+      '<input class="input" id="send-code-email" type="email" autocomplete="off" placeholder="you@example.com" /></div>' +
+    '<div class="modal-field"><label class="form-label" for="send-code-first">First name <span style="color:#6f6d65;">(optional)</span></label>' +
+      '<input class="input" id="send-code-first" type="text" autocomplete="off" placeholder="e.g. Marcus" value="' + escapeHtml(derivedFirstName) + '" /></div>' +
+    '<div class="modal-error" data-modal-error hidden></div>';
+  openModal({
+    eyebrow: 'Send access code',
+    title: 'Send <em>' + escapeHtml(row.code) + '</em>.',
+    bodyHtml,
+    confirmLabel: 'Send',
+    initialFocus: '#send-code-email',
+    onConfirm: async (root) => {
+      const email = (root.querySelector('#send-code-email').value || '').trim();
+      const firstName = (root.querySelector('#send-code-first').value || '').trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setModalError(root, 'Enter a valid email.');
+        return false;
+      }
+      setModalBusy(root, true, 'Sending…');
+      try {
+        const res = await fetch('/api/team/send-access-code', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, code: row.code, firstName: firstName || null }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          setModalError(root, json.error || 'Send failed.');
+          setModalBusy(root, false);
+          return false;
+        }
+      } catch (e) {
+        setModalError(root, (e && e.message) || 'Send failed.');
+        setModalBusy(root, false);
+        return false;
+      }
+      toast('Access code sent to ' + email);
       return true;
     },
   });
