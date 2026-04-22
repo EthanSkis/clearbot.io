@@ -124,7 +124,7 @@ export function renderShell(args: ShellArgs): string {
           <td class="px-inner" style="padding: 24px 40px 28px 40px; border-top: 1px solid rgba(10,11,13,0.10); font-family: 'JetBrains Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.22em; color: #6f6d65;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr>
               <td align="left" valign="top" style="color:#6f6d65;">
-                ClearBot Solutions<br><span style="color:#b7b4ab;">mccall, id</span>
+                ClearBot<br><span style="color:#b7b4ab;">mccall, id</span>
               </td>
               <td align="right" valign="top" style="color:#b7b4ab;">
                 <a href="https://client.clearbot.io/settings" style="color:#6f6d65; text-decoration: none;">Manage emails</a><br>

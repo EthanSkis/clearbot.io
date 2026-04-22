@@ -21,7 +21,7 @@ export function MarketingHomeClient() {
       </div>
 
       <div className="divider" id="services">
-        <span>§ 01 · Services</span>
+        <span>§ 01 · Plans & automations</span>
         <span className="divider-line" />
       </div>
 
@@ -46,7 +46,7 @@ export function MarketingHomeClient() {
       })}
 
       <div className="divider" id="process">
-        <span>§ 02 · How I work</span>
+        <span>§ 02 · Onboarding</span>
         <span className="divider-line" />
       </div>
       <div className="process">

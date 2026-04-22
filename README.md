@@ -1,7 +1,8 @@
 # ClearBot (unified web app)
 
-This repo hosts the single Next.js app that serves every `*.clearbot.io`
-subdomain from one Vercel project:
+ClearBot is an AI-powered business license renewal platform for
+multi-location operators. This repo hosts the single Next.js app that
+serves every `*.clearbot.io` subdomain from one Vercel project:
 
 | Host | Route group |
 |---|---|

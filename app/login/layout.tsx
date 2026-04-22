@@ -16,9 +16,9 @@ export default function LoginLayout({ children }: { children: React.ReactNode })
 
         <footer className="foot">
           <div className="left">
-            <span>© 2026 ClearBot Solutions</span>
+            <span>© 2026 ClearBot</span>
           </div>
-          <div className="copyright">Your idea. Perfected.</div>
+          <div className="copyright">Business license renewals, automated.</div>
           <div className="right">
             <a href="https://clearbot.io">Home</a>
             <a href="mailto:ethan@clearbot.io">Contact</a>

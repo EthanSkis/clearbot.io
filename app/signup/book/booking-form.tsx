@@ -7,18 +7,18 @@ type Msg = { kind?: 'error' | 'ok'; text: string } | null;
 type Slot = { iso: string; day: string; date: string; time: string };
 
 const FOCUS_OPTIONS = [
-  { value: 'brand',   label: 'Brand system' },
-  { value: 'web',     label: 'Website or landing page' },
-  { value: 'rescue',  label: 'Website rescue' },
-  { value: 'copy',    label: 'Landing-page copy' },
-  { value: 'audit',   label: 'Site & brand audit' },
-  { value: 'naming',  label: 'Naming & taglines' },
-  { value: 'ads',     label: 'Ads & campaigns' },
-  { value: 'content', label: 'Content engine' },
-  { value: 'video',   label: 'Motion & video' },
-  { value: 'deck',    label: 'Pitch-deck design' },
-  { value: 'icons',   label: 'Illustration & icons' },
-  { value: 'other',   label: 'Something else' },
+  { value: 'essential',    label: 'Essential — deadline tracking + alerts' },
+  { value: 'standard',     label: 'Standard — alerts + prep packets' },
+  { value: 'professional', label: 'Professional — auto-submission' },
+  { value: 'enterprise',   label: 'Enterprise — 20+ locations' },
+  { value: 'mapping',      label: 'License discovery & onboarding' },
+  { value: 'gaps',         label: 'Gap audit on current licenses' },
+  { value: 'vault',        label: 'Document vault setup' },
+  { value: 'alerts',       label: 'Deadline alert engine' },
+  { value: 'prep',         label: 'Prep packets for existing renewals' },
+  { value: 'autofile',     label: 'Portal auto-submission' },
+  { value: 'data',         label: 'Jurisdiction intelligence (data license)' },
+  { value: 'other',        label: 'Something else' },
 ] as const;
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -219,14 +219,14 @@ export function BookingForm() {
         <span className="italic">Book</span> intro.
       </h1>
       <p className="subtitle">
-        A 30-minute call to see what <em>ClearBot</em> can make for you.
+        A 15-minute call to map every license <em>ClearBot</em> would manage for you.
       </p>
 
       <div className="bullets" aria-hidden="true">
         <div className="bullet">
           <span className="k">Runtime</span>
           <span className="v">
-            <em>30</em> min
+            <em>15</em> min
           </span>
         </div>
         <div className="bullet">
@@ -237,7 +237,7 @@ export function BookingForm() {
         </div>
         <div className="bullet">
           <span className="k">You leave with</span>
-          <span className="v">Sample work</span>
+          <span className="v">A license map + price</span>
         </div>
       </div>
 
@@ -357,14 +357,14 @@ export function BookingForm() {
             <div className="section-label">Brief</div>
             <div className="field brief-field">
               <label htmlFor="notes">
-                <span>What do you need made?</span>
+                <span>Tell us about your operation</span>
                 <span className="hint">Optional</span>
               </label>
               <div className="input-wrap">
                 <textarea
                   id="notes"
                   name="notes"
-                  placeholder="A few lines on the project, timeline, or budget."
+                  placeholder="How many locations? In which states? How do you track renewals today?"
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                 />
