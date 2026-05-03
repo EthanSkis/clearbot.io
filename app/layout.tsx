@@ -3,9 +3,9 @@ import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ClearBot · Your idea. Perfected.',
+  title: 'ClearBot · Business license renewals, automated',
   description:
-    "An AI-assisted design studio. Brand identities, websites, and rescue jobs for sites that aren't quite working \u2014 made sharp, made fast, made yours.",
+    'ClearBot tracks, prepares, and files business license renewals for every location you operate — so a missed renewal is no longer possible. Built for multi-location restaurants, healthcare practices, franchises, contractors, and retail chains.',
   icons: { icon: '/assets/favicon.svg' }
 };
 

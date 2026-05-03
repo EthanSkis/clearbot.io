@@ -317,6 +317,51 @@ header.bar {
 .lede em { font-style: italic; color: var(--cb-ink-dim); }
 
 /* ==========================================================
+   Fear hook (three-up stat strip under hero lede)
+   ========================================================== */
+
+.fear-hook {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin: 36px 0 0;
+  border-top: 1px solid var(--cb-rule-strong);
+  border-bottom: 1px solid var(--cb-rule-strong);
+}
+.fear-hook-stat {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 18px 20px 18px 0;
+  border-right: 1px dashed var(--cb-rule);
+}
+.fear-hook-stat:last-child { border-right: 0; }
+.fear-hook-k {
+  font-family: var(--cb-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--cb-accent-blue);
+  padding-top: 3px;
+}
+.fear-hook-v {
+  font-family: var(--cb-display);
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 1.4;
+  letter-spacing: -0.005em;
+  color: var(--cb-ink-dim);
+}
+.fear-hook-v em { font-style: italic; color: var(--cb-ink); font-weight: 400; }
+@media (max-width: 860px) {
+  .fear-hook { grid-template-columns: 1fr; }
+  .fear-hook-stat { border-right: 0; border-bottom: 1px dashed var(--cb-rule); padding: 14px 0; }
+  .fear-hook-stat:last-child { border-bottom: 0; }
+}
+
+/* ==========================================================
    Panel (signature bracketed card)
    ========================================================== */
 
@@ -874,12 +919,13 @@ header.bar {
   font-family: var(--cb-display);
   font-style: italic;
   font-weight: 300;
-  font-size: 64px;
+  font-size: clamp(28px, 3.2vw, 40px);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--cb-ink);
   margin-bottom: 18px;
   font-variation-settings: "opsz" 144, "SOFT" 100;
+  white-space: nowrap;
 }
 
 .process-name {

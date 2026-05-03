@@ -7,196 +7,196 @@
 
 const AUTOMATIONS = [
   {
-    id: 'brief-to-brand',
-    title: 'Brief → full brand system',
+    id: 'renewal-lifecycle',
+    title: 'License → filed renewal',
     summary:
-      'One intake form becomes a logo, palette, type system, and guidelines doc. Our bots run the creative moves an agency team would — in 48 hours, not 8 weeks.',
-    steps: '7 steps · 4 deliverables · ~48h runtime',
-    runsPerWeek: 9,
+      'A license record with an upcoming deadline becomes a pre-filled application, fees paid, confirmation downloaded, and a filing record in your vault — with human review only when a requirement changed.',
+    steps: '7 steps · 3 outputs · ~6h runtime',
+    runsPerWeek: 240,
     nodes: [
-      { id: 'brief',    role: 'trigger', label: 'Brand brief',   sub: 'intake form · call recap',        col: 0, row: 1 },
-      { id: 'research', role: 'agent',   label: 'Research',      sub: 'category · competitors · mood',   col: 1, row: 1 },
-      { id: 'concept',  role: 'agent',   label: 'Concept',       sub: '3 directions · rationale',        col: 2, row: 0 },
-      { id: 'refs',     role: 'source',  label: 'Reference set', sub: 'curated board · 40 refs',         col: 2, row: 2 },
-      { id: 'review',   role: 'branch',  label: 'Client pick',   sub: 'approve · revise · restart',      col: 3, row: 1 },
-      { id: 'build',    role: 'action',  label: 'Build system',  sub: 'logo · type · color · grid',      col: 4, row: 1 },
-      { id: 'ship',     role: 'sink',    label: 'Brand kit',     sub: 'Figma · PDF guide · assets',      col: 5, row: 1 },
+      { id: 'clock',    role: 'trigger', label: '90-day cue',      sub: 'deadline detector',             col: 0, row: 1 },
+      { id: 'kb',       role: 'source',  label: 'Knowledge base',  sub: 'forms · fees · requirements',   col: 1, row: 0 },
+      { id: 'record',   role: 'source',  label: 'License record',  sub: 'number · expiry · agency',      col: 1, row: 2 },
+      { id: 'prep',     role: 'agent',   label: 'Prep packet',     sub: 'form fill · docs · fees',       col: 2, row: 1 },
+      { id: 'gate',     role: 'branch',  label: 'Owner approval',  sub: 'in-app one-tap',                col: 3, row: 1 },
+      { id: 'file',     role: 'action',  label: 'Submit to agency',sub: 'portal login · pay · confirm',  col: 4, row: 1 },
+      { id: 'vault',    role: 'sink',    label: 'Filed + archived',sub: 'receipt · cert · audit log',    col: 5, row: 1 },
     ],
     edges: [
-      ['brief', 'research'], ['research', 'concept'], ['research', 'refs'],
-      ['concept', 'review'], ['refs', 'review'], ['review', 'build'], ['build', 'ship'],
+      ['clock', 'prep'], ['kb', 'prep'], ['record', 'prep'],
+      ['prep', 'gate'], ['gate', 'file'], ['file', 'vault'],
     ],
   },
   {
-    id: 'concept-to-campaign',
-    title: 'Concept → live multi-channel campaign',
+    id: 'onboarding',
+    title: 'Upload → every license mapped',
     summary:
-      'A campaign concept becomes ready-to-run Meta, Google, TikTok, and email creative — sized, copywritten, tagged, and pushed to ad accounts.',
-    steps: '8 steps · 4 channels · ~6h runtime',
-    runsPerWeek: 14,
+      'Drop in your current licenses or connect state portals. Claude extracts every expiration date, license number, and agency — then maps each one to the ClearBot knowledge base so the renewal clock starts.',
+    steps: '6 steps · N locations · ~30 min runtime',
+    runsPerWeek: 18,
     nodes: [
-      { id: 'conc',     role: 'trigger', label: 'Campaign concept', sub: 'positioning · hook',       col: 0, row: 1 },
-      { id: 'audience', role: 'agent',   label: 'Audience map',     sub: 'segments · pain points',   col: 1, row: 1 },
-      { id: 'copy',     role: 'agent',   label: 'Copy variants',    sub: '12 hooks · 3 tones',       col: 2, row: 0 },
-      { id: 'art',      role: 'agent',   label: 'Art direction',    sub: 'key visuals · layouts',    col: 2, row: 2 },
-      { id: 'cut',      role: 'action',  label: 'Cut to formats',   sub: '4:5 · 1:1 · 9:16 · email', col: 3, row: 1 },
-      { id: 'gate',     role: 'branch',  label: 'Brand check',      sub: 'tone · legal · usage',     col: 4, row: 1 },
-      { id: 'meta',     role: 'sink',    label: 'Meta Ads',         sub: 'ad sets drafted',          col: 5, row: 0 },
-      { id: 'ga',       role: 'sink',    label: 'Google Ads',       sub: 'RSAs · extensions',        col: 5, row: 1 },
-      { id: 'email',    role: 'sink',    label: 'Email · CRM',      sub: 'sequence scheduled',       col: 5, row: 2 },
+      { id: 'upload', role: 'trigger', label: 'Licenses uploaded', sub: 'PDFs · portal pulls · photos', col: 0, row: 1 },
+      { id: 'ocr',    role: 'action',  label: 'OCR + parse',       sub: 'Claude · vision',              col: 1, row: 1 },
+      { id: 'map',    role: 'agent',   label: 'Map to KB',         sub: 'agency · license type',        col: 2, row: 1 },
+      { id: 'gaps',   role: 'branch',  label: 'Gap check',         sub: 'missing docs · unknown types', col: 3, row: 0 },
+      { id: 'sched',  role: 'action',  label: 'Build calendar',    sub: '90/60/30 reminders set',       col: 3, row: 2 },
+      { id: 'dash',   role: 'sink',    label: 'Live dashboard',    sub: 'every license · every loc',    col: 4, row: 1 },
     ],
     edges: [
-      ['conc', 'audience'], ['audience', 'copy'], ['audience', 'art'],
-      ['copy', 'cut'], ['art', 'cut'], ['cut', 'gate'],
-      ['gate', 'meta'], ['gate', 'ga'], ['gate', 'email'],
+      ['upload', 'ocr'], ['ocr', 'map'],
+      ['map', 'gaps'], ['map', 'sched'],
+      ['gaps', 'dash'], ['sched', 'dash'],
     ],
   },
   {
-    id: 'request-to-landing',
-    title: 'Request → landing page live',
+    id: 'deadline-tracker',
+    title: 'Calendar → 90/60/30 alerts',
     summary:
-      'A one-line page request becomes a live, on-brand landing page with copy, imagery, analytics, and A/B variants — deployed behind your own domain.',
-    steps: '7 steps · 1 deploy · ~3h runtime',
-    runsPerWeek: 22,
+      'Every morning, ClearBot scans upcoming deadlines across every location and sends exactly-what-you-need reminders — with the form, the fee, the documents, and a one-click start-renewal link.',
+    steps: '5 steps · 3 channels · ~90s runtime',
+    runsPerWeek: 7,
     nodes: [
-      { id: 'req',    role: 'trigger', label: 'Page request', sub: 'Slack · form',         col: 0, row: 1 },
-      { id: 'wire',   role: 'agent',   label: 'Wireframe',    sub: 'sections · hierarchy', col: 1, row: 1 },
-      { id: 'assets', role: 'source',  label: 'Brand assets', sub: 'kit · photography',    col: 2, row: 0 },
-      { id: 'write',  role: 'agent',   label: 'Write',        sub: 'hero · value · CTA',   col: 2, row: 2 },
-      { id: 'build',  role: 'action',  label: 'Build',        sub: 'Webflow · Next.js',    col: 3, row: 1 },
-      { id: 'qa',     role: 'branch',  label: 'QA',           sub: 'perf · a11y · brand',  col: 4, row: 1 },
-      { id: 'ship',   role: 'sink',    label: 'Deployed',     sub: 'live URL · GA · CRM',  col: 5, row: 1 },
+      { id: 'cron',   role: 'trigger', label: 'Daily 6:00',     sub: 'cron cue',                    col: 0, row: 1 },
+      { id: 'scan',   role: 'agent',   label: 'Scan deadlines', sub: 'all locations · all licenses',col: 1, row: 1 },
+      { id: 'tier',   role: 'branch',  label: 'Tier by urgency',sub: '90 · 60 · 30 · overdue',      col: 2, row: 1 },
+      { id: 'draft',  role: 'agent',   label: 'Draft message',  sub: 'form · fee · docs needed',    col: 3, row: 1 },
+      { id: 'email',  role: 'sink',    label: 'Email',          sub: 'owner + ops manager',         col: 4, row: 0 },
+      { id: 'sms',    role: 'sink',    label: 'SMS',            sub: '30-day + overdue',            col: 4, row: 1 },
+      { id: 'slack',  role: 'sink',    label: 'Slack / portal', sub: 'in-app card',                 col: 4, row: 2 },
     ],
     edges: [
-      ['req', 'wire'], ['wire', 'assets'], ['wire', 'write'],
-      ['assets', 'build'], ['write', 'build'], ['build', 'qa'], ['qa', 'ship'],
+      ['cron', 'scan'], ['scan', 'tier'], ['tier', 'draft'],
+      ['draft', 'email'], ['draft', 'sms'], ['draft', 'slack'],
     ],
   },
   {
-    id: 'calendar-to-content',
-    title: 'Calendar → monthly content drop',
+    id: 'auto-submit',
+    title: 'Approved packet → filed with agency',
     summary:
-      'Monday morning, last month’s performance plus this month’s themes turn into 20 posts, 4 blog drafts, and a newsletter — scheduled across every channel.',
-    steps: '6 steps · 3 channels · ~2h runtime',
-    runsPerWeek: 4,
+      'For agencies with online portals, ClearBot logs in, fills the form, pays the fee, and downloads the confirmation — all under the customer account. Humans step in only when an agency requirement changes.',
+    steps: '7 steps · N agencies · ~12 min per filing',
+    runsPerWeek: 110,
     nodes: [
-      { id: 'cal',   role: 'trigger', label: 'Mon 7:00',    sub: 'calendar cue',                col: 0, row: 1 },
-      { id: 'perf',  role: 'source',  label: 'Last month',  sub: 'GA · LinkedIn · IG',          col: 1, row: 1 },
-      { id: 'plan',  role: 'agent',   label: 'Plan themes', sub: 'what worked · what’s next',   col: 2, row: 1 },
-      { id: 'write', role: 'agent',   label: 'Draft',       sub: '20 posts · 4 blogs · email',  col: 3, row: 1 },
-      { id: 'check', role: 'branch',  label: 'Tone check',  sub: 'brand voice · fact-check',    col: 4, row: 1 },
-      { id: 'sched', role: 'sink',    label: 'Scheduled',   sub: 'Buffer · Ghost · Klaviyo',    col: 5, row: 1 },
+      { id: 'pkt',    role: 'trigger', label: 'Approved packet', sub: 'owner tapped "file"',          col: 0, row: 1 },
+      { id: 'creds',  role: 'source',  label: 'Agency creds',    sub: 'vaulted · per-location',       col: 1, row: 1 },
+      { id: 'bot',    role: 'agent',   label: 'Portal agent',    sub: 'Playwright · form mapping',    col: 2, row: 1 },
+      { id: 'pay',    role: 'action',  label: 'Pay fee',         sub: 'Stripe-backed · agency card',  col: 3, row: 0 },
+      { id: 'upload', role: 'action',  label: 'Attach docs',     sub: 'COI · certs · photos',         col: 3, row: 2 },
+      { id: 'verify', role: 'branch',  label: 'Verify submit',   sub: 'confirmation number pulled',   col: 4, row: 1 },
+      { id: 'done',   role: 'sink',    label: 'Filed',           sub: 'receipt · log · next date',    col: 5, row: 1 },
     ],
     edges: [
-      ['cal', 'perf'], ['perf', 'plan'], ['plan', 'write'],
-      ['write', 'check'], ['check', 'sched'],
+      ['pkt', 'bot'], ['creds', 'bot'],
+      ['bot', 'pay'], ['bot', 'upload'],
+      ['pay', 'verify'], ['upload', 'verify'], ['verify', 'done'],
     ],
   },
   {
-    id: 'footage-to-ad',
-    title: 'Raw footage → edited video ad',
+    id: 'knowledge-base',
+    title: 'Rejection → knowledge base updated',
     summary:
-      'Drop in raw footage and a product one-liner. Out comes a cut, captioned, music-scored video ad in 1:1, 9:16, and 16:9 — ready to run.',
-    steps: '7 steps · 3 cuts · ~45 min runtime',
-    runsPerWeek: 31,
+      'Every rejected filing is parsed by Claude, the changed requirement is isolated, and the knowledge base is patched — so every pending renewal in that jurisdiction is corrected before it files.',
+    steps: '7 steps · cross-customer signal · ~5 min runtime',
+    runsPerWeek: 12,
     nodes: [
-      { id: 'upload',  role: 'trigger', label: 'Upload',         sub: 'footage · brief',        col: 0, row: 1 },
-      { id: 'trans',   role: 'action',  label: 'Transcribe',     sub: 'whisper · timecodes',    col: 1, row: 1 },
-      { id: 'pick',    role: 'agent',   label: 'Pick moments',   sub: 'hook · payoff · b-roll', col: 2, row: 1 },
-      { id: 'score',   role: 'agent',   label: 'Score & caption',sub: 'music bed · kinetic',    col: 3, row: 0 },
-      { id: 'cut',     role: 'action',  label: 'Render cuts',    sub: '1:1 · 9:16 · 16:9',      col: 3, row: 2 },
-      { id: 'review',  role: 'branch',  label: 'Client review',  sub: 'approve · tweak',        col: 4, row: 1 },
-      { id: 'deliver', role: 'sink',    label: 'Deliverables',   sub: 'Frame.io · ad accounts', col: 5, row: 1 },
+      { id: 'reject', role: 'trigger', label: 'Rejection notice', sub: 'email · portal · letter',    col: 0, row: 1 },
+      { id: 'parse',  role: 'agent',   label: 'Parse reason',     sub: 'Claude · rule extract',      col: 1, row: 1 },
+      { id: 'diff',   role: 'agent',   label: 'Diff vs KB',       sub: 'what changed',               col: 2, row: 1 },
+      { id: 'cross',  role: 'branch',  label: 'Cross-signal',     sub: '3+ same-jurisdiction = live',col: 3, row: 1 },
+      { id: 'patch',  role: 'action',  label: 'Patch KB',         sub: 'form · fee · doc list',      col: 4, row: 0 },
+      { id: 'resub',  role: 'action',  label: 'Re-prep pending',  sub: 'all affected filings',       col: 4, row: 2 },
+      { id: 'alert',  role: 'sink',    label: 'Team notified',    sub: 'changelog · audit trail',    col: 5, row: 1 },
     ],
     edges: [
-      ['upload', 'trans'], ['trans', 'pick'], ['pick', 'score'], ['pick', 'cut'],
-      ['score', 'review'], ['cut', 'review'], ['review', 'deliver'],
+      ['reject', 'parse'], ['parse', 'diff'], ['diff', 'cross'],
+      ['cross', 'patch'], ['cross', 'resub'],
+      ['patch', 'alert'], ['resub', 'alert'],
     ],
   },
 ];
 
 const NODE_DETAIL = {
-  'brief-to-brand:research': {
-    body: 'Reads the brief alongside your category, scrapes 200+ competitor touchpoints, and distills a positioning map with whitespace flagged.',
-    outputs: ['positioning', 'whitespace', 'mood refs'],
+  'renewal-lifecycle:kb': {
+    body: 'The ClearBot knowledge base — every license type, agency, form version, fee schedule, and required document, for every jurisdiction you operate in. Updated automatically from agency portals and every filing outcome across the customer base.',
+    outputs: ['current form', 'current fee', 'doc requirements'],
   },
-  'brief-to-brand:concept': {
-    body: 'Three distinct creative directions, each with logo sketches, type pairings, palette, and a one-paragraph rationale the client can react to.',
-    outputs: ['3 directions', 'rationale', 'sample layouts'],
+  'renewal-lifecycle:prep': {
+    body: 'Pulls the latest agency requirements from the KB, assembles the renewal packet: form pre-filled from your license record, the exact fee, and every required document from your vault. Ready to submit.',
+    outputs: ['pre-filled form', 'doc bundle', 'fee total'],
   },
-  'brief-to-brand:build': {
-    body: 'Once a direction is picked, builds the full system: logo lockups, type scale, color tokens, grid, iconography, motion rules, and a PDF guideline.',
-    outputs: ['logo kit', 'type scale', 'tokens', 'guidelines'],
+  'renewal-lifecycle:gate': {
+    body: 'One-tap approval in the portal or app. Owner sees the packet, the fee, and any flagged changes since last year before authorizing submission. Auto-mode skips this once trust is built.',
+    outputs: ['approved', 'flagged', 'snoozed'],
   },
-  'concept-to-campaign:copy': {
-    body: 'Generates twelve hook variants across three tones (direct, playful, earnest). Each is tagged by audience segment so downstream cuts can mix and match.',
-    outputs: ['12 hooks', 'tone tags', 'segment tags'],
+  'renewal-lifecycle:file': {
+    body: 'Logs into the agency portal using vaulted credentials, submits the form, pays the fee on the agency card, and captures the confirmation number. If the portal breaks, humans step in without missing the deadline.',
+    outputs: ['confirmation #', 'receipt', 'next expiry'],
   },
-  'concept-to-campaign:art': {
-    body: 'Picks key visuals and lays out master templates for every placement. Composition rules, safe zones, and logo placement are all hard-coded into the template.',
-    outputs: ['key visual', 'placements', 'template'],
+  'onboarding:ocr': {
+    body: 'Claude parses every uploaded license — scanned PDFs, portal screenshots, phone photos — and extracts license number, issuing agency, issue date, expiration, and any attached conditions.',
+    outputs: ['license #', 'expiry', 'agency', 'conditions'],
   },
-  'concept-to-campaign:cut': {
-    body: 'Renders every approved copy × visual pair into 4:5, 1:1, 9:16, and email-ready sizes — naming convention matches your ad account taxonomy.',
-    outputs: ['4:5', '1:1', '9:16', 'email'],
+  'onboarding:map': {
+    body: 'Every parsed license is matched to an entry in the ClearBot knowledge base — the canonical agency, the canonical license type, the current form version. Unknown types are flagged for human review.',
+    outputs: ['KB match', 'agency id', 'unknown flag'],
   },
-  'request-to-landing:wire': {
-    body: 'Reads the request and picks the right section pattern — hero, social proof, features, FAQ, CTA — from our library. You see the wireframe before a pixel gets pushed.',
-    outputs: ['section list', 'layout', 'content brief'],
+  'onboarding:gaps': {
+    body: 'Compares your uploaded set to what the knowledge base says a business of your type and location should hold. Surfaces missing licenses, missing documents, and any that may have lapsed before onboarding.',
+    outputs: ['missing licenses', 'missing docs', 'lapsed flags'],
   },
-  'request-to-landing:write': {
-    body: 'Copy grounded in your brand voice doc. Hero, value props, and CTAs are written in three variants so the A/B test is ready on day one.',
-    outputs: ['hero', 'body', 'CTAs (3 variants)'],
+  'deadline-tracker:scan': {
+    body: 'Every morning, scans every license on every location for upcoming deadlines. Tiers them by urgency, routes them to the right owner on your team, and drafts the alert body with exactly what is needed.',
+    outputs: ['upcoming list', 'urgency tier', 'owner routing'],
   },
-  'request-to-landing:qa': {
-    body: 'Runs Lighthouse, axe, a brand-tone check, and a fact-check against your claims doc. Anything < 95 or failing brand gets sent back before deploy.',
-    outputs: ['perf', 'a11y', 'brand', 'facts'],
+  'deadline-tracker:draft': {
+    body: 'Composes a human-sounding reminder tailored to the specific license and jurisdiction. Includes the current form URL, the current fee, and a checklist of required documents pulled from the knowledge base.',
+    outputs: ['form URL', 'fee', 'doc checklist', 'one-click start'],
   },
-  'calendar-to-content:plan': {
-    body: 'Looks at what performed last month, your content pillars, and upcoming product beats — picks themes, cadence, and channel mix for the month.',
-    outputs: ['themes', 'cadence', 'channel mix'],
+  'auto-submit:bot': {
+    body: 'A Playwright agent that logs into the agency portal, navigates to the renewal form for your license type, and maps each field from the prep packet. Tested per-agency and version-gated against the knowledge base.',
+    outputs: ['portal session', 'form mapping', 'field log'],
   },
-  'calendar-to-content:check': {
-    body: 'Every draft runs through a tone check against your brand voice, a claims check against your facts doc, and a duplication check against the last 90 days.',
-    outputs: ['tone score', 'claims ok', 'dedupe ok'],
+  'auto-submit:verify': {
+    body: 'After submit, the agent pulls the confirmation number from the receipt page, screenshots the submission, and writes both to the audit trail. If the receipt is missing, the filing is held and a human is paged immediately.',
+    outputs: ['confirmation #', 'screenshot', 'audit entry'],
   },
-  'footage-to-ad:pick': {
-    body: 'Reads the transcript, scores moments for hook strength and emotional beat, and assembles a first cut. You see the timeline with reasoning attached.',
-    outputs: ['hook', 'beats', 'b-roll picks'],
+  'knowledge-base:parse': {
+    body: 'Rejection notices — email, PDF letter, portal message — are read by Claude to extract the exact rule that changed. Examples: new doc required, new fee, renamed form, changed filing window.',
+    outputs: ['rule diff', 'affected form', 'effective date'],
   },
-  'footage-to-ad:score': {
-    body: 'Picks music from your licensed library to match energy curve, adds kinetic captions styled to your brand, and matches audio ducking to voiceover.',
-    outputs: ['music bed', 'captions', 'mix'],
+  'knowledge-base:cross': {
+    body: 'One rejection could be a one-off. Three rejections from the same jurisdiction in the same week is a systemic change — the knowledge base is patched live and every pending renewal in that jurisdiction is re-prepped before it files.',
+    outputs: ['cross-customer count', 'patch scope', 'live flag'],
   },
 };
 
 const ROLE_META = {
-  trigger: { tag: 'BRIEF'   },
-  source:  { tag: 'ASSET'   },
-  agent:   { tag: 'CRAFT'   },
-  action:  { tag: 'PRODUCE' },
-  branch:  { tag: 'REVIEW'  },
-  sink:    { tag: 'SHIP'    },
+  trigger: { tag: 'SIGNAL' },
+  source:  { tag: 'RECORD' },
+  agent:   { tag: 'AGENT'  },
+  action:  { tag: 'FILE'   },
+  branch:  { tag: 'REVIEW' },
+  sink:    { tag: 'DONE'   },
 };
 
 const SERVICES = [
-  { id: 'brand',   name: 'Brand systems',    meta: 'typical · 48 hours',
-    body: 'Logo, type, color, voice, guidelines. A full identity shipped as Figma libraries and a PDF bible — ready for every downstream bot to draw from.' },
-  { id: 'web',     name: 'Websites & pages', meta: 'typical · 3–72 hours',
-    body: 'Marketing sites and campaign landers. On-brand, fast, analytics-wired, with A/B variants live on day one. Webflow, Framer, or custom Next.js.' },
-  { id: 'ads',     name: 'Ads & campaigns',  meta: 'typical · 6 hours',
-    body: 'Concept through live placements. Copy variants, sized creative, audience targeting, and media plans pushed straight to Meta, Google, and TikTok.' },
-  { id: 'content', name: 'Content engine',   meta: 'retainer · from $4k/mo',
-    body: 'Monthly content at the scale a human team can’t match. Social posts, blogs, newsletters, and repurposing flows tuned to your brand voice.' },
-  { id: 'video',   name: 'Video & motion',   meta: 'typical · 45 min per cut',
-    body: 'Ad cuts, explainers, and social video from raw footage or stock. Music scored, captioned, sized for every placement.' },
+  { id: 'essential',    name: 'Essential',    meta: '$500 / location / year · 1+ locations',
+    body: 'Deadline tracking, document vault, and 90/60/30-day alerts with exactly what is needed. You file. We make sure you never forget.' },
+  { id: 'standard',     name: 'Standard',     meta: '$800 / location / year · 3+ locations',
+    body: 'Essential plus prep packets — pre-filled renewal forms, assembled documents, exact fees, ready to submit. You review and file.' },
+  { id: 'professional', name: 'Professional', meta: '$1,200 / location / year · 5+ locations',
+    body: 'Standard plus auto-submission. ClearBot logs into agency portals, fills the form, pays the fee, and captures the confirmation — you approve in-app.' },
+  { id: 'enterprise',   name: 'Enterprise',   meta: 'custom · 20+ locations',
+    body: 'Professional plus a dedicated ops lead, SLA on every filing, data exports, API access, and jurisdiction intelligence reports for your leadership team.' },
+  { id: 'intelligence', name: 'Data licensing', meta: 'enterprise · from $15k/yr',
+    body: 'Aggregated, anonymized jurisdiction intelligence — real-world processing times, fee changes, rejection patterns — licensed to CRE, insurance, and PE teams.' },
 ];
 
 const PROCESS = [
-  { n: '01', name: 'Brief',        body: 'Ten-minute intake form, or a 30-minute call if you prefer. We capture what you sell, who you sell to, and what the work needs to do.' },
-  { n: '02', name: 'Concept',      body: 'Our bots return 3 directions within a day. You pick one, leave notes on another — the system learns what you mean by on-brand.' },
-  { n: '03', name: 'Produce',      body: 'The winning direction fans out into every deliverable you need — identity, site, ads, video — cut from the same source of truth.' },
-  { n: '04', name: 'Ship & tune',  body: 'Work goes live in your channels. We watch the numbers, iterate weekly, and retire creative the moment it stops earning its keep.' },
+  { n: 'Day 1',     name: 'Kickoff call',       body: 'A 30-minute working session. We pull your current license list from uploads or your state portal and map each one to our knowledge base. Gaps and lapses surface live on the call.' },
+  { n: 'Week 1',    name: 'Full license map',   body: 'Every license, every location, every deadline — in one dashboard. Document vault populated with COIs, manager certifications, and any recurring paperwork your renewals need.' },
+  { n: 'Week 2',    name: 'First renewal live', body: 'Within two weeks the first upcoming renewal is pre-prepped, approved by your team, and filed. You watch the full loop end-to-end before the next one runs.' },
+  { n: 'Always-on', name: 'Runs itself',        body: 'Deadlines become alerts. Alerts become prep packets. Prep packets become filings. You approve in-app or let Auto mode handle portal-friendly agencies hands-off.' },
 ];
 
 // ── State & layout constants ────────────────────────────────
@@ -257,9 +257,6 @@ function renderServices() {
       </div>
       <h3 class="service-name">${escape(s.name)}</h3>
       <p class="service-body">${escape(s.body)}</p>
-      <a class="service-cta" href="https://signup.clearbot.io/book?focus=${encodeURIComponent(s.id)}">Book a call about this
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
     </article>
   `).join('');
 }
